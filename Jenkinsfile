@@ -1,14 +1,23 @@
 pipeline {
+    environment {
+        dockerImage = ''
+    }
     agent any
     stages {
-        stage('create docker image') {
+        stage('Build image') {
             steps {
-                sh "docker build . --tag docker.alekseikromski.com/blog"
+               script{
+                dockerImage = docker.build("localhost:5000/blog:testing")
+               }
             }
         }
-        stage('push docker image') {
+        stage('Push image') {
             steps {
-                sh "docker push docker.alekseikromski.com/blog"
+               script {
+                 withDockerRegistry([ credentialsId: "docker-registry", url: "http://localhost:5000" ]) {
+                    dockerImage.push()
+                 }
+               }
             }
         }
     }
