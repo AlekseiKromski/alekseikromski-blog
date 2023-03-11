@@ -1,7 +1,7 @@
 package main
 
 import (
-	"alekseikromski.space/api"
+	"alekseikromski.com/blog/api"
 	"log"
 	"os"
 )

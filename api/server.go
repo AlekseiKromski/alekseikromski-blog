@@ -1,7 +1,7 @@
 package api
 
 import (
-	v1 "alekseikromski.space/api/v1"
+	v1 "alekseikromski.com/blog/api/v1"
 	"log"
 	"net/http"
 )
