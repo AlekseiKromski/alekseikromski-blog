@@ -2,11 +2,8 @@ package api
 
 import (
 	v1 "alekseikromski.space/api/v1"
-	"fmt"
 	"log"
 	"net/http"
-	"os"
-	"path/filepath"
 )
 
 type Server struct {
@@ -28,17 +25,9 @@ func NewServer(config *Config) *Server {
 func (s *Server) Start() error {
 	log.Println("Register handlers")
 
-	s.mux.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		filePath := filepath.Join("front-end", "index.html")
-		file, err := os.ReadFile(filePath)
-		if err != nil {
-			writer.WriteHeader(http.StatusInternalServerError)
-			writer.Write([]byte(fmt.Sprintf("cannot find front-end: %v", err)))
-			return
-		}
+	fs := http.FileServer(http.Dir("./front-end/build/"))
+	s.mux.Handle("/", fs)
 
-		writer.Write(file)
-	})
 	log.Println("Route [ / ] was mounted - GENERIC - FRONT-END")
 
 	s.mux.HandleFunc("/healthz", func(writer http.ResponseWriter, request *http.Request) {
