@@ -1,10 +1,11 @@
-FROM golang:1.19-alpine
+FROM golang:1.19.4-alpine
 WORKDIR /app
+ENV GO111MODULE=on BLOG_ADDRESS=":3000"
 COPY go.mod ./
 RUN go mod download
-COPY *.go ./
+COPY . ./
 RUN go build -o /blog-build
 
-EXPOSE 8081
+EXPOSE 3000
 
 CMD [ "/blog-build" ]
