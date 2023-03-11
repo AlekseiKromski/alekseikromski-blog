@@ -26,5 +26,5 @@ pipeline {
 
 def getTag() {
     def now = new Date()
-    return now.format("yyMMdd.HHmm", TimeZone.getTimeZone('UTC'))
+    return now.format("yyMMddHHmm", TimeZone.getTimeZone('UTC'))
 }
