@@ -25,7 +25,6 @@ pipeline {
 }
 
 def getTag() {
-    def date = new Date()
-    def sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss")
-    return sdf.format(date)
+    def now = new Date()
+    return now.format("yyMMdd.HHmm", TimeZone.getTimeZone('UTC'))
 }
