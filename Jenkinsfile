@@ -1,13 +1,14 @@
 pipeline {
     environment {
         dockerImage = ''
+        tag = getTag()
     }
     agent any
     stages {
         stage('Build image') {
             steps {
                script{
-                dockerImage = docker.build("localhost:5000/blog:testing")
+                dockerImage = docker.build("localhost:5000/blog:" + tag)
                }
             }
         }
@@ -20,5 +21,17 @@ pipeline {
                }
             }
         }
+        stage('Run docker container') {
+            steps {
+                script {
+                    sh "docker compose up -d"
+                }
+            }
+        }
     }
+}
+
+def getTag() {
+    def now = new Date()
+    return now.format("yyMMddHHmm", TimeZone.getTimeZone('UTC'))
 }
