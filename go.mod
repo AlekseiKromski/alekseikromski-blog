@@ -1,3 +1,3 @@
-module alekseikromski.space
+module alekseikromski.com/blog
 
 go 1.19
