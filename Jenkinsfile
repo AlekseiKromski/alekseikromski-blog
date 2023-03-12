@@ -15,7 +15,7 @@ pipeline {
         stage('Push image') {
             steps {
                script {
-                 withDockerRegistry([ credentialsId: "docker-registry", url: "docker.alekseikromski.com" ]) {
+                 withDockerRegistry([ credentialsId: "docker-registry", url: "https://docker.alekseikromski.com" ]) {
                     dockerImage.push()
                  }
                }
