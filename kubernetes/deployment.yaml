@@ -17,11 +17,11 @@ spec:
       containers:
         - name: blog
           image: docker.alekseikromski.com/blog:latest
-          imagePullSecrets:
-          - name: regcred
           resources:
             requests:
               cpu: "100m"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
+      imagePullSecrets:
+        - name: regcred
