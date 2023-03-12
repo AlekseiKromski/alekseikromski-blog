@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: blog
-          image: docker.alekseikromski.com/blog:k8s
+          image: docker.alekseikromski.com/blog:latest
           resources:
             requests:
               cpu: "100m"
