@@ -8,24 +8,17 @@ pipeline {
         stage('Build image') {
             steps {
                script{
-                dockerImage = docker.build("localhost:5000/blog:" + tag)
+                dockerImage = docker.build("docker.alekseikromski.com/blog:" + tag)
                }
             }
         }
         stage('Push image') {
             steps {
                script {
-                 withDockerRegistry([ credentialsId: "docker-registry", url: "http://localhost:5000" ]) {
+                 withDockerRegistry([ credentialsId: "docker-registry", url: "docker.alekseikromski.com" ]) {
                     dockerImage.push()
                  }
                }
-            }
-        }
-        stage('Run docker container') {
-            steps {
-                script {
-                    sh "docker compose up -d"
-                }
             }
         }
     }
