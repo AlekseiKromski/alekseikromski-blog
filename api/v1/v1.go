@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"alekseikromski.com/blog/api/storage"
 	"fmt"
 	"log"
 	"net/http"
@@ -9,11 +10,13 @@ import (
 type v1 struct {
 	Version string
 	routes  map[string]http.HandlerFunc
+	storage storage.Storage
 }
 
-func NewV1() *v1 {
+func NewV1(storage storage.Storage) *v1 {
 	return &v1{
 		Version: "v1",
+		storage: storage,
 	}
 }
 

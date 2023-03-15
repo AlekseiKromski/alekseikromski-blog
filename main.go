@@ -2,6 +2,7 @@ package main
 
 import (
 	"alekseikromski.com/blog/api"
+	"alekseikromski.com/blog/api/storage/memstore"
 	"log"
 	"os"
 )
@@ -14,7 +15,11 @@ func main() {
 	}
 
 	config := api.NewConfig(addr)
-	server := api.NewServer(config)
+
+	//Prepare storage object
+	memstore := memstore.NewMemStorage()
+
+	server := api.NewServer(config, memstore)
 	log.Println("Create server instance")
 	err := server.Start()
 	if err != nil {

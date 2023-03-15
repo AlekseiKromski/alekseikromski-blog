@@ -1,6 +1,7 @@
 package api
 
 import (
+	"alekseikromski.com/blog/api/storage"
 	v1 "alekseikromski.com/blog/api/v1"
 	"log"
 	"net/http"
@@ -12,12 +13,12 @@ type Server struct {
 	apis   []Api
 }
 
-func NewServer(config *Config) *Server {
+func NewServer(config *Config, storage storage.Storage) *Server {
 	return &Server{
 		mux:    http.NewServeMux(),
 		config: config,
 		apis: []Api{
-			v1.NewV1(),
+			v1.NewV1(storage),
 		},
 	}
 }
