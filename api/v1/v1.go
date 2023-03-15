@@ -23,6 +23,7 @@ func NewV1(storage storage.Storage) *v1 {
 func (v *v1) RegisterRoutes() {
 	v.routes = map[string]http.HandlerFunc{
 		fmt.Sprintf("/%s/get-last-posts", v.Version): v.GetLastPosts,
+		fmt.Sprintf("/%s/create-post", v.Version):    v.CreatePost,
 	}
 }
 
