@@ -8,14 +8,14 @@ pipeline {
         stage('Build image') {
             steps {
                script{
-                dockerImage = docker.build("localhost:5000/blog:" + tag)
+                dockerImage = docker.build("docker.alekseikromski.com/blog:" + tag)
                }
             }
         }
         stage('Push image') {
             steps {
                script {
-                 withDockerRegistry([ credentialsId: "docker-registry", url: "http://localhost:5000" ]) {
+                 withDockerRegistry([ credentialsId: "docker-registry", url: "https://docker.alekseikromski.com" ]) {
                     dockerImage.push()
                  }
                }
