@@ -10,6 +10,9 @@ There will be opensource api code and front-end part
  - Jenkins
  - Docker
  - Kubernetes
+
+## Addons ✈️
+ - swagger documentation (check [blog.alekseikromski.com/swagger](http://blog.alekseikromski.com))
  
 Feature url: [blog.alekseikromski.com](http://blog.alekseikromski.com) 🔗
 
