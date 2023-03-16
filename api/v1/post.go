@@ -7,7 +7,21 @@ import (
 	"net/http"
 )
 
-func (v *v1) GetLastPosts(writer http.ResponseWriter, request *http.Request) {
+// GetLastPosts
+//
+//	@Summary		List of last posts
+//	@Description	Get last posts from storage
+//	@Produce		json
+//	@Success		200	{array}	storage.Post
+//	@Failure		400
+//	@Failure		500
+//	@Router			/v1/get-last-posts [get]
+func (v *v1) GetLastPosts(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
 	query := storage.NewQueryRequest()
 	query.Limit = 3
 
@@ -15,13 +29,21 @@ func (v *v1) GetLastPosts(writer http.ResponseWriter, request *http.Request) {
 
 	response, err := json.Marshal(posts)
 	if err != nil {
-		writer.WriteHeader(http.StatusInternalServerError)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	writer.WriteHeader(http.StatusOK)
-	writer.Write(response)
+	w.WriteHeader(http.StatusOK)
+	w.Write(response)
 }
 
+// CreatePost
+//
+//	@Summary		Create post
+//	@Description	Create a post
+//	@Success		200
+//	@Failure		400
+//	@Failure		500
+//	@Router			/v1/create-post [post]
 func (v *v1) CreatePost(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusBadRequest)

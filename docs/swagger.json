@@ -1,0 +1,72 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a simple api for aleksei kromski blog",
+        "title": "Swagger Aleksei Kromski blog API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:3001",
+    "basePath": "/api/v1",
+    "paths": {
+        "/v1/create-post": {
+            "post": {
+                "description": "Create a post",
+                "summary": "Create post",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/v1/get-last-posts": {
+            "get": {
+                "description": "Get last posts from storage",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "List of last posts",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/storage.Post"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "storage.Post": {
+            "type": "object",
+            "properties": {
+                "ID": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

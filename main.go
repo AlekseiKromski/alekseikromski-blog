@@ -7,6 +7,11 @@ import (
 	"os"
 )
 
+// @title			Swagger Aleksei Kromski blog API
+// @version		1.0
+// @description	This is a simple api for aleksei kromski blog
+// @host			localhost:3001
+// @BasePath		/api/v1
 func main() {
 
 	addr := os.Getenv("BLOG_ADDRESS")

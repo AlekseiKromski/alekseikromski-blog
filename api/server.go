@@ -3,6 +3,8 @@ package api
 import (
 	"alekseikromski.com/blog/api/storage"
 	v1 "alekseikromski.com/blog/api/v1"
+	_ "alekseikromski.com/blog/docs"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"log"
 	"net/http"
 )
@@ -35,6 +37,9 @@ func (s *Server) Start() error {
 		writer.WriteHeader(http.StatusOK)
 		writer.Write([]byte("200 OK"))
 	})
+
+	log.Println("Route [ /swagger ] was mounted - GENERIC")
+	s.mux.HandleFunc("/swagger/", httpSwagger.WrapHandler)
 
 	log.Println("Route [ /healthz ] was mounted - GENERIC")
 
