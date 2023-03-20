@@ -13,6 +13,7 @@ There will be opensource api code and front-end part
 
 ## Addons ✈️
  - swagger documentation (check [blog.alekseikromski.com/swagger](http://blog.alekseikromski.com))
+ - Notion documentation with planning (check [notion.so - Blog](https://mirage-freezer-7c9.notion.site/Blog-planning-92e3f4e5c1ed4d0c965fad3596e062f6))
  
 Feature url: [blog.alekseikromski.com](http://blog.alekseikromski.com) 🔗
 
