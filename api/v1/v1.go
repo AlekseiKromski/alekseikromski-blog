@@ -30,6 +30,6 @@ func (v *v1) RegisterRoutes() {
 func (v *v1) Mount(mux *http.ServeMux) {
 	for route, handler := range v.routes {
 		log.Printf("Route [ %s ] was mounted - V1", route)
-		mux.HandleFunc(route, handler)
+		mux.Handle(route, handler)
 	}
 }
