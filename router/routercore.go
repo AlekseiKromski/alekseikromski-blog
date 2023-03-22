@@ -24,12 +24,9 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, request *http.Request) {
 	pathList := strings.Split(url, "/")
 
 	for _, e := range r.registeredRoutes {
-		if !e.Match(pathList, e.Method) {
+		match, params := e.Match(pathList, e.Method)
+		if !match {
 			continue
-		}
-
-		params := Params{
-			"test": "hello from params",
 		}
 
 		ctx := context.WithValue(request.Context(), "params", params)
@@ -72,23 +69,30 @@ func (r *Router) registerRoute(re *Route) {
 		log.Fatalf("Cannot create dynamic regexp: %v", err)
 	}
 
-	newPathList := make([]*regexp.Regexp, len(pathList))
+	newPathList := make([]*Param, len(pathList))
 	for i, item := range pathList {
-
-		var newItem *regexp.Regexp
+		param := &Param{
+			Key: item,
+		}
 
 		location := dynamicPathRegexp.FindStringIndex(item)
 		if len(location) != 0 {
-			newItem = regexp.MustCompile(`\S+`)
-			newPathList[i] = newItem
+			param.Key = re.prepareDynamicItemKey(item)
+			param.RegExp = regexp.MustCompile(`\S+`)
+			param.IsDynamic = true
+			newPathList[i] = param
 			continue
 		}
 
-		newItem = regexp.MustCompile(item)
-		newPathList[i] = newItem
+		param.RegExp = regexp.MustCompile(item)
+		newPathList[i] = param
 	}
 
 	re.PathList = newPathList
 
 	r.registeredRoutes = append(r.registeredRoutes, re)
+}
+
+func (r *Router) GetParams(request *http.Request) Params {
+	return request.Context().Value("params").(Params)
 }

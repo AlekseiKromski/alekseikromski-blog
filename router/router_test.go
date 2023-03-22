@@ -57,10 +57,9 @@ func TestGroup_CreateRouter(t *testing.T) {
 func TestRouter_CreateDynamicRoute(t *testing.T) {
 	router := NewRouter()
 
-	router.CreateRoute("/v1/{id}/{id}/test", http.MethodGet, func(writer http.ResponseWriter, request *http.Request) {
-		fmt.Println(request.Context().Value("params").(Params)["test"])
-
-		fmt.Println()
+	router.CreateRoute("/v1/{id}/{test}/test", http.MethodGet, func(writer http.ResponseWriter, request *http.Request) {
+		params := router.GetParams(request)
+		assert.Equal(t, "f8aef97f-60aa-42de-b7b1-db8f5d45f6fd", params["id"])
 		writer.Write([]byte("200 OK"))
 	})
 
