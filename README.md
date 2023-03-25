@@ -1,7 +1,10 @@
 # Aleksei Kromski blog 🥳
 
 ## Description 📋
-There will be opensource api code and front-end part
+A simple web app to check the latest news from my life/projects. The system will support various types of filtering and searching, as well as comments on posts. On the admin side, there will be a simple CRUD application. The system will use self-written libraries (for example, the implementation of a router or storage). Project goals:
+  - Write your own implementation of many standard things and bring them to the ideal speed
+  - Gain new knowledge in deploying a CI/CD application with kubernetes.
+
 
 ## Stack 📦
  - Golang 1.19
