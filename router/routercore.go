@@ -101,6 +101,7 @@ func (r *Router) registerRoute(re *Route) {
 	re.PathList = newPathList
 
 	r.registeredRoutes = append(r.registeredRoutes, re)
+	log.Printf("[ROTUER] new route was registers: %s", re.Path)
 }
 
 func (r *Router) GetParams(request *http.Request) Params {
