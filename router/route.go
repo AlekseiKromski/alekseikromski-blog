@@ -15,6 +15,7 @@ type Param struct {
 type Route struct {
 	Path        string
 	Method      string
+	IsAll       bool
 	Handler     http.HandlerFunc
 	PathList    []*Param
 	Middlewares []Middleware
@@ -26,18 +27,30 @@ func (ro *Route) Match(r []string, method string) (bool, Params) {
 		return false, nil
 	}
 
-	if len(r) == len(ro.PathList) {
-
-		for index, item := range ro.PathList {
-			if !item.RegExp.Match([]byte(r[index])) {
-				return false, nil
-			}
+	if ro.IsAll && len(r) != 0 {
+		if r[0] == "" {
+			return ro.associateValues(r)
 		}
-
-		return ro.associateValues(r)
+		return false, nil
 	}
 
-	return false, nil
+	if !ro.match(r) {
+		return false, nil
+	}
+
+	return ro.associateValues(r)
+}
+
+func (ro *Route) match(r []string) bool {
+	for index, item := range ro.PathList {
+		if item.Key == "*" {
+			break
+		}
+		if !item.RegExp.Match([]byte(r[index])) {
+			return false
+		}
+	}
+	return true
 }
 
 func (ro *Route) associateValues(values []string) (bool, Params) {

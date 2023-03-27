@@ -16,6 +16,7 @@ func (g *Group) CreateRoute(path, method string, handler http.HandlerFunc, middl
 	entity := Route{
 		fmt.Sprintf("%s%s", g.prefix, path),
 		method,
+		false,
 		handler,
 		nil,
 		middlewares,

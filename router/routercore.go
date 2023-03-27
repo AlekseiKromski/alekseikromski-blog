@@ -52,6 +52,7 @@ func (r *Router) CreateRoute(path, method string, handler http.HandlerFunc, midd
 	entity := &Route{
 		Path:        path,
 		Method:      method,
+		IsAll:       false,
 		Handler:     handler,
 		PathList:    nil,
 		Middlewares: middlewares,
@@ -92,6 +93,17 @@ func (r *Router) registerRoute(re *Route) {
 			param.IsDynamic = true
 			newPathList[i] = param
 			continue
+		}
+
+		if item == "*" {
+			param.RegExp = regexp.MustCompile(`.+`)
+			param.IsDynamic = false
+			newPathList[i] = param
+			break
+		}
+
+		if item == "" {
+			re.IsAll = true
 		}
 
 		param.RegExp = regexp.MustCompile(item)
