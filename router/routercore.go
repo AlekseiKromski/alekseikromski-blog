@@ -30,21 +30,31 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, request *http.Request) {
 		}
 
 		ctx := context.WithValue(request.Context(), "params", params)
-		test := request.WithContext(ctx)
+		request = request.WithContext(ctx)
 
-		e.Handler.ServeHTTP(w, test)
+		if len(e.Middlewares) != 0 {
+			for _, middleware := range e.Middlewares {
+				passed := middleware(request, w)
+				if !passed {
+					return
+				}
+			}
+		}
+
+		e.Handler.ServeHTTP(w, request)
 		return
 	}
 	http.NotFound(w, request)
 }
 
 // CreateRoute - create new route with all parameters
-func (r *Router) CreateRoute(path, method string, handler http.HandlerFunc) {
+func (r *Router) CreateRoute(path, method string, handler http.HandlerFunc, middlewares ...Middleware) {
 	entity := &Route{
-		Path:     path,
-		Method:   method,
-		Handler:  handler,
-		PathList: nil,
+		Path:        path,
+		Method:      method,
+		Handler:     handler,
+		PathList:    nil,
+		Middlewares: middlewares,
 	}
 
 	r.registerRoute(entity)

@@ -13,10 +13,11 @@ type Param struct {
 
 // Route - one model for creating routes
 type Route struct {
-	Path     string
-	Method   string
-	Handler  http.HandlerFunc
-	PathList []*Param
+	Path        string
+	Method      string
+	Handler     http.HandlerFunc
+	PathList    []*Param
+	Middlewares []Middleware
 }
 
 // Match - check the match for entity
