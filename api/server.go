@@ -1,54 +1,68 @@
 package api
 
 import (
-	"alekseikromski.com/blog/api/storage"
-	v1 "alekseikromski.com/blog/api/v1"
 	_ "alekseikromski.com/blog/docs"
+	router "alekseikromski.com/blog/router"
 	httpSwagger "github.com/swaggo/http-swagger"
 	"log"
 	"net/http"
+	"os"
 )
 
 type Server struct {
 	config *Config
-	mux    *http.ServeMux
 	apis   []Api
+	router *router.Router
 }
 
-func NewServer(config *Config, storage storage.Storage) *Server {
+func NewServer(config *Config, router *router.Router, apis []Api) *Server {
 	return &Server{
-		mux:    http.NewServeMux(),
 		config: config,
-		apis: []Api{
-			v1.NewV1(storage),
-		},
+		router: router,
+		apis:   apis,
 	}
 }
 
 func (s *Server) Start() error {
-	log.Println("Register handlers")
+	log.Println("[INFO] Register handlers")
 
-	fs := http.FileServer(http.Dir("./front-end/build/"))
-	s.mux.Handle("/", fs)
+	s.router.CreateRoute(
+		"/",
+		http.MethodGet,
+		func(writer http.ResponseWriter, request *http.Request) {
+			file, _ := os.ReadFile("./front-end/build/index.html")
+			writer.Write(file)
+		},
+	)
 
-	log.Println("Route [ / ] was mounted - GENERIC - FRONT-END")
+	s.router.CreateRoute(
+		"/static/*",
+		http.MethodGet,
+		func(writer http.ResponseWriter, request *http.Request) {
+			fileServer := http.FileServer(http.Dir("./front-end/build/"))
+			fileServer.ServeHTTP(writer, request)
+		},
+	)
 
-	s.mux.HandleFunc("/healthz", func(writer http.ResponseWriter, request *http.Request) {
-		writer.WriteHeader(http.StatusOK)
-		writer.Write([]byte("200 OK"))
-	})
-
-	log.Println("Route [ /swagger ] was mounted - GENERIC")
-	s.mux.HandleFunc("/swagger/", httpSwagger.WrapHandler)
-
-	log.Println("Route [ /healthz ] was mounted - GENERIC")
+	s.router.CreateRoute(
+		"/healthz",
+		http.MethodGet,
+		func(writer http.ResponseWriter, request *http.Request) {
+			writer.WriteHeader(http.StatusOK)
+			writer.Write([]byte("200 OK"))
+		},
+	)
+	s.router.CreateRoute(
+		"/swagger/*",
+		http.MethodGet,
+		httpSwagger.WrapHandler,
+	)
 
 	for _, api := range s.apis {
 		api.RegisterRoutes()
-		api.Mount(s.mux)
 	}
 
 	log.Printf("Run server on %s", s.config.addr)
-	err := http.ListenAndServe(s.config.addr, s.mux)
+	err := http.ListenAndServe(s.config.addr, s.router)
 	return err
 }

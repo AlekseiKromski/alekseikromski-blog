@@ -3,6 +3,8 @@ package main
 import (
 	"alekseikromski.com/blog/api"
 	"alekseikromski.com/blog/api/storage/memstore"
+	v1 "alekseikromski.com/blog/api/v1"
+	router "alekseikromski.com/blog/router"
 	"log"
 	"os"
 )
@@ -24,7 +26,15 @@ func main() {
 	//Prepare storage object
 	memstore := memstore.NewMemStorage()
 
-	server := api.NewServer(config, memstore)
+	//Create router
+	router := router.NewRouter()
+
+	//Prepare apis
+	apis := []api.Api{
+		v1.NewV1(memstore, router),
+	}
+
+	server := api.NewServer(config, router, apis)
 	log.Println("Create server instance")
 	err := server.Start()
 	if err != nil {
