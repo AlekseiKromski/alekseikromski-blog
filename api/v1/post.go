@@ -2,6 +2,7 @@ package v1
 
 import (
 	"alekseikromski.com/blog/api/storage"
+	"alekseikromski.com/blog/api/storage/models"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -49,7 +50,7 @@ func (v *v1) CreatePost(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	var post storage.Post
+	var post models.Post
 
 	err := json.NewDecoder(r.Body).Decode(&post)
 	defer r.Body.Close()
