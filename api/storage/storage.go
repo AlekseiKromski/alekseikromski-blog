@@ -1,9 +1,14 @@
 package storage
 
+import "alekseikromski.com/blog/api/storage/models"
+
 type Storage interface {
 	// GetPosts - will return all posts
-	GetPosts(request *QueryRequest) []*Post
-	CreatePost(post *Post) (bool, error)
+	GetPosts(request *QueryRequest) []*models.Post
+	CreatePost(post *models.Post) (bool, error)
+
+	//General functions
+	Stop()
 }
 
 type QueryRequest struct {
