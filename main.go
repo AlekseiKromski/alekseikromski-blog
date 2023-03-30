@@ -2,7 +2,7 @@ package main
 
 import (
 	"alekseikromski.com/blog/api"
-	"alekseikromski.com/blog/api/storage/memstore"
+	"alekseikromski.com/blog/api/storage/dbstore"
 	v1 "alekseikromski.com/blog/api/v1"
 	router "alekseikromski.com/blog/router"
 	"log"
@@ -21,22 +21,42 @@ func main() {
 		log.Fatalf("env BLOG_ADDRESS is required")
 	}
 
+	username := os.Getenv("DB_USERNAME")
+	password := os.Getenv("DB_PASSWORD")
+	hostname := os.Getenv("DB_HOSTNAME")
+	port := os.Getenv("DB_PORT")
+	database := os.Getenv("DB_DATABASE")
+
+	if username == "" || password == "" || hostname == "" || port == "" || database == "" {
+		log.Fatalf("[ERROR] Database credits is required")
+	}
 	config := api.NewConfig(addr)
 
 	//Prepare storage object
-	memstore := memstore.NewMemStorage()
+	dbstore, err := dbstore.NewDbConnection(
+		username,
+		password,
+		hostname,
+		port,
+		database,
+	)
+
+	if err != nil {
+		log.Fatalf("There is the toruble with db connection: %v", err)
+		return
+	}
 
 	//Create router
 	router := router.NewRouter()
 
 	//Prepare apis
 	apis := []api.Api{
-		v1.NewV1(memstore, router),
+		v1.NewV1(dbstore, router),
 	}
 
 	server := api.NewServer(config, router, apis)
-	log.Println("Create server instance")
-	err := server.Start()
+	log.Println("[INFO] Create server instance")
+	err = server.Start()
 	if err != nil {
 		log.Fatalf("server error: %v", err)
 	}
