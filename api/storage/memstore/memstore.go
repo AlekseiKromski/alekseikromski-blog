@@ -2,22 +2,23 @@ package memstore
 
 import (
 	"alekseikromski.com/blog/api/storage"
+	"alekseikromski.com/blog/api/storage/models"
 	"fmt"
 	"log"
 )
 
 type Memstorage struct {
-	posts []*storage.Post
+	posts []*models.Post
 }
 
 func NewMemStorage() *Memstorage {
 	return &Memstorage{}
 }
 
-func (m *Memstorage) GetPosts(request *storage.QueryRequest) []*storage.Post {
-	var posts []*storage.Post
+func (m *Memstorage) GetPosts(request *storage.QueryRequest) []*models.Post {
+	var posts []*models.Post
 	if request.Limit != 0 {
-		var buffer []*storage.Post
+		var buffer []*models.Post
 		if len(m.posts) > request.Limit {
 			for i := len(m.posts) - 1; len(buffer) < request.Limit; i-- {
 				buffer = append(buffer, m.posts[i])
@@ -32,7 +33,7 @@ func (m *Memstorage) GetPosts(request *storage.QueryRequest) []*storage.Post {
 	return posts
 }
 
-func (m *Memstorage) CreatePost(post *storage.Post) (bool, error) {
+func (m *Memstorage) CreatePost(post *models.Post) (bool, error) {
 	if !post.Validate() {
 		return false, fmt.Errorf("post is not valid")
 	}
@@ -40,3 +41,5 @@ func (m *Memstorage) CreatePost(post *storage.Post) (bool, error) {
 	m.posts = append(m.posts, post)
 	return true, nil
 }
+
+func (m *Memstorage) Stop() {}
