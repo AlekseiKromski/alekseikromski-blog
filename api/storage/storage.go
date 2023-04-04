@@ -2,6 +2,10 @@ package storage
 
 import "alekseikromski.com/blog/api/storage/models"
 
+type Migration interface {
+	RunMigrations() error
+}
+
 type Storage interface {
 	// GetPosts - will return all posts
 	GetPosts(request *QueryRequest) []*models.Post

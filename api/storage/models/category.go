@@ -30,3 +30,18 @@ func (c *Category) Soft() {
 func (c *Category) Undo() {
 	c.DeletedAt = ""
 }
+
+func (m *Category) TableCreate() string {
+	return `
+		create table if not exists categories
+		(
+			id          serial
+				constraint categories_pk
+					primary key,
+			"name"  varchar(60)      not null,
+			"CreatedAt" timestamp not null,
+			"UpdatedAt" timestamp not null,
+			"DeletedAt" timestamp
+		);
+	`
+}

@@ -16,7 +16,7 @@ func (t *Tag) Validate() bool {
 	return false
 }
 
-func (t *Tag) SetTimestamt() {
+func (t *Tag) SetTimestamp() {
 	t.UpdatedAt = time.Now().Format(time.RFC3339)
 	if len(t.CreatedAt) != 0 {
 		t.CreatedAt = time.Now().Format(time.RFC3339)
@@ -29,4 +29,19 @@ func (t *Tag) Soft() {
 
 func (t *Tag) Undo() {
 	t.DeletedAt = ""
+}
+
+func (m *Tag) TableCreate() string {
+	return `
+		create table if not exists tags
+		(
+			id          serial
+				constraint tags_pk
+					primary key,
+			"name"  varchar(60)      not null,
+			"CreatedAt" timestamp not null,
+			"UpdatedAt" timestamp not null,
+			"DeletedAt" timestamp
+		);
+	`
 }
