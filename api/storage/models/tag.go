@@ -33,7 +33,7 @@ func (t *Tag) Undo() {
 
 func (m *Tag) TableCreate() string {
 	return `
-		create table if not exists tags
+		create table tags
 		(
 			id          serial
 				constraint tags_pk

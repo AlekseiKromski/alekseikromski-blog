@@ -35,7 +35,7 @@ func (p *Post) Undo() {
 
 func (m *Post) TableCreate() string {
 	return `
-		create table if not exists posts
+		create table posts
 		(
 			id          serial
 				constraint posts_pk

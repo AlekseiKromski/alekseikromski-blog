@@ -33,7 +33,7 @@ func (c *Category) Undo() {
 
 func (m *Category) TableCreate() string {
 	return `
-		create table if not exists categories
+		create table categories
 		(
 			id          serial
 				constraint categories_pk
