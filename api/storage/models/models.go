@@ -4,8 +4,8 @@ type Validate interface {
 	Validate() bool
 }
 
-// Migration interface will be useful for database storage
-type Migration interface {
+// MigrationInterface interface will be useful for database storage
+type MigrationInterface interface {
 	TableCreate() string
 }
 
