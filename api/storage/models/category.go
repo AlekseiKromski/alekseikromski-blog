@@ -35,7 +35,7 @@ func (m *Category) TableCreate() string {
 	return `
 		create table categories
 		(
-			id          serial
+			ID          serial
 				constraint categories_pk
 					primary key,
 			"name"  varchar(60)      not null,

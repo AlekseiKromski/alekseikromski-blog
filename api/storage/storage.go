@@ -1,6 +1,8 @@
 package storage
 
-import "alekseikromski.com/blog/api/storage/models"
+import (
+	"alekseikromski.com/blog/api/storage/models"
+)
 
 type Migration interface {
 	RunMigrations() error
