@@ -38,7 +38,7 @@ func (m *Migration) TableCreate() string {
 	return `
 		create table migrations
 		(
-			id          serial
+			ID          serial
 				constraint migrations_pk
 					primary key,
 			"sqlDump"  text      not null,
