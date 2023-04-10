@@ -21,7 +21,7 @@ type TimestampSetter interface {
 }
 
 type Timestamp struct {
-	CreatedAt string `json:"startedAt"`
+	CreatedAt string `json:"createdAt"`
 	UpdatedAt string `json:"updatedAt"`
 }
 

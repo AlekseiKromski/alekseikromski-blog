@@ -35,7 +35,7 @@ func (m *Tag) TableCreate() string {
 	return `
 		create table tags
 		(
-			id          serial
+			ID          serial
 				constraint tags_pk
 					primary key,
 			"name"  varchar(60)      not null,
