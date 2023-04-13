@@ -39,31 +39,62 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/storage.Post"
+                                "$ref": "#/definitions/models.Post"
                             }
                         }
                     },
                     "400": {
-                        "description": "Bad Request"
+                        "description": "if we cannot decode or encode payload",
+                        "schema": {
+                            "$ref": "#/definitions/v1.JsonError"
+                        }
                     },
                     "500": {
-                        "description": "Internal Server Error"
+                        "description": "if we have bad payload",
+                        "schema": {
+                            "$ref": "#/definitions/v1.InputError"
+                        }
                     }
                 }
             }
         }
     },
     "definitions": {
-        "storage.Post": {
+        "models.Post": {
             "type": "object",
             "properties": {
-                "ID": {
-                    "type": "integer"
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "type": "string"
                 },
                 "description": {
                     "type": "string"
                 },
+                "id": {
+                    "type": "integer"
+                },
                 "title": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "v1.InputError": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "v1.JsonError": {
+            "type": "object",
+            "properties": {
+                "message": {
                     "type": "string"
                 }
             }
