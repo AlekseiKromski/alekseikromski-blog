@@ -1,12 +1,28 @@
 basePath: /api/v1
 definitions:
-  storage.Post:
+  models.Post:
     properties:
-      ID:
-        type: integer
+      createdAt:
+        type: string
+      deletedAt:
+        type: string
       description:
         type: string
+      id:
+        type: integer
       title:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  v1.InputError:
+    properties:
+      message:
+        type: string
+    type: object
+  v1.JsonError:
+    properties:
+      message:
         type: string
     type: object
 host: localhost:3001
@@ -37,11 +53,15 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/storage.Post'
+              $ref: '#/definitions/models.Post'
             type: array
         "400":
-          description: Bad Request
+          description: if we cannot decode or encode payload
+          schema:
+            $ref: '#/definitions/v1.JsonError'
         "500":
-          description: Internal Server Error
+          description: if we have bad payload
+          schema:
+            $ref: '#/definitions/v1.InputError'
       summary: List of last posts
 swagger: "2.0"
