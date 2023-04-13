@@ -3,6 +3,7 @@ package v1
 import (
 	"alekseikromski.com/blog/api/storage"
 	"alekseikromski.com/blog/router"
+	"encoding/json"
 	"net/http"
 )
 
@@ -23,7 +24,7 @@ func NewV1(storage storage.Storage, router *router.Router) *v1 {
 func (v *v1) RegisterRoutes() {
 	group := v.router.CreateGroup("/v1/")
 	group.CreateRoute(
-		"/get-last-posts",
+		"/get-last-posts/{size}/{indent}",
 		http.MethodGet,
 		v.GetLastPosts,
 	)
@@ -32,4 +33,18 @@ func (v *v1) RegisterRoutes() {
 		http.MethodPost,
 		v.CreatePost,
 	)
+}
+
+func (v *v1) ReturnErrorResponse(err error, w http.ResponseWriter) {
+	w.WriteHeader(ClassifyError(err))
+	json.NewEncoder(w).Encode(err)
+}
+
+func (v *v1) ReturnResponse(w http.ResponseWriter, payload []byte) {
+	w.Header().Set("content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	if payload != nil {
+		w.Write(payload)
+	}
 }

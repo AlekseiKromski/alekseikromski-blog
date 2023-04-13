@@ -10,7 +10,7 @@ func (db *DbConnection) GetPosts(request *storage.QueryRequest) []*models.Post {
 	var posts []*models.Post
 
 	if request.Limit > 0 {
-		query := models.GetLastPosts(request.Limit)
+		query := models.GetLastPosts(request.Limit, request.Offset)
 
 		rows, err := db.Connection.Query(query)
 		if err != nil {
