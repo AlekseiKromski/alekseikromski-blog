@@ -18,8 +18,9 @@ type Storage interface {
 }
 
 type QueryRequest struct {
-	ID    int
-	Limit int
+	ID     int
+	Limit  int
+	Offset int
 }
 
 // NewQueryRequest - will return basic object without any properties

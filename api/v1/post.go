@@ -3,9 +3,11 @@ package v1
 import (
 	"alekseikromski.com/blog/api/storage"
 	"alekseikromski.com/blog/api/storage/models"
+	"alekseikromski.com/blog/router"
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 // GetLastPosts
@@ -13,30 +15,46 @@ import (
 //	@Summary		List of last posts
 //	@Description	Get last posts from storage
 //	@Produce		json
-//	@Success		200	{array}	storage.Post
-//	@Failure		400
-//	@Failure		500
+//	@Success		200	{array}		models.Post
+//	@Failure		400	{object}	v1.JsonError	"if we cannot decode or encode payload"
+//	@Failure		500	{object}	v1.InputError	"if we have bad payload"
 //	@Router			/v1/get-last-posts [get]
 func (v *v1) GetLastPosts(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		w.WriteHeader(http.StatusBadRequest)
-		return
+
+	// Get params from context
+	ctx := r.Context()
+	var params router.Params
+	if pr, ok := ctx.Value("params").(router.Params); ok {
+		params = pr
 	}
 
 	query := storage.NewQueryRequest()
-	query.Limit = 3
+
+	size, err := strconv.Atoi(params["size"])
+	if err != nil {
+		// Recreate error
+		v.ReturnErrorResponse(NewInputError(), w)
+		return
+	}
+
+	indent, err := strconv.Atoi(params["indent"])
+	if err != nil {
+		// Recreate error
+		v.ReturnErrorResponse(NewInputError(), w)
+		return
+	}
+	query.Limit = size
+	query.Offset = indent
 
 	posts := v.storage.GetPosts(query)
 
 	response, err := json.Marshal(posts)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		v.ReturnErrorResponse(NewDecodingError(), w)
 		return
 	}
-	w.Header().Set("content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
 
-	w.Write(response)
+	v.ReturnResponse(w, response)
 }
 
 // CreatePost
