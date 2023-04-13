@@ -6,7 +6,7 @@ import (
 )
 
 type Post struct {
-	ID          int    `json:"omitempty"`
+	ID          int    `json:"id"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	*Timestamp
@@ -80,6 +80,6 @@ func (m *Post) CreateRecord() string {
 	return fmt.Sprintf(`INSERT INTO posts ("title", "description", "CreatedAt", "UpdatedAt", "DeletedAt") VALUES ('%s','%s','%s','%s', NULL)`, m.Title, m.Description, m.CreatedAt, m.UpdatedAt)
 }
 
-func GetLastPosts(limit int) string {
-	return fmt.Sprintf(`SELECT * FROM posts ORDER BY "CreatedAt" DESC LIMIT %d`, limit)
+func GetLastPosts(limit int, offset int) string {
+	return fmt.Sprintf(`SELECT * FROM posts ORDER BY "CreatedAt" DESC LIMIT %d OFFSET %d`, limit, offset)
 }
