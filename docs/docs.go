@@ -63,12 +63,70 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/v1/post/get-last-posts-by-category/{category_id}/{size}/{offset}": {
+            "get": {
+                "description": "Get last posts from storage filtered by category",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "List of last posts filtered by category",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Post"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "if we cannot decode or encode payload",
+                        "schema": {
+                            "$ref": "#/definitions/v1.JsonError"
+                        }
+                    },
+                    "500": {
+                        "description": "if we have bad payload",
+                        "schema": {
+                            "$ref": "#/definitions/v1.InputError"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "models.Category": {
+            "type": "object",
+            "properties": {
+                "ID": {
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Post": {
             "type": "object",
             "properties": {
+                "category": {
+                    "$ref": "#/definitions/models.Category"
+                },
+                "category_id": {
+                    "type": "integer"
+                },
                 "createdAt": {
                     "type": "string"
                 },
