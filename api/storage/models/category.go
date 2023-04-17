@@ -9,6 +9,17 @@ type Category struct {
 	*SoftDelete
 }
 
+func CreateCategory() *Category {
+	category := &Category{
+		Name:       "",
+		Timestamp:  &Timestamp{},
+		SoftDelete: &SoftDelete{},
+	}
+
+	category.SetTimestamt()
+	return category
+}
+
 func (c *Category) Validate() bool {
 	if len(c.Name) != 0 {
 		return true
@@ -24,11 +35,13 @@ func (c *Category) SetTimestamt() {
 }
 
 func (c *Category) Soft() {
-	c.DeletedAt = time.Now().Format(time.RFC3339)
+	softDeleteTs := time.Now().Format(time.RFC3339)
+	c.DeletedAt = &softDeleteTs
 }
 
 func (c *Category) Undo() {
-	c.DeletedAt = ""
+	softDeleteTs := ""
+	c.DeletedAt = &softDeleteTs
 }
 
 func (m *Category) TableCreate() *TableCreation {

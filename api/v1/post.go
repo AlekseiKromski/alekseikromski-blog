@@ -5,6 +5,7 @@ import (
 	"alekseikromski.com/blog/api/storage/models"
 	"alekseikromski.com/blog/router"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -30,21 +31,62 @@ func (v *v1) GetLastPosts(w http.ResponseWriter, r *http.Request) {
 
 	query := storage.NewQueryRequest()
 
-	size, err := strconv.Atoi(params["size"])
+	size, indent, err := v.getSizeAndOffset(params)
+	if err != nil {
+		v.ReturnErrorResponse(NewInputError(), w)
+		return
+	}
+
+	query.Limit = size
+	query.Offset = indent
+
+	posts := v.storage.GetPosts(query)
+
+	response, err := json.Marshal(posts)
+	if err != nil {
+		v.ReturnErrorResponse(NewDecodingError(), w)
+		return
+	}
+
+	v.ReturnResponse(w, response)
+}
+
+// GetLastPostsByCategory
+//
+//	@Summary		List of last posts filtered by category
+//	@Description	Get last posts from storage filtered by category
+//	@Produce		json
+//	@Success		200	{array}		models.Post
+//	@Failure		400	{object}	v1.JsonError	"if we cannot decode or encode payload"
+//	@Failure		500	{object}	v1.InputError	"if we have bad payload"
+//	@Router			/v1/post/get-last-posts-by-category/{category_id}/{size}/{offset} [get]
+func (v *v1) GetLastPostsByCategory(w http.ResponseWriter, r *http.Request) {
+
+	// Get params from context
+	ctx := r.Context()
+	var params router.Params
+	if pr, ok := ctx.Value("params").(router.Params); ok {
+		params = pr
+	}
+
+	query := storage.NewQueryRequest()
+
+	size, indent, err := v.getSizeAndOffset(params)
+	if err != nil {
+		v.ReturnErrorResponse(NewInputError(), w)
+		return
+	}
+
+	categoryID, err := strconv.Atoi(params["category_id"])
 	if err != nil {
 		// Recreate error
 		v.ReturnErrorResponse(NewInputError(), w)
 		return
 	}
 
-	indent, err := strconv.Atoi(params["indent"])
-	if err != nil {
-		// Recreate error
-		v.ReturnErrorResponse(NewInputError(), w)
-		return
-	}
 	query.Limit = size
 	query.Offset = indent
+	query.CategoryID = categoryID
 
 	posts := v.storage.GetPosts(query)
 
@@ -94,4 +136,18 @@ func (v *v1) CreatePost(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("created"))
 	log.Printf("Post with id [%d] was created", post.ID)
+}
+
+func (v *v1) getSizeAndOffset(params router.Params) (int, int, error) {
+	size, err := strconv.Atoi(params["size"])
+	if err != nil {
+		return 0, 0, fmt.Errorf("cannot get size: %w", err)
+	}
+
+	indent, err := strconv.Atoi(params["indent"])
+	if err != nil {
+		return 0, 0, fmt.Errorf("cannot get offset: %w", err)
+	}
+
+	return size, indent, nil
 }

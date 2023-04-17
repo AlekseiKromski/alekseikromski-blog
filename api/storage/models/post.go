@@ -6,9 +6,11 @@ import (
 )
 
 type Post struct {
-	ID          int    `json:"id"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
+	ID          int       `json:"id"`
+	Title       string    `json:"title"`
+	CategoryID  int       `json:"category_id,omitempty"`
+	Category    *Category `json:"category,omitempty"`
+	Description string    `json:"description"`
 	*Timestamp
 	*SoftDelete
 }
@@ -53,11 +55,13 @@ func (p *Post) SetTimestamp() {
 }
 
 func (p *Post) Soft() {
-	p.DeletedAt = time.Now().Format(time.RFC3339)
+	softDeleteTs := time.Now().Format(time.RFC3339)
+	p.DeletedAt = &softDeleteTs
 }
 
 func (p *Post) Undo() {
-	p.DeletedAt = ""
+	softDeleteTs := time.Now().Format(time.RFC3339)
+	p.DeletedAt = &softDeleteTs
 }
 
 func (m *Post) TableCreate() *TableCreation {
@@ -87,6 +91,9 @@ func (m *Post) CreateRecord() string {
 	return fmt.Sprintf(`INSERT INTO posts ("title", "description", "CreatedAt", "UpdatedAt", "DeletedAt") VALUES ('%s','%s','%s','%s', NULL)`, m.Title, m.Description, m.CreatedAt, m.UpdatedAt)
 }
 
-func GetLastPosts(limit int, offset int) string {
-	return fmt.Sprintf(`SELECT * FROM posts ORDER BY "CreatedAt" DESC LIMIT %d OFFSET %d`, limit, offset)
+func GetLastPosts(limit int, offset int, categoryID int) (string, bool) {
+	if categoryID == 0 {
+		return fmt.Sprintf(`SELECT * FROM posts ORDER BY "CreatedAt" DESC LIMIT %d OFFSET %d`, limit, offset), false
+	}
+	return fmt.Sprintf(`SELECT * FROM posts INNER JOIN categories c on c.id = posts.category_id WHERE category_id = '%d' ORDER BY posts."CreatedAt" DESC LIMIT %d OFFSET %d`, categoryID, limit, offset), true
 }
