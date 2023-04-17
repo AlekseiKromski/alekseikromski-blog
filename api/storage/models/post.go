@@ -60,20 +60,27 @@ func (p *Post) Undo() {
 	p.DeletedAt = ""
 }
 
-func (m *Post) TableCreate() string {
-	return `
-		create table posts
-		(
-			ID          serial
-				constraint posts_pk
-					primary key,
-			"title"  varchar(60)      not null,
-			"description"  text      not null,
-			"CreatedAt" timestamp not null,
-			"UpdatedAt" timestamp not null,
-			"DeletedAt" timestamp
-		);
-	`
+func (m *Post) TableCreate() *TableCreation {
+	return &TableCreation{
+		Sql: `
+			create table posts
+			(
+				ID          serial
+					constraint posts_pk
+						primary key,
+				"title"  varchar(60)      not null,
+				"description"  text      not null,
+				"category_id" serial not null,
+				"CreatedAt" timestamp not null,
+				"UpdatedAt" timestamp not null,
+				"DeletedAt" timestamp,
+				CONSTRAINT FK_CATEGORY
+					FOREIGN KEY(category_id)
+						REFERENCES categories(id)
+			);
+		`,
+		Dependencies: []string{"Category"},
+	}
 }
 
 func (m *Post) CreateRecord() string {

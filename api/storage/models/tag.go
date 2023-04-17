@@ -31,17 +31,20 @@ func (t *Tag) Undo() {
 	t.DeletedAt = ""
 }
 
-func (m *Tag) TableCreate() string {
-	return `
-		create table tags
-		(
-			ID          serial
-				constraint tags_pk
-					primary key,
-			"name"  varchar(60)      not null,
-			"CreatedAt" timestamp not null,
-			"UpdatedAt" timestamp not null,
-			"DeletedAt" timestamp
-		);
-	`
+func (m *Tag) TableCreate() *TableCreation {
+	return &TableCreation{
+		Sql: `
+			create table tags
+			(
+				ID          serial
+					constraint tags_pk
+						primary key,
+				"name"  varchar(60)      not null,
+				"CreatedAt" timestamp not null,
+				"UpdatedAt" timestamp not null,
+				"DeletedAt" timestamp
+			);
+		`,
+		Dependencies: []string{},
+	}
 }

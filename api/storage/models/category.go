@@ -31,17 +31,20 @@ func (c *Category) Undo() {
 	c.DeletedAt = ""
 }
 
-func (m *Category) TableCreate() string {
-	return `
-		create table categories
-		(
-			ID          serial
-				constraint categories_pk
-					primary key,
-			"name"  varchar(60)      not null,
-			"CreatedAt" timestamp not null,
-			"UpdatedAt" timestamp not null,
-			"DeletedAt" timestamp
-		);
-	`
+func (m *Category) TableCreate() *TableCreation {
+	return &TableCreation{
+		Sql: `
+			create table categories
+			(
+				ID          serial
+					constraint categories_pk
+						primary key,
+				"name"  varchar(60)      not null,
+				"CreatedAt" timestamp not null,
+				"UpdatedAt" timestamp not null,
+				"DeletedAt" timestamp
+			);
+		`,
+		Dependencies: []string{},
+	}
 }
