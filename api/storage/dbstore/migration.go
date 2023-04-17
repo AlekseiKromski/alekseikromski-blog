@@ -8,6 +8,12 @@ import (
 	"strings"
 )
 
+type queueMigration struct {
+	*models.TableCreation
+	TableName string
+	Model     models.MigrationInterface
+}
+
 // RunMigrations - take all migrations from table, compare and create tables, that should be
 func (db *DbConnection) RunMigrations() error {
 	notExisted, err := db.getNotExistedTables()
@@ -15,28 +21,31 @@ func (db *DbConnection) RunMigrations() error {
 		return fmt.Errorf("trying to get all migrations: %w", err)
 	}
 
+	var queue []*queueMigration
 	for _, model := range notExisted {
 		if m, ok := model.(models.MigrationInterface); ok {
-			sql := m.TableCreate()
+			tc := m.TableCreate()
 			tableName := db.getType(m)
-
-			_, err := db.Connection.Exec(sql)
-			if err != nil {
-				if strings.Contains(err.Error(), "already exists") {
-					log.Printf("[DBSTORAGE] migrations for: %s ALREADY EXISTS", tableName)
+			if len(tc.Dependencies) != 0 {
+				if db.checkDependencies(notExisted, tc.Dependencies) {
+					queue = append(queue, &queueMigration{
+						TableCreation: tc,
+						TableName:     tableName,
+						Model:         m,
+					})
 					continue
 				}
-				return fmt.Errorf("cannot make migration: %s, %v", sql, err)
 			}
 
-			migration := models.CreateMigrationModel(tableName, sql)
-			mq := migration.CreateRecord()
-			_, err = db.Connection.Exec(mq)
-			if err != nil {
-				return fmt.Errorf("cannot create record in database %s: %w", mq, err)
+			if err = db.createTable(tc, tableName, m); err != nil {
+				log.Printf("%v", err)
 			}
+		}
+	}
 
-			log.Printf("[DBSTORAGE] Migration for: %s SUCCESSFUL", db.getType(m))
+	for _, q := range queue {
+		if err = db.createTable(q.TableCreation, q.TableName, q.Model); err != nil {
+			log.Printf("%v", err)
 		}
 	}
 
@@ -84,6 +93,38 @@ func (db *DbConnection) getNotExistedTables() ([]models.MigrationInterface, erro
 		}
 	}
 	return tables, nil
+}
+
+func (db *DbConnection) checkDependencies(notExisted []models.MigrationInterface, dependencies []string) bool {
+	for _, ne := range notExisted {
+		for _, dep := range dependencies {
+			if db.getType(ne) == dep {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func (db *DbConnection) createTable(tc *models.TableCreation, tableName string, m models.MigrationInterface) error {
+	_, err := db.Connection.Exec(tc.Sql)
+	if err != nil {
+		if strings.Contains(err.Error(), "already exists") {
+			log.Printf("[DBSTORAGE] migrations for: %s ALREADY EXISTS", tableName)
+			return nil
+		}
+		return fmt.Errorf("cannot make migration: %s, %v", tc.Sql, err)
+	}
+
+	migration := models.CreateMigrationModel(tableName, tc.Sql)
+	mq := migration.CreateRecord()
+	_, err = db.Connection.Exec(mq)
+	if err != nil {
+		return fmt.Errorf("cannot create record in database %s: %w", mq, err)
+	}
+
+	log.Printf("[DBSTORAGE] Migration for: %s SUCCESSFUL", db.getType(m))
+	return nil
 }
 
 // containsInTables - check if we have table name in list of tables, that implement migration interface

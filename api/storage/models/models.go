@@ -6,7 +6,7 @@ type Validate interface {
 
 // MigrationInterface interface will be useful for database storage
 type MigrationInterface interface {
-	TableCreate() string
+	TableCreate() *TableCreation
 }
 
 // SoftDeletion will useful for checking, that model is 'softDeleted'
@@ -27,4 +27,10 @@ type Timestamp struct {
 
 type SoftDelete struct {
 	DeletedAt string `json:"deletedAt"`
+}
+
+// TableCreation - having sql for creation table and dependency like foreign key
+type TableCreation struct {
+	Sql          string
+	Dependencies []string
 }

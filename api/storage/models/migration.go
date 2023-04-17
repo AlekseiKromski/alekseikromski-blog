@@ -34,17 +34,20 @@ func (m *Migration) SetTimestamp() {
 	}
 }
 
-func (m *Migration) TableCreate() string {
-	return `
-		create table migrations
-		(
-			ID          serial
-				constraint migrations_pk
-					primary key,
-			"sqlDump"  text      not null,
-			"tableName"  text      not null,
-			"CreatedAt" timestamp not null,
-			"UpdatedAt" timestamp not null
-		);
-	`
+func (m *Migration) TableCreate() *TableCreation {
+	return &TableCreation{
+		Sql: `
+			create table migrations
+			(
+				ID          serial
+					constraint migrations_pk
+						primary key,
+				"sqlDump"  text      not null,
+				"tableName"  text      not null,
+				"CreatedAt" timestamp not null,
+				"UpdatedAt" timestamp not null
+			);
+		`,
+		Dependencies: []string{},
+	}
 }
