@@ -1,7 +1,24 @@
 basePath: /api/v1
 definitions:
+  models.Category:
+    properties:
+      ID:
+        type: integer
+      createdAt:
+        type: string
+      deletedAt:
+        type: string
+      name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
   models.Post:
     properties:
+      category:
+        $ref: '#/definitions/models.Category'
+      category_id:
+        type: integer
       createdAt:
         type: string
       deletedAt:
@@ -64,4 +81,25 @@ paths:
           schema:
             $ref: '#/definitions/v1.InputError'
       summary: List of last posts
+  /v1/post/get-last-posts-by-category/{category_id}/{size}/{offset}:
+    get:
+      description: Get last posts from storage filtered by category
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Post'
+            type: array
+        "400":
+          description: if we cannot decode or encode payload
+          schema:
+            $ref: '#/definitions/v1.JsonError'
+        "500":
+          description: if we have bad payload
+          schema:
+            $ref: '#/definitions/v1.InputError'
+      summary: List of last posts filtered by category
 swagger: "2.0"
