@@ -4,13 +4,16 @@ import (
 	"alekseikromski.com/blog/api/storage"
 	"alekseikromski.com/blog/api/storage/models"
 	"fmt"
+	"log"
 )
 
 func (db *DbConnection) GetPosts(request *storage.QueryRequest) []*models.Post {
 	var posts []*models.Post
 
 	if request.Limit > 0 {
-		query := models.GetLastPosts(request.Limit, request.Offset)
+		query, withCategory := models.GetLastPosts(request.Limit, request.Offset, request.CategoryID)
+
+		log.Printf("[DBSTORE] running query: %s", query)
 
 		rows, err := db.Connection.Query(query)
 		if err != nil {
@@ -19,7 +22,40 @@ func (db *DbConnection) GetPosts(request *storage.QueryRequest) []*models.Post {
 
 		for rows.Next() {
 			post := models.CreatePost()
-			rows.Scan(&post.ID, &post.Title, &post.Description, &post.CreatedAt, &post.UpdatedAt, &post.DeletedAt)
+			var scanError error
+			if withCategory {
+				category := models.CreateCategory()
+				scanError = rows.Scan(
+					&post.ID,
+					&post.Title,
+					&post.Description,
+					&post.CategoryID,
+					&post.CreatedAt,
+					&post.UpdatedAt,
+					&post.DeletedAt,
+					&category.ID,
+					&category.Name,
+					&category.CreatedAt,
+					&category.UpdatedAt,
+					&category.DeletedAt,
+				)
+				post.Category = category
+			} else {
+				scanError = rows.Scan(
+					&post.ID,
+					&post.Title,
+					&post.Description,
+					&post.CategoryID,
+					&post.CreatedAt,
+					&post.UpdatedAt,
+					&post.DeletedAt,
+				)
+			}
+
+			if scanError != nil {
+				log.Printf("troubles during scanning: %w", err)
+			}
+
 			posts = append(posts, post)
 		}
 	}

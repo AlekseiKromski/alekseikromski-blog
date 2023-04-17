@@ -29,6 +29,11 @@ func (v *v1) RegisterRoutes() {
 		v.GetLastPosts,
 	)
 	group.CreateRoute(
+		"/post/get-last-posts-by-category/{category_id}/{size}/{indent}",
+		http.MethodGet,
+		v.GetLastPostsByCategory,
+	)
+	group.CreateRoute(
 		"/create-post",
 		http.MethodPost,
 		v.CreatePost,

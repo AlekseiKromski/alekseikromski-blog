@@ -24,11 +24,13 @@ func (t *Tag) SetTimestamp() {
 }
 
 func (t *Tag) Soft() {
-	t.DeletedAt = time.Now().Format(time.RFC3339)
+	softDeleteTs := time.Now().Format(time.RFC3339)
+	t.DeletedAt = &softDeleteTs
 }
 
 func (t *Tag) Undo() {
-	t.DeletedAt = ""
+	softDeleteTs := time.Now().Format(time.RFC3339)
+	t.DeletedAt = &softDeleteTs
 }
 
 func (m *Tag) TableCreate() *TableCreation {

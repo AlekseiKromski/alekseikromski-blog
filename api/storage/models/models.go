@@ -26,7 +26,7 @@ type Timestamp struct {
 }
 
 type SoftDelete struct {
-	DeletedAt string `json:"deletedAt"`
+	DeletedAt *string `json:"deletedAt"`
 }
 
 // TableCreation - having sql for creation table and dependency like foreign key

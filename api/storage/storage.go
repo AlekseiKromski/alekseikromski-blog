@@ -9,7 +9,7 @@ type Migration interface {
 }
 
 type Storage interface {
-	// GetPosts - will return all posts
+	// GetPosts - will return all posts by query request
 	GetPosts(request *QueryRequest) []*models.Post
 	CreatePost(post *models.Post) (bool, error)
 
@@ -18,9 +18,10 @@ type Storage interface {
 }
 
 type QueryRequest struct {
-	ID     int
-	Limit  int
-	Offset int
+	ID         int
+	Limit      int
+	Offset     int
+	CategoryID int
 }
 
 // NewQueryRequest - will return basic object without any properties
