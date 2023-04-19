@@ -99,6 +99,52 @@ func (v *v1) GetLastPostsByCategory(w http.ResponseWriter, r *http.Request) {
 	v.ReturnResponse(w, response)
 }
 
+// GetLastPostsByCategory
+//
+//	@Summary		List of last posts filtered by category
+//	@Description	Get last posts from storage filtered by category
+//	@Produce		json
+//	@Success		200	{array}		models.Post
+//	@Failure		400	{object}	v1.JsonError	"if we cannot decode or encode payload"
+//	@Failure		500	{object}	v1.InputError	"if we have bad payload"
+//	@Router			/v1/post/get-last-posts-by-category/{category_id}/{size}/{offset} [get]
+func (v *v1) GetSinglePost(w http.ResponseWriter, r *http.Request) {
+
+	// Get params from context
+	ctx := r.Context()
+	var params router.Params
+	if pr, ok := ctx.Value("params").(router.Params); ok {
+		params = pr
+	}
+
+	query := storage.NewQueryRequest()
+
+	postID, err := strconv.Atoi(params["id"])
+	if err != nil {
+		// Recreate error
+		v.ReturnErrorResponse(NewInputError(), w)
+		return
+	}
+
+	query.ID = &postID
+
+	posts := v.storage.GetPosts(query)
+
+	if len(posts) == 0 {
+		v.ReturnErrorResponse(NewInputError(), w)
+		return
+	}
+
+	//return only one post
+	response, err := json.Marshal(posts[0])
+	if err != nil {
+		v.ReturnErrorResponse(NewDecodingError(), w)
+		return
+	}
+
+	v.ReturnResponse(w, response)
+}
+
 // CreatePost
 //
 //	@Summary		Create post

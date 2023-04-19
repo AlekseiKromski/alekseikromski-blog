@@ -97,3 +97,7 @@ func GetLastPosts(limit int, offset int, categoryID int) (string, bool) {
 	}
 	return fmt.Sprintf(`SELECT * FROM posts INNER JOIN categories c on c.id = posts.category_id WHERE category_id = '%d' ORDER BY posts."CreatedAt" DESC LIMIT %d OFFSET %d`, categoryID, limit, offset), true
 }
+
+func GetPost(postID int) string {
+	return fmt.Sprintf(`SELECT * FROM posts INNER JOIN categories c on c.id = posts.category_id WHERE posts."id" = %d`, postID)
+}
