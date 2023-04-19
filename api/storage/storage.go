@@ -11,6 +11,8 @@ type Migration interface {
 type Storage interface {
 	// GetPosts - will return all posts by query request
 	GetPosts(request *QueryRequest) []*models.Post
+
+	// CreatePost - will create a post
 	CreatePost(post *models.Post) (bool, error)
 
 	//General functions
@@ -18,7 +20,7 @@ type Storage interface {
 }
 
 type QueryRequest struct {
-	ID         int
+	ID         *int
 	Limit      int
 	Offset     int
 	CategoryID int

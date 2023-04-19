@@ -10,6 +10,47 @@ import (
 func (db *DbConnection) GetPosts(request *storage.QueryRequest) []*models.Post {
 	var posts []*models.Post
 
+	if request.ID != nil {
+		query := models.GetPost(*request.ID)
+
+		log.Printf("[DBSTORE] running query: %s", query)
+
+		rows, err := db.Connection.Query(query)
+		if err != nil {
+			return posts
+		}
+
+		for rows.Next() {
+			post := models.CreatePost()
+			var scanError error
+			category := models.CreateCategory()
+			scanError = rows.Scan(
+				&post.ID,
+				&post.Title,
+				&post.Description,
+				&post.CategoryID,
+				&post.CreatedAt,
+				&post.UpdatedAt,
+				&post.DeletedAt,
+				&category.ID,
+				&category.Name,
+				&category.CreatedAt,
+				&category.UpdatedAt,
+				&category.DeletedAt,
+			)
+
+			post.Category = category
+
+			if scanError != nil {
+				log.Printf("troubles during scanning: %w", err)
+			}
+
+			posts = append(posts, post)
+		}
+
+		return posts
+	}
+
 	if request.Limit > 0 {
 		query, withCategory := models.GetLastPosts(request.Limit, request.Offset, request.CategoryID)
 
