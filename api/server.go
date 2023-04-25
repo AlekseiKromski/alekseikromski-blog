@@ -59,7 +59,9 @@ func (s *Server) Start() error {
 	)
 
 	for _, api := range s.apis {
-		api.RegisterRoutes()
+		if err := api.RegisterRoutes(); err != nil {
+			log.Fatalf("there is the problem with routes registration: %v", err)
+		}
 	}
 
 	log.Printf("Run server on %s", s.config.addr)

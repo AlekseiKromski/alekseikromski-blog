@@ -1,0 +1,35 @@
+{
+  "groups": [
+    {
+      "url": "/v1/",
+      "routes" : [
+        {
+          "method": "GET",
+          "route": "/get-last-posts/{size}/{indent}",
+          "handler": "GetLastPosts"
+        },
+        {
+          "method": "GET",
+          "route": "/post/get-last-posts-by-category/{category_id}/{size}/{indent}",
+          "handler": "GetLastPostsByCategory"
+        },
+        {
+          "method": "GET",
+          "route": "/post/get-post/{id}",
+          "handler": "GetSinglePost"
+        },
+        {
+          "method": "GET",
+          "route": "/category/all",
+          "handler": "GetAllCategories"
+        },
+        {
+          "method": "POST",
+          "route": "/create-post",
+          "handler": "CreatePost"
+        }
+      ]
+    }
+  ],
+  "routes": []
+}
