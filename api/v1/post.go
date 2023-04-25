@@ -17,10 +17,10 @@ import (
 //	@Description	Get last posts from storage
 //	@Produce		json
 //	@Success		200	{array}		models.Post
-//	@Failure		400	{object}	v1.JsonError	"if we cannot decode or encode payload"
-//	@Failure		500	{object}	v1.InputError	"if we have bad payload"
-//	@Router			/v1/get-last-posts [get]
-func (v *v1) GetLastPosts(w http.ResponseWriter, r *http.Request) {
+//	@Failure		400	{object}	V1.JsonError	"if we cannot decode or encode payload"
+//	@Failure		500	{object}	V1.InputError	"if we have bad payload"
+//	@Router			/V1/get-last-posts [get]
+func (v *V1) GetLastPosts(w http.ResponseWriter, r *http.Request) {
 
 	// Get params from context
 	ctx := r.Context()
@@ -57,10 +57,10 @@ func (v *v1) GetLastPosts(w http.ResponseWriter, r *http.Request) {
 //	@Description	Get last posts from storage filtered by category
 //	@Produce		json
 //	@Success		200	{array}		models.Post
-//	@Failure		400	{object}	v1.JsonError	"if we cannot decode or encode payload"
-//	@Failure		500	{object}	v1.InputError	"if we have bad payload"
-//	@Router			/v1/post/get-last-posts-by-category/{category_id}/{size}/{offset} [get]
-func (v *v1) GetLastPostsByCategory(w http.ResponseWriter, r *http.Request) {
+//	@Failure		400	{object}	V1.JsonError	"if we cannot decode or encode payload"
+//	@Failure		500	{object}	V1.InputError	"if we have bad payload"
+//	@Router			/V1/post/get-last-posts-by-category/{category_id}/{size}/{offset} [get]
+func (v *V1) GetLastPostsByCategory(w http.ResponseWriter, r *http.Request) {
 
 	// Get params from context
 	ctx := r.Context()
@@ -105,10 +105,10 @@ func (v *v1) GetLastPostsByCategory(w http.ResponseWriter, r *http.Request) {
 //	@Description	Get post by id
 //	@Produce		json
 //	@Success		200	{array}		models.Post
-//	@Failure		400	{object}	v1.JsonError	"if we cannot decode or encode payload"
-//	@Failure		500	{object}	v1.InputError	"if we have bad payload"
-//	@Router			/v1/post/get-post/1 [get]
-func (v *v1) GetSinglePost(w http.ResponseWriter, r *http.Request) {
+//	@Failure		400	{object}	V1.JsonError	"if we cannot decode or encode payload"
+//	@Failure		500	{object}	V1.InputError	"if we have bad payload"
+//	@Router			/V1/post/get-post/1 [get]
+func (v *V1) GetSinglePost(w http.ResponseWriter, r *http.Request) {
 
 	// Get params from context
 	ctx := r.Context()
@@ -152,8 +152,8 @@ func (v *v1) GetSinglePost(w http.ResponseWriter, r *http.Request) {
 //	@Success		200
 //	@Failure		400
 //	@Failure		500
-//	@Router			/v1/create-post [post]
-func (v *v1) CreatePost(w http.ResponseWriter, r *http.Request) {
+//	@Router			/V1/create-post [post]
+func (v *V1) CreatePost(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -184,7 +184,7 @@ func (v *v1) CreatePost(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Post with id [%d] was created", post.ID)
 }
 
-func (v *v1) getSizeAndOffset(params router.Params) (int, int, error) {
+func (v *V1) getSizeAndOffset(params router.Params) (int, int, error) {
 	size, err := strconv.Atoi(params["size"])
 	if err != nil {
 		return 0, 0, fmt.Errorf("cannot get size: %w", err)

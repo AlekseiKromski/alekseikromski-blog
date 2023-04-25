@@ -1,0 +1,22 @@
+{
+  "groups": [
+    {
+      "name": "group",
+      "url": "/group/",
+      "routes" : [
+        {
+          "method": "GET",
+          "route": "/test",
+          "handler": "GetLastPosts"
+        }
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "method": "GET",
+      "route": "/test",
+      "handler": "GetAllCategories"
+    }
+  ]
+}
