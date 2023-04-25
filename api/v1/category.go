@@ -12,8 +12,8 @@ import (
 //	@Success		200
 //	@Failure		400
 //	@Failure		500
-//	@Router			/v1/category/all [get]
-func (v *v1) GetAllCategories(w http.ResponseWriter, r *http.Request) {
+//	@Router			/V1/category/all [get]
+func (v *V1) GetAllCategories(w http.ResponseWriter, r *http.Request) {
 
 	categories := v.storage.GetCategories()
 	if len(categories) == 0 {

@@ -7,22 +7,22 @@ import (
 	"net/http"
 )
 
-type v1 struct {
+type V1 struct {
 	Version string
 	router  *router.Router
 	storage storage.Storage
 }
 
-func NewV1(storage storage.Storage, router *router.Router) *v1 {
-	return &v1{
-		Version: "v1",
+func NewV1(storage storage.Storage, router *router.Router) *V1 {
+	return &V1{
+		Version: "V1",
 		router:  router,
 		storage: storage,
 	}
 }
 
-func (v *v1) RegisterRoutes() {
-	group := v.router.CreateGroup("/v1/")
+func (v *V1) RegisterRoutes() {
+	group := v.router.CreateGroup("/V1/")
 	group.CreateRoute(
 		"/get-last-posts/{size}/{indent}",
 		http.MethodGet,
@@ -50,12 +50,12 @@ func (v *v1) RegisterRoutes() {
 	)
 }
 
-func (v *v1) ReturnErrorResponse(err error, w http.ResponseWriter) {
+func (v *V1) ReturnErrorResponse(err error, w http.ResponseWriter) {
 	w.WriteHeader(ClassifyError(err))
 	json.NewEncoder(w).Encode(err)
 }
 
-func (v *v1) ReturnResponse(w http.ResponseWriter, payload []byte) {
+func (v *V1) ReturnResponse(w http.ResponseWriter, payload []byte) {
 	w.Header().Set("content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 
