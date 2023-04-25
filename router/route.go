@@ -42,10 +42,14 @@ func (ro *Route) Match(r []string, method string) (bool, Params) {
 }
 
 func (ro *Route) match(r []string) bool {
+	if len(r) != len(ro.PathList) {
+		return false
+	}
 	for index, item := range ro.PathList {
 		if item.Key == "*" {
 			break
 		}
+
 		if !item.RegExp.Match([]byte(r[index])) {
 			return false
 		}
