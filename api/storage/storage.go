@@ -15,6 +15,9 @@ type Storage interface {
 	// CreatePost - will create a post
 	CreatePost(post *models.Post) (bool, error)
 
+	// GetCategories - will return a list of categories
+	GetCategories() []*models.Category
+
 	//General functions
 	Stop()
 }

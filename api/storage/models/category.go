@@ -61,3 +61,7 @@ func (m *Category) TableCreate() *TableCreation {
 		Dependencies: []string{},
 	}
 }
+
+func GetCategories() string {
+	return `SELECT * FROM categories ORDER BY "CreatedAt"`
+}
