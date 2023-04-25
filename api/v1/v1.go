@@ -39,6 +39,11 @@ func (v *v1) RegisterRoutes() {
 		v.GetSinglePost,
 	)
 	group.CreateRoute(
+		"/category/all",
+		http.MethodGet,
+		v.GetAllCategories,
+	)
+	group.CreateRoute(
 		"/create-post",
 		http.MethodPost,
 		v.CreatePost,

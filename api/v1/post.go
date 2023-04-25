@@ -99,15 +99,15 @@ func (v *v1) GetLastPostsByCategory(w http.ResponseWriter, r *http.Request) {
 	v.ReturnResponse(w, response)
 }
 
-// GetLastPostsByCategory
+// GetSinglePost
 //
-//	@Summary		List of last posts filtered by category
-//	@Description	Get last posts from storage filtered by category
+//	@Summary		Return only one post
+//	@Description	Get post by id
 //	@Produce		json
 //	@Success		200	{array}		models.Post
 //	@Failure		400	{object}	v1.JsonError	"if we cannot decode or encode payload"
 //	@Failure		500	{object}	v1.InputError	"if we have bad payload"
-//	@Router			/v1/post/get-last-posts-by-category/{category_id}/{size}/{offset} [get]
+//	@Router			/v1/post/get-post/1 [get]
 func (v *v1) GetSinglePost(w http.ResponseWriter, r *http.Request) {
 
 	// Get params from context
