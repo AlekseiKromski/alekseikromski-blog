@@ -21,7 +21,6 @@ type route struct {
 }
 
 type group struct {
-	Name   string   `json:"name"`
 	Url    string   `json:"url"`
 	Routes []*route `json:"routes"`
 }
@@ -57,14 +56,15 @@ func (p *Parser) Parse(router *router.Router) error {
 		return fmt.Errorf("cannot decode rotues file: %w", err)
 	}
 
-	//Default Routes (bot group)
+	//Default Routes (not group)
 	for _, route := range model.Routes {
 		p.registerRouter(router, route, p.api.MethodByName(route.Handler))
 	}
 
+	//Group routes
 	for _, group := range model.Groups {
-		g := router.CreateGroup(group.Name)
-		for _, route := range model.Routes {
+		g := router.CreateGroup(group.Url)
+		for _, route := range group.Routes {
 			p.registerRouter(g, route, p.api.MethodByName(route.Handler))
 		}
 	}
