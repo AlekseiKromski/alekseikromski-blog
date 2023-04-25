@@ -21,7 +21,6 @@ func (v *V1) GetAllCategories(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//return only one post
 	response, err := json.Marshal(categories)
 	if err != nil {
 		v.ReturnErrorResponse(NewDecodingError(), w)

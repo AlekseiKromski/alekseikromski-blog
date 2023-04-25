@@ -24,6 +24,11 @@
           "handler": "GetAllCategories"
         },
         {
+          "method": "GET",
+          "route": "/tag/all",
+          "handler": "GetAllTags"
+        },
+        {
           "method": "POST",
           "route": "/create-post",
           "handler": "CreatePost"

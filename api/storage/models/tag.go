@@ -9,6 +9,17 @@ type Tag struct {
 	*SoftDelete
 }
 
+func CreateTag() *Tag {
+	tag := &Tag{
+		Name:       "",
+		Timestamp:  &Timestamp{},
+		SoftDelete: &SoftDelete{},
+	}
+
+	tag.SetTimestamp()
+	return tag
+}
+
 func (t *Tag) Validate() bool {
 	if len(t.Name) != 0 {
 		return true
@@ -49,4 +60,8 @@ func (m *Tag) TableCreate() *TableCreation {
 		`,
 		Dependencies: []string{},
 	}
+}
+
+func GetTags() string {
+	return `SELECT * FROM tags ORDER BY "CreatedAt"`
 }

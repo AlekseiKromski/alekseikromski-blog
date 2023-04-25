@@ -18,6 +18,9 @@ type Storage interface {
 	// GetCategories - will return a list of categories
 	GetCategories() []*models.Category
 
+	// GetTags - will return a list of tags
+	GetTags() []*models.Tag
+
 	//General functions
 	Stop()
 }
