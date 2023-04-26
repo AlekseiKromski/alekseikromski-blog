@@ -92,7 +92,7 @@ func (m *Post) CreateRecord() string {
 }
 
 func UpdatePost(post *Post) string {
-	return fmt.Sprintf(`UPDATE posts SET title = '%s', category_id = %d, description = '%s', "UpdatedAt" = '%s' WHERE posts.id = %d`, post.Title, post.CategoryID, post.Description, time.Now().Format(time.RFC3339), post.ID)
+	return fmt.Sprintf(`UPDATE posts SET title = '%s', category_id = %d, description = '%s', "UpdatedAt" = '%s', "DeletedAt" = '%s' WHERE posts.id = %d`, post.Title, post.CategoryID, post.Description, post.UpdatedAt, *post.DeletedAt, post.ID)
 }
 
 func GetLastPosts(limit int, offset int, categoryID int) (string, bool) {

@@ -174,6 +174,36 @@ func (v *V1) UpdatePost(w http.ResponseWriter, r *http.Request) {
 	v.ReturnResponse(w, []byte("OK"))
 }
 
+// DeletePost
+//
+//	@Summary		Delete post
+//	@Description	Delete single post
+//	@Produce		json
+//	@Success		200	{array}		models.Post
+//	@Failure		400	{object}	V1.JsonError	"if we cannot decode or encode payload"
+//	@Failure		500	{object}	V1.InputError	"if we have bad payload"
+//	@Router			/v1/post/delete/{ID} [get]
+func (v *V1) DeletePost(w http.ResponseWriter, r *http.Request) {
+
+	// Get params from context
+	ctx := r.Context()
+	var params router.Params
+	if pr, ok := ctx.Value("params").(router.Params); ok {
+		params = pr
+	}
+
+	id, err := strconv.Atoi(params["id"])
+	if err != nil {
+		v.ReturnErrorResponse(NewInputError(), w)
+	}
+
+	if err := v.storage.DeletePost(id); err != nil {
+		v.ReturnErrorResponse(NewInputError(), w)
+	}
+
+	v.ReturnResponse(w, []byte("OK"))
+}
+
 // CreatePost
 //
 //	@Summary		Create post

@@ -24,6 +24,9 @@ type Storage interface {
 	// UpdatePost - will update singe post
 	UpdatePost(post *models.Post) error
 
+	// DeletePost - will delete singe post
+	DeletePost(id int) error
+
 	//General functions
 	Stop()
 }
