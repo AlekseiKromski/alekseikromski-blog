@@ -29,6 +29,11 @@
           "handler": "GetAllTags"
         },
         {
+          "method": "GET",
+          "route": "/post/delete/{id}",
+          "handler": "DeletePost"
+        },
+        {
           "method": "POST",
           "route": "/post/edit-post",
           "handler": "UpdatePost"

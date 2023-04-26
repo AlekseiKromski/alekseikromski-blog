@@ -5,6 +5,7 @@ import (
 	"alekseikromski.com/blog/api/storage/models"
 	"fmt"
 	"log"
+	"time"
 )
 
 func (db *DbConnection) GetPosts(request *storage.QueryRequest) []*models.Post {
@@ -105,7 +106,9 @@ func (db *DbConnection) GetPosts(request *storage.QueryRequest) []*models.Post {
 }
 
 func (db *DbConnection) UpdatePost(post *models.Post) error {
+	post.UpdatedAt = time.Now().Format(time.RFC3339)
 	query := models.UpdatePost(post)
+	log.Printf("[DBSTORE] running query: %s", query)
 	_, err := db.Connection.Query(query)
 	if err != nil {
 		return fmt.Errorf("cannot update post: %w", err)
@@ -135,4 +138,21 @@ func (db *DbConnection) CreatePost(post *models.Post) (bool, error) {
 	}
 
 	return true, nil
+}
+
+func (db *DbConnection) DeletePost(id int) error {
+	request := storage.NewQueryRequest()
+	request.ID = &id
+	posts := db.GetPosts(request)
+	if len(posts) != 0 && len(posts) != 1 {
+		return fmt.Errorf("cannot get post by id")
+	}
+
+	post := posts[0]
+	post.Soft()
+
+	if err := db.UpdatePost(post); err != nil {
+		fmt.Errorf("cannot update object: %w", err)
+	}
+	return nil
 }
