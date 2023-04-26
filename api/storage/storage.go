@@ -21,6 +21,9 @@ type Storage interface {
 	// GetTags - will return a list of tags
 	GetTags() []*models.Tag
 
+	// UpdatePost - will update singe post
+	UpdatePost(post *models.Post) error
+
 	//General functions
 	Stop()
 }
