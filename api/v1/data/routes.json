@@ -30,6 +30,11 @@
         },
         {
           "method": "POST",
+          "route": "/post/edit-post",
+          "handler": "UpdatePost"
+        },
+        {
+          "method": "POST",
           "route": "/create-post",
           "handler": "CreatePost"
         }

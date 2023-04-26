@@ -91,6 +91,10 @@ func (m *Post) CreateRecord() string {
 	return fmt.Sprintf(`INSERT INTO posts ("title", "description", "CreatedAt", "UpdatedAt", "DeletedAt") VALUES ('%s','%s','%s','%s', NULL)`, m.Title, m.Description, m.CreatedAt, m.UpdatedAt)
 }
 
+func UpdatePost(post *Post) string {
+	return fmt.Sprintf(`UPDATE posts SET title = '%s', category_id = %d, description = '%s', "UpdatedAt" = '%s' WHERE posts.id = %d`, post.Title, post.CategoryID, post.Description, time.Now().Format(time.RFC3339), post.ID)
+}
+
 func GetLastPosts(limit int, offset int, categoryID int) (string, bool) {
 	if categoryID == 0 {
 		return fmt.Sprintf(`SELECT * FROM posts ORDER BY "CreatedAt" DESC LIMIT %d OFFSET %d`, limit, offset), false

@@ -145,6 +145,35 @@ func (v *V1) GetSinglePost(w http.ResponseWriter, r *http.Request) {
 	v.ReturnResponse(w, response)
 }
 
+// UpdatePost
+//
+//	@Summary		Update post
+//	@Description	Update single post
+//	@Produce		json
+//	@Success		200	{array}		models.Post
+//	@Failure		400	{object}	V1.JsonError	"if we cannot decode or encode payload"
+//	@Failure		500	{object}	V1.InputError	"if we have bad payload"
+//	@Router			/v1/post/edit-post [post]
+func (v *V1) UpdatePost(w http.ResponseWriter, r *http.Request) {
+	var postForUpdate *models.Post
+
+	err := json.NewDecoder(r.Body).Decode(&postForUpdate)
+	defer r.Body.Close()
+	if err != nil {
+		log.Printf("Decoding error: %s", err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	if err = v.storage.UpdatePost(postForUpdate); err != nil {
+		log.Printf("Update error: %s", err.Error())
+		v.ReturnErrorResponse(NewDecodingError(), w)
+		return
+	}
+
+	v.ReturnResponse(w, []byte("OK"))
+}
+
 // CreatePost
 //
 //	@Summary		Create post
@@ -154,10 +183,6 @@ func (v *V1) GetSinglePost(w http.ResponseWriter, r *http.Request) {
 //	@Failure		500
 //	@Router			/V1/create-post [post]
 func (v *V1) CreatePost(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
 	var post models.Post
 
 	err := json.NewDecoder(r.Body).Decode(&post)

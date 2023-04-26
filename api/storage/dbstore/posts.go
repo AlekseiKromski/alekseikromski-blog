@@ -104,6 +104,15 @@ func (db *DbConnection) GetPosts(request *storage.QueryRequest) []*models.Post {
 	return posts
 }
 
+func (db *DbConnection) UpdatePost(post *models.Post) error {
+	query := models.UpdatePost(post)
+	_, err := db.Connection.Query(query)
+	if err != nil {
+		return fmt.Errorf("cannot update post: %w", err)
+	}
+	return nil
+}
+
 func (db *DbConnection) CreatePost(post *models.Post) (bool, error) {
 
 	//Recreate from json model
