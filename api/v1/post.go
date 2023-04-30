@@ -155,7 +155,7 @@ func (v *V1) GetSinglePost(w http.ResponseWriter, r *http.Request) {
 //	@Failure		500	{object}	V1.InputError	"if we have bad payload"
 //	@Router			/v1/post/edit-post [post]
 func (v *V1) UpdatePost(w http.ResponseWriter, r *http.Request) {
-	var postForUpdate *models.Post
+	postForUpdate := models.CreatePost()
 
 	err := json.NewDecoder(r.Body).Decode(&postForUpdate)
 	defer r.Body.Close()

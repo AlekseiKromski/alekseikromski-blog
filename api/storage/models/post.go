@@ -99,6 +99,9 @@ func (m *Post) CreateRecord() string {
 }
 
 func UpdatePost(post *Post) string {
+	if post.DeletedAt == nil {
+		return fmt.Sprintf(`UPDATE posts SET title = '%s', category_id = %d, description = '%s', "UpdatedAt" = '%s' WHERE posts.id = %d`, post.Title, post.CategoryID, post.Description, post.UpdatedAt, post.ID)
+	}
 	return fmt.Sprintf(`UPDATE posts SET title = '%s', category_id = %d, description = '%s', "UpdatedAt" = '%s', "DeletedAt" = '%s' WHERE posts.id = %d`, post.Title, post.CategoryID, post.Description, post.UpdatedAt, *post.DeletedAt, post.ID)
 }
 
