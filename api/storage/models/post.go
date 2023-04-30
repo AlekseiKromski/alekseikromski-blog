@@ -6,19 +6,22 @@ import (
 )
 
 type Post struct {
-	ID          int       `json:"id"`
-	Title       string    `json:"title"`
-	CategoryID  int       `json:"category_id,omitempty"`
-	Category    *Category `json:"category,omitempty"`
-	Description string    `json:"description"`
+	ID          int        `json:"id"`
+	Title       string     `json:"title"`
+	CategoryID  int        `json:"category_id,omitempty"`
+	Category    *Category  `json:"category,omitempty"`
+	Comments    []*Comment `json:"comments"`
+	Description string     `json:"description"`
 	*Timestamp
 	*SoftDelete
 }
 
-func CreatePostWithData(title, desc string) *Post {
+func CreatePostWithData(title, desc string, categoryID int) *Post {
 	post := &Post{
 		Title:       title,
 		Description: desc,
+		CategoryID:  categoryID,
+		Comments:    []*Comment{},
 		Timestamp:   &Timestamp{},
 		SoftDelete:  &SoftDelete{},
 	}
@@ -31,6 +34,7 @@ func CreatePost() *Post {
 	post := &Post{
 		Title:       "",
 		Description: "",
+		Comments:    []*Comment{},
 		Timestamp:   &Timestamp{},
 		SoftDelete:  &SoftDelete{},
 	}
@@ -88,18 +92,18 @@ func (m *Post) TableCreate() *TableCreation {
 }
 
 func (m *Post) CreateRecord() string {
-	return fmt.Sprintf(`INSERT INTO posts ("title", "description", "CreatedAt", "UpdatedAt", "DeletedAt") VALUES ('%s','%s','%s','%s', NULL)`, m.Title, m.Description, m.CreatedAt, m.UpdatedAt)
+	return fmt.Sprintf(`INSERT INTO posts ("title", "description", "category_id", "CreatedAt", "UpdatedAt", "DeletedAt") VALUES ('%s','%s', %d,'%s','%s', NULL)`, m.Title, m.Description, m.CategoryID, m.CreatedAt, m.UpdatedAt)
 }
 
 func UpdatePost(post *Post) string {
 	return fmt.Sprintf(`UPDATE posts SET title = '%s', category_id = %d, description = '%s', "UpdatedAt" = '%s', "DeletedAt" = '%s' WHERE posts.id = %d`, post.Title, post.CategoryID, post.Description, post.UpdatedAt, *post.DeletedAt, post.ID)
 }
 
-func GetLastPosts(limit int, offset int, categoryID int) (string, bool) {
+func GetLastPosts(limit int, offset int, categoryID int) string {
 	if categoryID == 0 {
-		return fmt.Sprintf(`SELECT * FROM posts ORDER BY "CreatedAt" DESC LIMIT %d OFFSET %d`, limit, offset), false
+		return fmt.Sprintf(`SELECT * FROM posts INNER JOIN categories c on c.id = posts.category_id ORDER BY posts."CreatedAt" DESC LIMIT %d OFFSET %d`, limit, offset)
 	}
-	return fmt.Sprintf(`SELECT * FROM posts INNER JOIN categories c on c.id = posts.category_id WHERE category_id = '%d' ORDER BY posts."CreatedAt" DESC LIMIT %d OFFSET %d`, categoryID, limit, offset), true
+	return fmt.Sprintf(`SELECT * FROM posts INNER JOIN categories c on c.id = posts.category_id WHERE category_id = '%d' ORDER BY posts."CreatedAt" DESC LIMIT %d OFFSET %d`, categoryID, limit, offset)
 }
 
 func GetPost(postID int) string {

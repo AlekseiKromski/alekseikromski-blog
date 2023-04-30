@@ -211,7 +211,7 @@ func (v *V1) DeletePost(w http.ResponseWriter, r *http.Request) {
 //	@Success		200
 //	@Failure		400
 //	@Failure		500
-//	@Router			/V1/create-post [post]
+//	@Router			/V1/post/create-post [post]
 func (v *V1) CreatePost(w http.ResponseWriter, r *http.Request) {
 	var post models.Post
 
@@ -225,6 +225,7 @@ func (v *V1) CreatePost(w http.ResponseWriter, r *http.Request) {
 
 	created, err := v.storage.CreatePost(&post)
 	if err != nil {
+		log.Printf("Problem: %v", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -237,6 +238,35 @@ func (v *V1) CreatePost(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("created"))
 	log.Printf("Post with id [%d] was created", post.ID)
+}
+
+// CreateComment
+//
+//	@Summary		Create post
+//	@Description	Create a post
+//	@Success		200
+//	@Failure		400
+//	@Failure		500
+//	@Router			/V1/post/create-comment [post]
+func (v *V1) CreateComment(w http.ResponseWriter, r *http.Request) {
+	var comment models.Comment
+
+	err := json.NewDecoder(r.Body).Decode(&comment)
+	defer r.Body.Close()
+	if err != nil {
+		log.Printf("Decoding error: %s", err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	if err := v.storage.CreateComment(&comment); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("created"))
+	log.Printf("Comment with id [%d] was created", comment.ID)
 }
 
 func (v *V1) getSizeAndOffset(params router.Params) (int, int, error) {

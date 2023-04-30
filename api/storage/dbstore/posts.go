@@ -46,6 +46,9 @@ func (db *DbConnection) GetPosts(request *storage.QueryRequest) []*models.Post {
 				log.Printf("troubles during scanning: %w", err)
 			}
 
+			//Get comments
+			post.Comments = db.GetComments(post.ID)
+
 			posts = append(posts, post)
 		}
 
@@ -53,7 +56,7 @@ func (db *DbConnection) GetPosts(request *storage.QueryRequest) []*models.Post {
 	}
 
 	if request.Limit > 0 {
-		query, withCategory := models.GetLastPosts(request.Limit, request.Offset, request.CategoryID)
+		query := models.GetLastPosts(request.Limit, request.Offset, request.CategoryID)
 
 		log.Printf("[DBSTORE] running query: %s", query)
 
@@ -65,38 +68,29 @@ func (db *DbConnection) GetPosts(request *storage.QueryRequest) []*models.Post {
 		for rows.Next() {
 			post := models.CreatePost()
 			var scanError error
-			if withCategory {
-				category := models.CreateCategory()
-				scanError = rows.Scan(
-					&post.ID,
-					&post.Title,
-					&post.Description,
-					&post.CategoryID,
-					&post.CreatedAt,
-					&post.UpdatedAt,
-					&post.DeletedAt,
-					&category.ID,
-					&category.Name,
-					&category.CreatedAt,
-					&category.UpdatedAt,
-					&category.DeletedAt,
-				)
-				post.Category = category
-			} else {
-				scanError = rows.Scan(
-					&post.ID,
-					&post.Title,
-					&post.Description,
-					&post.CategoryID,
-					&post.CreatedAt,
-					&post.UpdatedAt,
-					&post.DeletedAt,
-				)
-			}
+			category := models.CreateCategory()
+			scanError = rows.Scan(
+				&post.ID,
+				&post.Title,
+				&post.Description,
+				&post.CategoryID,
+				&post.CreatedAt,
+				&post.UpdatedAt,
+				&post.DeletedAt,
+				&category.ID,
+				&category.Name,
+				&category.CreatedAt,
+				&category.UpdatedAt,
+				&category.DeletedAt,
+			)
+			post.Category = category
 
 			if scanError != nil {
 				log.Printf("troubles during scanning: %w", err)
 			}
+
+			//Get comments
+			post.Comments = db.GetComments(post.ID)
 
 			posts = append(posts, post)
 		}
@@ -119,7 +113,7 @@ func (db *DbConnection) UpdatePost(post *models.Post) error {
 func (db *DbConnection) CreatePost(post *models.Post) (bool, error) {
 
 	//Recreate from json model
-	post = models.CreatePostWithData(post.Title, post.Description)
+	post = models.CreatePostWithData(post.Title, post.Description, post.CategoryID)
 
 	query := post.CreateRecord()
 
