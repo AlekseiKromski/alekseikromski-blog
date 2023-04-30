@@ -51,6 +51,9 @@ type Storage interface {
 	// DeleteTag - will delete tag
 	DeleteTag(id int) error
 
+	// Search - will return search result
+	Search(sr *SearchRequest) *SearchResult
+
 	//General functions
 	Stop()
 }
@@ -65,4 +68,19 @@ type QueryRequest struct {
 // NewQueryRequest - will return basic object without any properties
 func NewQueryRequest() *QueryRequest {
 	return &QueryRequest{}
+}
+
+type SearchResult struct {
+	Posts []*models.Post `json:"posts"`
+}
+
+type SearchRequest struct {
+	Search string `json:"search"`
+}
+
+// NewSearchRequest - will return basic object without any properties
+func NewSearchRequest(search string) *SearchRequest {
+	return &SearchRequest{
+		Search: search,
+	}
 }

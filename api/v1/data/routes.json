@@ -1,6 +1,16 @@
 {
   "groups": [
     {
+      "url": "/v1",
+      "routes": [
+        {
+          "method": "POST",
+          "route": "/search",
+          "handler": "Search"
+        }
+      ]
+    },
+    {
       "url": "/v1/category",
       "routes" : [
         {

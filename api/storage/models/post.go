@@ -115,3 +115,16 @@ func GetLastPosts(limit int, offset int, categoryID int) string {
 func GetPost(postID int) string {
 	return fmt.Sprintf(`SELECT * FROM posts INNER JOIN categories c on c.id = posts.category_id WHERE posts."id" = %d AND c."DeletedAt" IS NULL`, postID)
 }
+
+func SearchPost(search string) string {
+	return fmt.Sprintf(`SELECT * FROM posts
+		INNER JOIN categories c on c.id = posts.category_id
+		 WHERE
+			posts.title LIKE '%s'
+			OR posts.description LIKE '%s'
+			OR c.name LIKE '%s'
+			AND category_id = 1
+			AND c."DeletedAt" IS NULL
+		 ORDER BY posts."CreatedAt" DESC
+	`, search, search, search)
+}
