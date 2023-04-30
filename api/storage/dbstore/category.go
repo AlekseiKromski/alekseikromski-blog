@@ -86,3 +86,27 @@ func (db *DbConnection) UpdateCategory(category *models.Category) error {
 	}
 	return nil
 }
+
+func (db *DbConnection) CreateCategory(category *models.Category) (bool, error) {
+
+	//Recreate from json model
+	category = models.CreateCategoryWithData(category.Name)
+
+	query := category.CreateRecord()
+
+	result, err := db.Connection.Exec(query)
+	if err != nil {
+		return false, fmt.Errorf("cannot create post record: %w", err)
+	}
+
+	affected, err := result.RowsAffected()
+	if err != nil {
+		return false, fmt.Errorf("cannot get info about creation: %w", err)
+	}
+
+	if affected == 0 {
+		return false, fmt.Errorf("new was not created. Affected rows: %d, sql: %s", affected, query)
+	}
+
+	return true, nil
+}

@@ -23,6 +23,17 @@ func CreateCategory() *Category {
 	return category
 }
 
+func CreateCategoryWithData(name string) *Category {
+	category := &Category{
+		Name:       name,
+		Timestamp:  &Timestamp{},
+		SoftDelete: &SoftDelete{},
+	}
+
+	category.SetTimestamt()
+	return category
+}
+
 func (c *Category) Validate() bool {
 	if len(c.Name) != 0 {
 		return true
@@ -32,7 +43,7 @@ func (c *Category) Validate() bool {
 
 func (c *Category) SetTimestamt() {
 	c.UpdatedAt = time.Now().Format(time.RFC3339)
-	if len(c.CreatedAt) != 0 {
+	if len(c.CreatedAt) == 0 {
 		c.CreatedAt = time.Now().Format(time.RFC3339)
 	}
 }
@@ -63,6 +74,10 @@ func (m *Category) TableCreate() *TableCreation {
 		`,
 		Dependencies: []string{},
 	}
+}
+
+func (c *Category) CreateRecord() string {
+	return fmt.Sprintf(`INSERT INTO categories ("name", "CreatedAt", "UpdatedAt", "DeletedAt") VALUES ('%s','%s','%s', NULL)`, c.Name, c.CreatedAt, c.UpdatedAt)
 }
 
 func GetCategories() string {
