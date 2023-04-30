@@ -1,7 +1,32 @@
 {
   "groups": [
     {
-      "url": "/v1/",
+      "url": "/v1/category",
+      "routes" : [
+        {
+          "method": "GET",
+          "route": "/all",
+          "handler": "GetAllCategories"
+        },
+        {
+          "method": "GET",
+          "route": "/delete/{id}",
+          "handler": "DeleteCategory"
+        }
+      ]
+    },
+    {
+      "url": "/v1/tag",
+      "routes" : [
+        {
+          "method": "GET",
+          "route": "/all",
+          "handler": "GetAllTags"
+        }
+      ]
+    },
+    {
+      "url": "/v1/post",
       "routes" : [
         {
           "method": "GET",
@@ -10,42 +35,32 @@
         },
         {
           "method": "GET",
-          "route": "/post/get-last-posts-by-category/{category_id}/{size}/{indent}",
+          "route": "/get-last-posts-by-category/{category_id}/{size}/{indent}",
           "handler": "GetLastPostsByCategory"
         },
         {
           "method": "GET",
-          "route": "/post/get-post/{id}",
+          "route": "/get-post/{id}",
           "handler": "GetSinglePost"
         },
         {
           "method": "GET",
-          "route": "/category/all",
-          "handler": "GetAllCategories"
-        },
-        {
-          "method": "GET",
-          "route": "/tag/all",
-          "handler": "GetAllTags"
-        },
-        {
-          "method": "GET",
-          "route": "/post/delete/{id}",
+          "route": "/delete/{id}",
           "handler": "DeletePost"
         },
         {
           "method": "POST",
-          "route": "/post/edit-post",
+          "route": "/edit-post",
           "handler": "UpdatePost"
         },
         {
           "method": "POST",
-          "route": "/post/create-post",
+          "route": "/create-post",
           "handler": "CreatePost"
         },
         {
           "method": "POST",
-          "route": "/post/create-comment",
+          "route": "/create-comment",
           "handler": "CreateComment"
         }
       ]
