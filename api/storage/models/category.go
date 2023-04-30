@@ -73,6 +73,12 @@ func GetCategory(id int) string {
 }
 
 func UpdateCategory(category *Category) string {
+	if category.DeletedAt == nil {
+		return fmt.Sprintf(
+			`UPDATE categories SET name = '%s', "UpdatedAt" = '%s' WHERE categories.id = %d`,
+			category.Name, category.UpdatedAt, category.ID,
+		)
+	}
 	return fmt.Sprintf(
 		`UPDATE categories SET name = '%s', "UpdatedAt" = '%s', "DeletedAt" = '%s' WHERE categories.id = %d`,
 		category.Name, category.UpdatedAt, *category.DeletedAt, category.ID,

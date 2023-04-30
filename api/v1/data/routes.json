@@ -12,6 +12,11 @@
           "method": "GET",
           "route": "/delete/{id}",
           "handler": "DeleteCategory"
+        },
+        {
+          "method": "POST",
+          "route": "/edit",
+          "handler": "UpdateCategory"
         }
       ]
     },
@@ -55,12 +60,12 @@
         },
         {
           "method": "POST",
-          "route": "/edit-post",
+          "route": "/edit",
           "handler": "UpdatePost"
         },
         {
           "method": "POST",
-          "route": "/create-post",
+          "route": "/create",
           "handler": "CreatePost"
         },
         {
