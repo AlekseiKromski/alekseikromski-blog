@@ -25,6 +25,18 @@ func CreateTag() *Tag {
 	return tag
 }
 
+func CreateTagWithData(name string, postID int) *Tag {
+	tag := &Tag{
+		Name:       name,
+		PostID:     postID,
+		Timestamp:  &Timestamp{},
+		SoftDelete: &SoftDelete{},
+	}
+
+	tag.SetTimestamp()
+	return tag
+}
+
 func (t *Tag) Validate() bool {
 	if len(t.Name) != 0 {
 		return true
@@ -34,7 +46,7 @@ func (t *Tag) Validate() bool {
 
 func (t *Tag) SetTimestamp() {
 	t.UpdatedAt = time.Now().Format(time.RFC3339)
-	if len(t.CreatedAt) != 0 {
+	if len(t.CreatedAt) == 0 {
 		t.CreatedAt = time.Now().Format(time.RFC3339)
 	}
 }
@@ -69,6 +81,10 @@ func (m *Tag) TableCreate() *TableCreation {
 		`,
 		Dependencies: []string{},
 	}
+}
+
+func (c *Tag) CreateRecord() string {
+	return fmt.Sprintf(`INSERT INTO tags ("name", "post_id","CreatedAt", "UpdatedAt", "DeletedAt") VALUES ('%s', %d,'%s','%s', NULL)`, c.Name, c.PostID, c.CreatedAt, c.UpdatedAt)
 }
 
 func GetTags(postID *int) string {

@@ -18,6 +18,9 @@ type Storage interface {
 	// CreateCategory - will create a category
 	CreateCategory(category *models.Category) (bool, error)
 
+	// CreateTag - will create a tag
+	CreateTag(tag *models.Tag) (bool, error)
+
 	// GetCategories - will return a list of categories
 	GetCategories() []*models.Category
 
