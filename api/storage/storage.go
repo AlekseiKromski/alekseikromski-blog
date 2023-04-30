@@ -33,6 +33,12 @@ type Storage interface {
 	// GetComments - will return comments for single post
 	GetComments(id int) []*models.Comment
 
+	// DeleteCategory - will delete singe category
+	DeleteCategory(id int) error
+
+	// UpdateCategory - will update singe category
+	UpdateCategory(category *models.Category) error
+
 	//General functions
 	Stop()
 }

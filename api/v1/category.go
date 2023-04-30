@@ -1,8 +1,10 @@
 package v1
 
 import (
+	"alekseikromski.com/blog/router"
 	"encoding/json"
 	"net/http"
+	"strconv"
 )
 
 // GetAllCategories
@@ -28,4 +30,34 @@ func (v *V1) GetAllCategories(w http.ResponseWriter, r *http.Request) {
 	}
 
 	v.ReturnResponse(w, response)
+}
+
+// DeleteCategory
+//
+//	@Summary		Delete category
+//	@Description	Delete single category
+//	@Produce		json
+//	@Success		200	{array}		models.Post
+//	@Failure		400	{object}	V1.JsonError	"if we cannot decode or encode payload"
+//	@Failure		500	{object}	V1.InputError	"if we have bad payload"
+//	@Router			/v1/category/delete/{ID} [get]
+func (v *V1) DeleteCategory(w http.ResponseWriter, r *http.Request) {
+
+	// Get params from context
+	ctx := r.Context()
+	var params router.Params
+	if pr, ok := ctx.Value("params").(router.Params); ok {
+		params = pr
+	}
+
+	id, err := strconv.Atoi(params["id"])
+	if err != nil {
+		v.ReturnErrorResponse(NewInputError(), w)
+	}
+
+	if err := v.storage.DeleteCategory(id); err != nil {
+		v.ReturnErrorResponse(NewInputError(), w)
+	}
+
+	v.ReturnResponse(w, []byte("OK"))
 }

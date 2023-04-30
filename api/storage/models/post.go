@@ -101,11 +101,11 @@ func UpdatePost(post *Post) string {
 
 func GetLastPosts(limit int, offset int, categoryID int) string {
 	if categoryID == 0 {
-		return fmt.Sprintf(`SELECT * FROM posts INNER JOIN categories c on c.id = posts.category_id ORDER BY posts."CreatedAt" DESC LIMIT %d OFFSET %d`, limit, offset)
+		return fmt.Sprintf(`SELECT * FROM posts INNER JOIN categories c on c.id = posts.category_id WHERE c."DeletedAt" IS NULL ORDER BY posts."CreatedAt" DESC LIMIT %d OFFSET %d`, limit, offset)
 	}
-	return fmt.Sprintf(`SELECT * FROM posts INNER JOIN categories c on c.id = posts.category_id WHERE category_id = '%d' ORDER BY posts."CreatedAt" DESC LIMIT %d OFFSET %d`, categoryID, limit, offset)
+	return fmt.Sprintf(`SELECT * FROM posts INNER JOIN categories c on c.id = posts.category_id WHERE category_id = '%d' AND c."DeletedAt" IS NULL ORDER BY posts."CreatedAt" DESC LIMIT %d OFFSET %d`, categoryID, limit, offset)
 }
 
 func GetPost(postID int) string {
-	return fmt.Sprintf(`SELECT * FROM posts INNER JOIN categories c on c.id = posts.category_id WHERE posts."id" = %d`, postID)
+	return fmt.Sprintf(`SELECT * FROM posts INNER JOIN categories c on c.id = posts.category_id WHERE posts."id" = %d AND c."DeletedAt" IS NULL`, postID)
 }

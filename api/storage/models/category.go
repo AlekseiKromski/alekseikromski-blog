@@ -1,6 +1,9 @@
 package models
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 type Category struct {
 	ID   int    `json:"ID"`
@@ -63,5 +66,15 @@ func (m *Category) TableCreate() *TableCreation {
 }
 
 func GetCategories() string {
-	return `SELECT * FROM categories ORDER BY "CreatedAt"`
+	return `SELECT * FROM categories WHERE categories."DeletedAt" IS NULL ORDER BY "CreatedAt" DESC`
+}
+func GetCategory(id int) string {
+	return fmt.Sprintf(`SELECT * FROM categories WHERE id = %d AND categories."DeletedAt" IS NULL`, id)
+}
+
+func UpdateCategory(category *Category) string {
+	return fmt.Sprintf(
+		`UPDATE categories SET name = '%s', "UpdatedAt" = '%s', "DeletedAt" = '%s' WHERE categories.id = %d`,
+		category.Name, category.UpdatedAt, *category.DeletedAt, category.ID,
+	)
 }
