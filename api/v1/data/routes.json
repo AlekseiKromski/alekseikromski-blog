@@ -32,6 +32,11 @@
           "method": "GET",
           "route": "/delete/{id}",
           "handler": "DeleteTag"
+        },
+        {
+          "method": "POST",
+          "route": "/edit",
+          "handler": "UpdateTag"
         }
       ]
     },
