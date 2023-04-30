@@ -17,6 +17,11 @@
           "method": "POST",
           "route": "/edit",
           "handler": "UpdateCategory"
+        },
+        {
+          "method": "POST",
+          "route": "/create",
+          "handler": "CreateCategory"
         }
       ]
     },
