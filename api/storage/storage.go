@@ -19,7 +19,7 @@ type Storage interface {
 	GetCategories() []*models.Category
 
 	// GetTags - will return a list of tags
-	GetTags() []*models.Tag
+	GetTags(postID *int) []*models.Tag
 
 	// UpdatePost - will update singe post
 	UpdatePost(post *models.Post) error

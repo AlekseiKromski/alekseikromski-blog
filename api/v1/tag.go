@@ -14,8 +14,7 @@ import (
 //	@Failure		500
 //	@Router			/V1/tag/all [get]
 func (v *V1) GetAllTags(w http.ResponseWriter, r *http.Request) {
-
-	tags := v.storage.GetTags()
+	tags := v.storage.GetTags(nil)
 	if len(tags) == 0 {
 		v.ReturnErrorResponse(NewInputError(), w)
 		return

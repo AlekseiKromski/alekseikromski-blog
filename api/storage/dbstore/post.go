@@ -49,6 +49,9 @@ func (db *DbConnection) GetPosts(request *storage.QueryRequest) []*models.Post {
 			//Get comments
 			post.Comments = db.GetComments(post.ID)
 
+			//Get tags
+			post.Tags = db.GetTags(&post.ID)
+
 			posts = append(posts, post)
 		}
 
@@ -91,6 +94,9 @@ func (db *DbConnection) GetPosts(request *storage.QueryRequest) []*models.Post {
 
 			//Get comments
 			post.Comments = db.GetComments(post.ID)
+
+			//Get tags
+			post.Tags = db.GetTags(&post.ID)
 
 			posts = append(posts, post)
 		}
