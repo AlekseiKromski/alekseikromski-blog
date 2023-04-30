@@ -73,7 +73,18 @@ func (m *Tag) TableCreate() *TableCreation {
 
 func GetTags(postID *int) string {
 	if postID == nil {
-		return `SELECT * FROM tags ORDER BY "CreatedAt" DESC`
+		return `SELECT * FROM tags WHERE tags."DeletedAt" is NULL ORDER BY "CreatedAt" DESC`
 	}
-	return fmt.Sprintf(`SELECT * FROM tags WHERE tags.post_id = %d ORDER BY "CreatedAt" DESC`, *postID)
+	return fmt.Sprintf(`SELECT * FROM tags WHERE tags.post_id = %d AND tags."DeletedAt" is NULL ORDER BY "CreatedAt" DESC`, *postID)
+}
+
+func GetTagByID(id int) string {
+	return fmt.Sprintf(`SELECT * FROM tags WHERE tags.id = %d AND tags."DeletedAt" is NULL`, id)
+}
+
+func UpdateTag(tag *Tag) string {
+	return fmt.Sprintf(
+		`UPDATE tags SET name = '%s', post_id = %d, "UpdatedAt" = '%s', "DeletedAt" = '%s' WHERE tags.id = %d`,
+		tag.Name, tag.PostID, tag.UpdatedAt, *tag.DeletedAt, tag.ID,
+	)
 }
