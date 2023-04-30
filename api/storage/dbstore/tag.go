@@ -5,15 +5,16 @@ import (
 	"log"
 )
 
-func (db *DbConnection) GetTags() []*models.Tag {
+func (db *DbConnection) GetTags(postID *int) []*models.Tag {
 	var tags []*models.Tag
 
-	query := models.GetTags()
+	query := models.GetTags(postID)
 
 	log.Printf("[DBSTORE] running query: %s", query)
 
 	rows, err := db.Connection.Query(query)
 	if err != nil {
+		log.Printf("Problem: %v", err)
 		return tags
 	}
 
@@ -24,13 +25,14 @@ func (db *DbConnection) GetTags() []*models.Tag {
 		scanError = rows.Scan(
 			&tag.ID,
 			&tag.Name,
+			&tag.PostID,
 			&tag.CreatedAt,
 			&tag.UpdatedAt,
 			&tag.DeletedAt,
 		)
 
 		if scanError != nil {
-			log.Printf("troubles during scanning: %w", err)
+			log.Printf("troubles during scanning: %v", err)
 		}
 
 		tags = append(tags, tag)

@@ -11,6 +11,7 @@ type Post struct {
 	CategoryID  int        `json:"category_id,omitempty"`
 	Category    *Category  `json:"category,omitempty"`
 	Comments    []*Comment `json:"comments"`
+	Tags        []*Tag     `json:"tags"`
 	Description string     `json:"description"`
 	*Timestamp
 	*SoftDelete
@@ -22,6 +23,7 @@ func CreatePostWithData(title, desc string, categoryID int) *Post {
 		Description: desc,
 		CategoryID:  categoryID,
 		Comments:    []*Comment{},
+		Tags:        []*Tag{},
 		Timestamp:   &Timestamp{},
 		SoftDelete:  &SoftDelete{},
 	}
@@ -35,6 +37,7 @@ func CreatePost() *Post {
 		Title:       "",
 		Description: "",
 		Comments:    []*Comment{},
+		Tags:        []*Tag{},
 		Timestamp:   &Timestamp{},
 		SoftDelete:  &SoftDelete{},
 	}

@@ -1,10 +1,14 @@
 package models
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 type Tag struct {
-	ID   int    `json:"ID"`
-	Name string `json:"name"`
+	ID     int    `json:"ID"`
+	Name   string `json:"name"`
+	PostID int    `json:"post_id"`
 	*Timestamp
 	*SoftDelete
 }
@@ -12,6 +16,7 @@ type Tag struct {
 func CreateTag() *Tag {
 	tag := &Tag{
 		Name:       "",
+		PostID:     0,
 		Timestamp:  &Timestamp{},
 		SoftDelete: &SoftDelete{},
 	}
@@ -53,15 +58,22 @@ func (m *Tag) TableCreate() *TableCreation {
 					constraint tags_pk
 						primary key,
 				"name"  varchar(60)      not null,
+				"post_id"  serial     not null,
 				"CreatedAt" timestamp not null,
 				"UpdatedAt" timestamp not null,
-				"DeletedAt" timestamp
+				"DeletedAt" timestamp,
+				CONSTRAINT FK_TAG
+					FOREIGN KEY(post_id)
+						REFERENCES posts(id)
 			);
 		`,
 		Dependencies: []string{},
 	}
 }
 
-func GetTags() string {
-	return `SELECT * FROM tags ORDER BY "CreatedAt"`
+func GetTags(postID *int) string {
+	if postID == nil {
+		return `SELECT * FROM tags ORDER BY "CreatedAt" DESC`
+	}
+	return fmt.Sprintf(`SELECT * FROM tags WHERE tags.post_id = %d ORDER BY "CreatedAt" DESC`, *postID)
 }
