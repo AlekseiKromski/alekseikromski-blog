@@ -22,6 +22,11 @@
           "method": "GET",
           "route": "/all",
           "handler": "GetAllTags"
+        },
+        {
+          "method": "GET",
+          "route": "/delete/{id}",
+          "handler": "DeleteTag"
         }
       ]
     },

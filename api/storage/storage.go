@@ -36,8 +36,14 @@ type Storage interface {
 	// DeleteCategory - will delete singe category
 	DeleteCategory(id int) error
 
-	// UpdateCategory - will update singe category
+	// UpdateCategory - will update single category
 	UpdateCategory(category *models.Category) error
+
+	// UpdateTag - will update single tag
+	UpdateTag(tag *models.Tag) error
+
+	// DeleteTag - will delete tag
+	DeleteTag(id int) error
 
 	//General functions
 	Stop()
