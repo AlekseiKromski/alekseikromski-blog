@@ -83,6 +83,12 @@ func GetTagByID(id int) string {
 }
 
 func UpdateTag(tag *Tag) string {
+	if tag.DeletedAt == nil {
+		return fmt.Sprintf(
+			`UPDATE tags SET name = '%s', post_id = %d, "UpdatedAt" = '%s'WHERE tags.id = %d`,
+			tag.Name, tag.PostID, tag.UpdatedAt, tag.ID,
+		)
+	}
 	return fmt.Sprintf(
 		`UPDATE tags SET name = '%s', post_id = %d, "UpdatedAt" = '%s', "DeletedAt" = '%s' WHERE tags.id = %d`,
 		tag.Name, tag.PostID, tag.UpdatedAt, *tag.DeletedAt, tag.ID,
