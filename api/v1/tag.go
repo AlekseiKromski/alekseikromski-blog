@@ -93,3 +93,39 @@ func (v *V1) UpdateTag(w http.ResponseWriter, r *http.Request) {
 
 	v.ReturnResponse(w, []byte("OK"))
 }
+
+// CreateTag
+//
+//	@Summary		Create tag
+//	@Description	Create a tag
+//	@Success		200
+//	@Failure		400
+//	@Failure		500
+//	@Router			/v1/tag/create [post]
+func (v *V1) CreateTag(w http.ResponseWriter, r *http.Request) {
+	var tag models.Tag
+
+	err := json.NewDecoder(r.Body).Decode(&tag)
+	defer r.Body.Close()
+	if err != nil {
+		log.Printf("Decoding error: %s", err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	created, err := v.storage.CreateTag(&tag)
+	if err != nil {
+		log.Printf("Problem: %v", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	if !created {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("created"))
+	log.Printf("Tag with id [%d] was created", tag.ID)
+}

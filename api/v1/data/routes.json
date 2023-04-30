@@ -42,6 +42,11 @@
           "method": "POST",
           "route": "/edit",
           "handler": "UpdateTag"
+        },
+        {
+          "method": "POST",
+          "route": "/create",
+          "handler": "CreateTag"
         }
       ]
     },

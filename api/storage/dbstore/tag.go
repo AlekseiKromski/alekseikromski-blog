@@ -89,3 +89,27 @@ func (db *DbConnection) DeleteTag(id int) error {
 	}
 	return nil
 }
+
+func (db *DbConnection) CreateTag(tag *models.Tag) (bool, error) {
+
+	//Recreate from json model
+	tag = models.CreateTagWithData(tag.Name, tag.PostID)
+
+	query := tag.CreateRecord()
+
+	result, err := db.Connection.Exec(query)
+	if err != nil {
+		return false, fmt.Errorf("cannot create post record: %w", err)
+	}
+
+	affected, err := result.RowsAffected()
+	if err != nil {
+		return false, fmt.Errorf("cannot get info about creation: %w", err)
+	}
+
+	if affected == 0 {
+		return false, fmt.Errorf("new was not created. Affected rows: %d, sql: %s", affected, query)
+	}
+
+	return true, nil
+}
