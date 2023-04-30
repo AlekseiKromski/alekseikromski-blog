@@ -40,8 +40,13 @@
         },
         {
           "method": "POST",
-          "route": "/create-post",
+          "route": "/post/create-post",
           "handler": "CreatePost"
+        },
+        {
+          "method": "POST",
+          "route": "/post/create-comment",
+          "handler": "CreateComment"
         }
       ]
     }

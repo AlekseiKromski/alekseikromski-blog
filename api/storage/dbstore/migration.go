@@ -69,6 +69,7 @@ func (db *DbConnection) getNotExistedTables() ([]models.MigrationInterface, erro
 		&models.Tag{},
 		&models.Post{},
 		&models.Category{},
+		&models.Comment{},
 	}
 
 	query := `SELECT migrations."tableName" FROM migrations`

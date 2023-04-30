@@ -27,6 +27,12 @@ type Storage interface {
 	// DeletePost - will delete singe post
 	DeletePost(id int) error
 
+	// CreateComment - will create a comment for post
+	CreateComment(comment *models.Comment) error
+
+	// GetComments - will return comments for single post
+	GetComments(id int) []*models.Comment
+
 	//General functions
 	Stop()
 }
