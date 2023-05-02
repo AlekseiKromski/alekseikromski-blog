@@ -2,6 +2,8 @@ package main
 
 import (
 	"alekseikromski.com/blog/api"
+	"alekseikromski.com/blog/api/guard"
+	"alekseikromski.com/blog/api/guard/jwt"
 	"alekseikromski.com/blog/api/storage/dbstore"
 	v1 "alekseikromski.com/blog/api/v1"
 	router "alekseikromski.com/blog/router"
@@ -26,6 +28,7 @@ func main() {
 	hostname := os.Getenv("DB_HOSTNAME")
 	port := os.Getenv("DB_PORT")
 	database := os.Getenv("DB_DATABASE")
+	jwtSecret := os.Getenv("jwtSecret")
 
 	if username == "" || password == "" || hostname == "" || port == "" || database == "" {
 		log.Fatalf("[ERROR] Database credits is required")
@@ -46,12 +49,17 @@ func main() {
 		return
 	}
 
+	//Register guards
+	guards := []guard.Guard{
+		jwt.New(jwtSecret),
+	}
+
 	//Create router
-	router := router.NewRouter()
+	router := router.NewRouter(guards)
 
 	//Prepare apis
 	apis := []api.Api{
-		v1.NewV1(dbstore, router),
+		v1.NewV1(dbstore, router, guards),
 	}
 
 	server := api.NewServer(config, router, apis)

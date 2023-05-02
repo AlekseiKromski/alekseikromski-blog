@@ -1,8 +1,8 @@
 package v1
 
 import (
+	"alekseikromski.com/blog/api/guard"
 	"alekseikromski.com/blog/api/storage"
-	"alekseikromski.com/blog/api/v1/parser"
 	"alekseikromski.com/blog/router"
 	"encoding/json"
 	"fmt"
@@ -15,14 +15,25 @@ type V1 struct {
 	Version string
 	router  *router.Router
 	storage storage.Storage
+	guards  map[string]guard.Guard
 }
 
-func NewV1(storage storage.Storage, router *router.Router) *V1 {
+func NewV1(storage storage.Storage, router *router.Router, gs []guard.Guard) *V1 {
 	return &V1{
 		Version: "V1",
 		router:  router,
 		storage: storage,
+		guards:  parseGuards(gs),
 	}
+}
+
+func parseGuards(guards []guard.Guard) map[string]guard.Guard {
+	gs := make(map[string]guard.Guard, len(guards))
+	for _, guard := range guards {
+		gs[reflect.TypeOf(guard).Elem().Name()] = guard
+	}
+
+	return gs
 }
 
 func (v *V1) RegisterRoutes() error {
@@ -30,7 +41,7 @@ func (v *V1) RegisterRoutes() error {
 	if err != nil {
 		return fmt.Errorf("cannot find routes file: %w", err)
 	}
-	p := parser.NewParser(fp, reflect.ValueOf(v))
+	p := NewParser(fp, reflect.ValueOf(v))
 	if err := p.Parse(v.router); err != nil {
 		return fmt.Errorf("cannot parse routes file: %w", err)
 	}
