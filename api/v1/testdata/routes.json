@@ -7,7 +7,8 @@
         {
           "method": "GET",
           "route": "/test",
-          "handler": "GetLastPosts"
+          "handler": "GetLastPosts",
+          "guard": "JWTGuard"
         }
       ]
     }

@@ -7,6 +7,11 @@
           "method": "POST",
           "route": "/search",
           "handler": "Search"
+        },
+        {
+          "method": "GET",
+          "route": "/login/",
+          "handler": "Login"
         }
       ]
     },
@@ -26,12 +31,14 @@
         {
           "method": "POST",
           "route": "/edit",
-          "handler": "UpdateCategory"
+          "handler": "UpdateCategory",
+          "guard": "JWTGuard"
         },
         {
           "method": "POST",
           "route": "/create",
-          "handler": "CreateCategory"
+          "handler": "CreateCategory",
+          "guard": "JWTGuard"
         }
       ]
     },
@@ -51,12 +58,14 @@
         {
           "method": "POST",
           "route": "/edit",
-          "handler": "UpdateTag"
+          "handler": "UpdateTag",
+          "guard": "JWTGuard"
         },
         {
           "method": "POST",
           "route": "/create",
-          "handler": "CreateTag"
+          "handler": "CreateTag",
+          "guard": "JWTGuard"
         }
       ]
     },
@@ -86,12 +95,14 @@
         {
           "method": "POST",
           "route": "/edit",
-          "handler": "UpdatePost"
+          "handler": "UpdatePost",
+          "guard": "JWTGuard"
         },
         {
           "method": "POST",
           "route": "/create",
-          "handler": "CreatePost"
+          "handler": "CreatePost",
+          "guard": "JWTGuard"
         },
         {
           "method": "POST",
