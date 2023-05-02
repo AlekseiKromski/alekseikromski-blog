@@ -15,6 +15,7 @@ type Param struct {
 type Route struct {
 	Path        string
 	Method      string
+	Guard       string
 	IsAll       bool
 	Handler     http.HandlerFunc
 	PathList    []*Param
