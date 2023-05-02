@@ -33,6 +33,7 @@ func (s *Server) Start() error {
 			file, _ := os.ReadFile("./front-end/build/index.html")
 			writer.Write(file)
 		},
+		nil,
 	)
 
 	s.router.CreateRoute(
@@ -42,6 +43,7 @@ func (s *Server) Start() error {
 			fileServer := http.FileServer(http.Dir("./front-end/build/"))
 			fileServer.ServeHTTP(writer, request)
 		},
+		nil,
 	)
 
 	s.router.CreateRoute(
@@ -51,11 +53,13 @@ func (s *Server) Start() error {
 			writer.WriteHeader(http.StatusOK)
 			writer.Write([]byte("200 OK"))
 		},
+		nil,
 	)
 	s.router.CreateRoute(
 		"/swagger/*",
 		http.MethodGet,
 		httpSwagger.WrapHandler,
+		nil,
 	)
 
 	for _, api := range s.apis {
