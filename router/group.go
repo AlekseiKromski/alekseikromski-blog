@@ -11,11 +11,16 @@ type Group struct {
 	prefix string
 }
 
-func (g *Group) CreateRoute(path, method string, handler http.HandlerFunc, middlewares ...Middleware) {
+func (g *Group) CreateRoute(path, method string, handler http.HandlerFunc, guard *string, middlewares ...Middleware) {
+	grd := ""
+	if guard != nil {
+		grd = *guard
+	}
 	path = strings.TrimLeft(path, "/")
 	entity := Route{
 		fmt.Sprintf("%s%s", g.prefix, path),
 		method,
+		grd,
 		false,
 		handler,
 		nil,

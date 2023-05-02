@@ -1,9 +1,11 @@
 package router
 
 import (
+	"alekseikromski.com/blog/api/guard"
 	"context"
 	"log"
 	"net/http"
+	"reflect"
 	"regexp"
 	"strings"
 )
@@ -13,10 +15,22 @@ type Params map[string]string
 // Router - implementation of router with dynamic urls
 type Router struct {
 	registeredRoutes []*Route
+	guards           map[string]guard.Guard
 }
 
-func NewRouter() *Router {
-	return &Router{}
+func NewRouter(guards []guard.Guard) *Router {
+	return &Router{
+		guards: guardParsing(guards),
+	}
+}
+
+func guardParsing(guards []guard.Guard) map[string]guard.Guard {
+	gs := make(map[string]guard.Guard, len(guards))
+	for _, guard := range guards {
+		gs[reflect.TypeOf(guard).Elem().Name()] = guard
+	}
+
+	return gs
 }
 
 func (r *Router) ServeHTTP(w http.ResponseWriter, request *http.Request) {
@@ -32,10 +46,19 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, request *http.Request) {
 		ctx := context.WithValue(request.Context(), "params", params)
 		request = request.WithContext(ctx)
 
+		//Guard
+		if candidate := r.guards[e.Guard]; candidate != nil {
+			if !candidate.Check(request) {
+				log.Printf("[INFO] Guard check failed for: %s", e.Path)
+				w.WriteHeader(http.StatusForbidden)
+				return
+			}
+		}
+
+		//Middlewares
 		if len(e.Middlewares) != 0 {
 			for _, middleware := range e.Middlewares {
-				passed := middleware(request, w)
-				if !passed {
+				if passed := middleware(request, w); !passed {
 					return
 				}
 			}
@@ -48,10 +71,15 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, request *http.Request) {
 }
 
 // CreateRoute - create new route with all parameters
-func (r *Router) CreateRoute(path, method string, handler http.HandlerFunc, middlewares ...Middleware) {
+func (r *Router) CreateRoute(path, method string, handler http.HandlerFunc, guard *string, middlewares ...Middleware) {
+	g := ""
+	if guard != nil {
+		g = *guard
+	}
 	entity := &Route{
 		Path:        path,
 		Method:      method,
+		Guard:       g,
 		IsAll:       false,
 		Handler:     handler,
 		PathList:    nil,
@@ -68,6 +96,10 @@ func (r *Router) CreateGroup(prefix string) *Group {
 	}
 
 	return &Group{router: r, prefix: prefix}
+}
+
+func (r *Router) GetParams(request *http.Request) Params {
+	return request.Context().Value("params").(Params)
 }
 
 // RegisterRoute - for register already created route entity
@@ -113,9 +145,5 @@ func (r *Router) registerRoute(re *Route) {
 	re.PathList = newPathList
 
 	r.registeredRoutes = append(r.registeredRoutes, re)
-	log.Printf("[ROTUER] new route was registers: %s [%s]", re.Path, re.Method)
-}
-
-func (r *Router) GetParams(request *http.Request) Params {
-	return request.Context().Value("params").(Params)
+	log.Printf("[ROTUER] new route was registers: %s [%s][GUARD:%s]", re.Path, re.Method, re.Guard)
 }

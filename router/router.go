@@ -5,5 +5,5 @@ import (
 )
 
 type RouteEntityCreation interface {
-	CreateRoute(path, method string, handler http.HandlerFunc, middlewares ...Middleware)
+	CreateRoute(path, method string, handler http.HandlerFunc, guard *string, middlewares ...Middleware)
 }
