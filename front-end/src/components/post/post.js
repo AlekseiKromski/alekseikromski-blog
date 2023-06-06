@@ -1,25 +1,25 @@
 import "./post.css"
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import {Link} from "react-router-dom";
 
 function Post (props) {
     return (
-        <div className="post">
+        <Link to={`/post/${props.id}`} className="post">
             <div className="image" style={{
-                "backgroundImage": `linear-gradient(to bottom, rgba(252, 252, 252, 0) 20%, rgb(71 71 71) 100%), url('${props.post.img}')`
+                "backgroundImage": `linear-gradient(to bottom, rgba(252, 252, 252, 0) 20%, rgb(71 71 71) 100%), url('${props.img}')`
             }}></div>
             <div className="postContent">
-                <h1>{props.post.title}</h1>
-                <p>{props.post.description.slice(-90)}...</p>
-
+                <h1>{props.title}</h1>
+                <p>{props.description.slice(-90)}...</p>
                 <div className="info">
-                    <span>{props.post.createdAt.toString()}</span>
+                    <span>{props.createdAt.toString()}</span>
                     <div className="comments">
-                        {props.post.comments}
+                        {props.comments}
                         <ChatBubbleOutlineIcon className="commentsIcon"/>
                     </div>
                 </div>
             </div>
-        </div>
+        </Link>
     )
 }
 

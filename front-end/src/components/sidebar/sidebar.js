@@ -31,12 +31,6 @@ function SideBar() {
                                 <Link to="/">Posts</Link>
                             </li>
                             <li>
-                                <Link to="/categories">Categories</Link>
-                            </li>
-                            <li>
-                                <Link to="/links">Links</Link>
-                            </li>
-                            <li>
                                 <Link to="/about">About</Link>
                             </li>
                         </ul>

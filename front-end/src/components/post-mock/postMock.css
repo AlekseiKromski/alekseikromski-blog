@@ -64,3 +64,21 @@
         background-position: 0% 50%;
     }
 }
+
+@media screen and (max-width: 1500px) {
+    .postMock{
+        width: 25%;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .postMock{
+        width: 40%;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .postMock{
+        width: 100%;
+    }
+}

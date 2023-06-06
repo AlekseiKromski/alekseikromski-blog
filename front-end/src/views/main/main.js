@@ -8,11 +8,20 @@ import axios from "axios";
 function Main() {
 
     let [loading, setLoading] = useState(true)
-    let [posts, setPost] = useState([])
+    let [posts, setPosts] = useState([])
 
     useEffect(() => {
-        axios.get("http://localhost:3001/v1/get-last-posts/15/0")
-    });
+        axios.get("http://localhost:3001/v1/post/get-last-posts/15/0").catch(
+            setPosts([])
+        ).then(response => {
+            setPosts(response.data)
+        })
+
+        setTimeout(() => {
+            setLoading(false)
+        }, 1000)
+
+    }, []);
 
     return (
         <div className="main">
@@ -21,9 +30,18 @@ function Main() {
                 <div className="post-map">
                     {
                         posts.map(post => {
-                            return (
-                                <Post post={post} />
-                            )
+                          return (
+                              <Post
+                                  key={post.id}
+                                  id={post.id}
+                                  title={post.title}
+                                  img={post.img}
+                                  description={post.description}
+                                  createdAt={post.createdAt}
+                                  comments={post.comments.length}
+                                  tags={post.tags}
+                              ></Post>
+                          )
                         })
                     }
                     {posts.length == 0 &&
@@ -35,7 +53,7 @@ function Main() {
                     {
                         [...Array(20).keys()].map(index => {
                             return (
-                                <PostMock/>
+                                <PostMock key={index}/>
                             )
                         })
                     }
