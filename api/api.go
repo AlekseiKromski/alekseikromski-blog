@@ -1,5 +1,5 @@
 package api
 
 type Api interface {
-	RegisterRoutes() error // RegisterRoutes - need to register all routes, that we have in api realization
+	RegisterRoutes(routesFile string) error // RegisterRoutes - need to register all routes, that we have in api realization
 }

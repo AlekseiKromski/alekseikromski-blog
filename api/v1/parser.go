@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"os"
 	"reflect"
 )
 
@@ -45,14 +44,8 @@ func NewParser(fp string, api reflect.Value) *Parser {
 }
 
 func (p *Parser) Parse(router *router.Router) error {
-	f, err := os.Open(p.fp)
-	if err != nil {
-		return fmt.Errorf("cannot open rotues file: %w", err)
-	}
-	defer f.Close()
-
 	var model *Model
-	err = json.NewDecoder(f).Decode(&model)
+	err := json.Unmarshal([]byte(p.fp), &model)
 	if err != nil {
 		return fmt.Errorf("cannot decode rotues file: %w", err)
 	}

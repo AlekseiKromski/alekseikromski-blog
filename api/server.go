@@ -3,10 +3,12 @@ package api
 import (
 	_ "alekseikromski.com/blog/docs"
 	router "alekseikromski.com/blog/router"
+	"fmt"
 	httpSwagger "github.com/swaggo/http-swagger"
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 )
 
 type Server struct {
@@ -63,7 +65,11 @@ func (s *Server) Start() error {
 	)
 
 	for _, api := range s.apis {
-		if err := api.RegisterRoutes(); err != nil {
+		fp, err := filepath.Abs(filepath.Join("api", "v1", "data", "routes.json"))
+		if err != nil {
+			return fmt.Errorf("cannot find file: %w", err)
+		}
+		if err := api.RegisterRoutes(fp); err != nil {
 			log.Fatalf("there is the problem with routes registration: %v", err)
 		}
 	}

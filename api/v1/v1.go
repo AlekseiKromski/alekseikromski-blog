@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"path/filepath"
 	"reflect"
 )
 
@@ -36,11 +35,7 @@ func parseGuards(guards []guard.Guard) map[string]guard.Guard {
 	return gs
 }
 
-func (v *V1) RegisterRoutes() error {
-	fp, err := filepath.Abs(filepath.Join("api", "v1", "data", "routes.json"))
-	if err != nil {
-		return fmt.Errorf("cannot find routes file: %w", err)
-	}
+func (v *V1) RegisterRoutes(fp string) error {
 	p := NewParser(fp, reflect.ValueOf(v))
 	if err := p.Parse(v.router); err != nil {
 		return fmt.Errorf("cannot parse routes file: %w", err)
