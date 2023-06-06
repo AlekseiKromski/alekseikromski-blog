@@ -34,6 +34,10 @@ func guardParsing(guards []guard.Guard) map[string]guard.Guard {
 }
 
 func (r *Router) ServeHTTP(w http.ResponseWriter, request *http.Request) {
+	//cors
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
 	url := strings.Trim(request.URL.Path, "/")
 	pathList := strings.Split(url, "/")
 

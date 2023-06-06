@@ -8,7 +8,7 @@ import (
 )
 
 func (db *DbConnection) GetTags(postID *int) []*models.Tag {
-	var tags []*models.Tag
+	tags := []*models.Tag{}
 
 	query := models.GetTags(postID)
 

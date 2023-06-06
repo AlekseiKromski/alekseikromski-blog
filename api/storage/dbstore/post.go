@@ -33,6 +33,7 @@ func (db *DbConnection) GetPosts(request *storage.QueryRequest) []*models.Post {
 				&post.CreatedAt,
 				&post.UpdatedAt,
 				&post.DeletedAt,
+				&post.Img,
 				&category.ID,
 				&category.Name,
 				&category.CreatedAt,
@@ -80,6 +81,7 @@ func (db *DbConnection) GetPosts(request *storage.QueryRequest) []*models.Post {
 				&post.CreatedAt,
 				&post.UpdatedAt,
 				&post.DeletedAt,
+				&post.Img,
 				&category.ID,
 				&category.Name,
 				&category.CreatedAt,
@@ -119,7 +121,7 @@ func (db *DbConnection) UpdatePost(post *models.Post) error {
 func (db *DbConnection) CreatePost(post *models.Post) (bool, error) {
 
 	//Recreate from json model
-	post = models.CreatePostWithData(post.Title, post.Description, post.CategoryID)
+	post = models.CreatePostWithData(post.Title, post.Description, "", post.CategoryID)
 
 	query := post.CreateRecord()
 

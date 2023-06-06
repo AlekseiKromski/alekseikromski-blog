@@ -13,17 +13,19 @@ type Post struct {
 	Comments    []*Comment `json:"comments"`
 	Tags        []*Tag     `json:"tags"`
 	Description string     `json:"description"`
+	Img         string     `json:"img"`
 	*Timestamp
 	*SoftDelete
 }
 
-func CreatePostWithData(title, desc string, categoryID int) *Post {
+func CreatePostWithData(title, desc, img string, categoryID int) *Post {
 	post := &Post{
 		Title:       title,
 		Description: desc,
 		CategoryID:  categoryID,
 		Comments:    []*Comment{},
 		Tags:        []*Tag{},
+		Img:         img,
 		Timestamp:   &Timestamp{},
 		SoftDelete:  &SoftDelete{},
 	}
@@ -36,6 +38,7 @@ func CreatePost() *Post {
 	post := &Post{
 		Title:       "",
 		Description: "",
+		Img:         "",
 		Comments:    []*Comment{},
 		Tags:        []*Tag{},
 		Timestamp:   &Timestamp{},
@@ -80,6 +83,7 @@ func (m *Post) TableCreate() *TableCreation {
 					constraint posts_pk
 						primary key,
 				"title"  varchar(60)      not null,
+				"img"  varchar(60)      not null,
 				"description"  text      not null,
 				"category_id" serial not null,
 				"CreatedAt" timestamp not null,
@@ -95,7 +99,7 @@ func (m *Post) TableCreate() *TableCreation {
 }
 
 func (m *Post) CreateRecord() string {
-	return fmt.Sprintf(`INSERT INTO posts ("title", "description", "category_id", "CreatedAt", "UpdatedAt", "DeletedAt") VALUES ('%s','%s', %d,'%s','%s', NULL)`, m.Title, m.Description, m.CategoryID, m.CreatedAt, m.UpdatedAt)
+	return fmt.Sprintf(`INSERT INTO posts ("title", "img", "description", "category_id", "CreatedAt", "UpdatedAt", "DeletedAt") VALUES ('%s','%s','%s', %d,'%s','%s', NULL)`, m.Title, m.Img, m.Description, m.CategoryID, m.CreatedAt, m.UpdatedAt)
 }
 
 func UpdatePost(post *Post) string {
