@@ -1,0 +1,19 @@
+.App {
+    display: flex;
+    height: 100%;
+}
+.content{
+    display: flex;
+    width: 100%;
+    padding-left: 30px;
+    padding-right: 30px;
+    overflow-y: scroll;
+}
+.fontRighteous {
+    font-family: 'Righteous', cursive;
+}
+.fontRoboto{
+    font-family: 'Roboto', cursive;
+    display: flex;
+    width: 100%;
+}
