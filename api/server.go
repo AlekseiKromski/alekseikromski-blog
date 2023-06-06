@@ -69,7 +69,12 @@ func (s *Server) Start() error {
 		if err != nil {
 			return fmt.Errorf("cannot find file: %w", err)
 		}
-		if err := api.RegisterRoutes(fp); err != nil {
+		file, err := os.ReadFile(fp)
+		if err != nil {
+			return fmt.Errorf("cannot open file: %v", err)
+		}
+
+		if err := api.RegisterRoutes(string(file)); err != nil {
 			log.Fatalf("there is the problem with routes registration: %v", err)
 		}
 	}
