@@ -10,12 +10,13 @@ function Single() {
 
     let [loading, setLoading] = useState(true)
     let [post, setPost] = useState(null)
+    let [commentName, setCommentName] = useState("")
+    let [commentText, setCommentText] = useState("")
 
     useEffect(() => {
         axios.get(`http://localhost:3001/v1/post/get-post/${params.id}`).catch(
             setPost(null)
         ).then(response => {
-            console.log(response.data)
             setPost(response.data)
         })
 
@@ -24,6 +25,24 @@ function Single() {
         }, 1000)
 
     }, [params.id]);
+
+    function sendComment() {
+        if (commentName != "" && commentText != "") {
+            axios.post("http://localhost:3001/v1/post/comment", {
+                name: commentName,
+                text: commentText,
+                post_id: Number.parseInt(params.id)
+            }).then(response => {
+                setPost({
+                    ...post,
+                    comments: [response.data, ...post.comments]
+                })
+
+                setCommentName("")
+                setCommentText("")
+            })
+        }
+    }
 
     return (
         <div className="singlePost">
@@ -50,6 +69,20 @@ function Single() {
                         {
                             post.tags.map( tag => (<span className="tag">{tag.name}</span>))
                         }
+                    </div>
+                    <div className="commentForm">
+                        <h1>Comment</h1>
+
+                        <div className="">
+                            <label htmlFor="name">Name</label>
+                            <input type="text" name="Name" value={commentName} onChange={e => setCommentName(e.target.value)}/>
+                        </div>
+
+                        <div className="">
+                            <label htmlFor="comment">Comment</label>
+                            <textarea name="comment" value={commentText} onChange={e => setCommentText(e.target.value)}></textarea>
+                        </div>
+                        <button onClick={sendComment}>send</button>
                     </div>
                     <div className="singleComments">
                         {

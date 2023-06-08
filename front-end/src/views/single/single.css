@@ -59,10 +59,72 @@
     border-radius: 10px;
     background: #f8f8f8;
     padding: 10px;
+    margin-bottom: 15px;
 }
 .singleComment div {
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-weight: bold;
+}
+.commentForm{
+    margin-top: 50px;
+    gap: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.commentForm h1{
+    font-size: 1.5rem;
+}
+
+.commentForm div{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.commentForm div label{
+    font-weight: bold;
+}
+
+.commentForm div input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid black;
+}
+
+.commentForm div textarea {
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid black;
+    resize: none;
+    height: 100px;
+    font-family: 'Roboto', cursive;
+}
+
+.commentForm button {
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid black;
+    background: white;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.commentForm button:hover {
+    transition: 0.3s;
+    background: #dcb639;
+    color: white;
+    border: 2px solid #dcb639;
+}
+
+.commentForm div input:focus {
+   outline: none;
+}
+
+.commentForm div textarea:focus {
+   outline: none;
 }
