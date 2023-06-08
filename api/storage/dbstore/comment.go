@@ -6,26 +6,26 @@ import (
 	"log"
 )
 
-func (db *DbConnection) CreateComment(comment *models.Comment) error {
+func (db *DbConnection) CreateComment(comment *models.Comment) (*models.Comment, error) {
 	comment = models.CreateCommentWithData(comment.Name, comment.Text, comment.PostID)
 
 	query := comment.CreateRecord()
 	result, err := db.Connection.Exec(query)
 	if err != nil {
 		log.Printf("Problem: %v", err)
-		return fmt.Errorf("cannot create comment record: %w", err)
+		return nil, fmt.Errorf("cannot create comment record: %w", err)
 	}
 
 	affected, err := result.RowsAffected()
 	if err != nil {
-		return fmt.Errorf("cannot get info about creation: %w", err)
+		return nil, fmt.Errorf("cannot get info about creation: %w", err)
 	}
 
 	if affected == 0 {
-		return fmt.Errorf("new comment was not created. Affected rows: %d, sql: %s", affected, query)
+		return nil, fmt.Errorf("new comment was not created. Affected rows: %d, sql: %s", affected, query)
 	}
 
-	return nil
+	return comment, nil
 }
 
 func (db *DbConnection) GetComments(post_id int) []*models.Comment {

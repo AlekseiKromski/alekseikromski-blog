@@ -259,14 +259,20 @@ func (v *V1) CreateComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := v.storage.CreateComment(&comment); err != nil {
+	createdComment, err := v.storage.CreateComment(&comment)
+	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("created"))
+	response, err := json.Marshal(createdComment)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
 	log.Printf("Comment with id [%d] was created", comment.ID)
+	v.ReturnResponse(w, response)
 }
 
 func (v *V1) getSizeAndOffset(params router.Params) (int, int, error) {

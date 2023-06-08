@@ -49,8 +49,13 @@ func (v *V1) ReturnErrorResponse(err error, w http.ResponseWriter) {
 }
 
 func (v *V1) ReturnResponse(w http.ResponseWriter, payload []byte) {
-	w.Header().Set("content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
+	//w.Header().Add("content-Type", "application/json")
+	header := w.Header()
+	header.Add("Access-Control-Allow-Origin", "*")
+	header.Add("Access-Control-Allow-Methods", "DELETE, POST, GET, OPTIONS")
+	header.Add("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
+	//w.WriteHeader(http.StatusOK)
 
 	if payload != nil {
 		w.Write(payload)

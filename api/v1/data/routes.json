@@ -106,7 +106,7 @@
         },
         {
           "method": "POST",
-          "route": "/create-comment",
+          "route": "/comment",
           "handler": "CreateComment"
         }
       ]

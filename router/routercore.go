@@ -38,6 +38,11 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, request *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
+	if request.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
 	url := strings.Trim(request.URL.Path, "/")
 	pathList := strings.Split(url, "/")
 
