@@ -90,6 +90,10 @@ func (v *V1) GetLastPostsByCategory(w http.ResponseWriter, r *http.Request) {
 
 	posts := v.storage.GetPosts(query)
 
+	if posts == nil {
+		posts = []*models.Post{}
+	}
+
 	response, err := json.Marshal(posts)
 	if err != nil {
 		v.ReturnErrorResponse(NewDecodingError(), w)
