@@ -6,11 +6,21 @@ import SideBar from "./components/sidebar/sidebar"
 import Single from "./views/single/single";
 import { Helmet } from 'react-helmet';
 import {useDispatch} from "react-redux";
-import {initAxios} from "./store/application"
+import {initAxios, setToken} from "./store/application"
+import Auth from "./views/auth/auth";
+import Admin from "./views/dashboard/admin";
 
 function App() {
     let dispatch = useDispatch()
     dispatch(initAxios())
+
+    let account = JSON.parse(sessionStorage.getItem("account"))
+    if (account != null && account != undefined) {
+        dispatch(setToken({
+            email: account.email,
+            token: account.token
+        }))
+    }
 
     return (
         <div className="App">
@@ -23,6 +33,8 @@ function App() {
                     <Route path="/:categoryID?" element={ <Main/> } />
                     <Route path="/post/:id" element={ <Single/> } />
                     <Route path="/about" element={ <About/> } />
+                    <Route path="/auth/login" element={ <Auth/> } />
+                    <Route path="/dashboard/admin" element={ <Admin/> } />
                 </Routes>
             </div>
         </div>

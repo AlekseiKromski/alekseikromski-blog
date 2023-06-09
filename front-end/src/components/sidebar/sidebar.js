@@ -58,7 +58,6 @@ function SideBar() {
         if (isMobile) {
             setClose(true)
         }
-        console.log(to)
         return navigate(to)
     }
 
@@ -91,6 +90,11 @@ function SideBar() {
                             <li>
                                 <a onClick={(e) => red("/about")}>About</a>
                             </li>
+                            {application.user.authorized &&
+                                <li>
+                                    <a onClick={(e) => red("/dashboard/admin")}>Dashboard 🛠️</a>
+                                </li>
+                            }
                         </ul>
 
                         <div className="categories">
