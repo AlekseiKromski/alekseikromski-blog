@@ -5,6 +5,7 @@ import "./single.css"
 import SinglePostMock from "../../components/singlePostMock/singlePostMock";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import {useSelector} from "react-redux";
+import TiptapView from "../../components/tiptap/tiptapView";
 
 function Single() {
     const params = useParams()
@@ -66,7 +67,9 @@ function Single() {
                         </h1>
                         <small>{post.createdAt}</small>
                     </div>
-                    <p>{post.description}</p>
+                    <p>
+                        <TiptapView content={post.description}/>
+                    </p>
                     <span className="singleCategory">Category: <span><Link to={`/${post.category_id}`}>{post.category.name}</Link></span></span>
                     <div>
                         <b>Tags: </b>

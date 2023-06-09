@@ -1,6 +1,7 @@
 import "./post.css"
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import {Link} from "react-router-dom";
+import TiptapView from "../tiptap/tiptapView";
 
 function Post (props) {
     return (
@@ -10,7 +11,7 @@ function Post (props) {
             }}></div>
             <div className="postContent">
                 <h1>{props.title}</h1>
-                <p>{props.description.slice(-90)}...</p>
+                <TiptapView content={`<p>${props.description.slice(0, 90)}...</p>`}/>
                 <div className="info">
                     <span>{props.createdAt.toString()}</span>
                     <div className="comments">
