@@ -9,7 +9,8 @@ export const applicationSlice = createSlice({
         user: {
             email: null,
             authorized: false
-        }
+        },
+        sideClosed: true
     },
     reducers: {
         initAxios: state => {
@@ -29,10 +30,17 @@ export const applicationSlice = createSlice({
 
             //set to sessions storage
             sessionStorage.setItem("account", JSON.stringify(data.payload))
+        },
+        setSideClosed: (state,data) => {
+            if (data.payload != undefined) {
+                state.sideClosed = data.payload
+                return
+            }
+            state.sideClosed = !state.sideClosed
         }
     }
 })
 
-export const { initAxios, setToken } = applicationSlice.actions
+export const { initAxios, setToken, setSideClosed } = applicationSlice.actions
 
 export default applicationSlice.reducer

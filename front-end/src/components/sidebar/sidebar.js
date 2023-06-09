@@ -4,6 +4,7 @@ import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import { importCategories } from '../../store/shared'
+import { setSideClosed } from '../../store/application'
 import { useNavigate } from "react-router-dom";
 
 function SideBar() {
@@ -11,7 +12,6 @@ function SideBar() {
 
     //State
     let [isMobile, setIsMobile] = useState(false)
-    let [close, setClose] = useState(true);
 
     window.addEventListener("resize", (e) => {
         checkSize()
@@ -23,7 +23,8 @@ function SideBar() {
     const application = useSelector((state) => state.application);
 
     let closeFunction = () => {
-        setClose(!close)
+        console.log('SSS')
+        dispatch(setSideClosed())
     }
 
     async function getCategories () {
@@ -42,21 +43,21 @@ function SideBar() {
 
     function sideBarIdentify() {
         if (isMobile == false) {
-            return close ? "sideBarMinimal-show" : "sideBar-hide"
+            return application.sideClosed ? "sideBarMinimal-show" : "sideBar-hide"
         }
-        return close ? "sideBar-hide" : "sideBarMinimal-show"
+        return application.sideClosed ? "sideBar-hide" : "sideBarMinimal-show"
     }
 
     function sideBarMinimalIdentify() {
         if (isMobile == false) {
-            return !close ? "sideBarMinimal-show" : "sideBar-hide"
+            return !application.sideClosed ? "sideBarMinimal-show" : "sideBar-hide"
         }
-        return !close ? "sideBar-hide" : "sideBarMinimal-show"
+        return !application.sideClosed ? "sideBar-hide" : "sideBarMinimal-show"
     }
 
     function red(to) {
         if (isMobile) {
-            setClose(true)
+            dispatch(setSideClosed(true))
         }
         return navigate(to)
     }
@@ -78,7 +79,7 @@ function SideBar() {
                             </a>
                             <CloseIcon
                                 className="close"
-                                onClick={closeFunction}
+                                onClick={() => {closeFunction()}}
                             />
                         </h1>
                     </div>

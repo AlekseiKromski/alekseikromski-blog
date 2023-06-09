@@ -40,7 +40,7 @@ function Auth(){
     }
 
     return (
-        <div className={styles.login}>
+        <div className={`${styles.login} ${!application.sideClosed ? "static" : ""}`}>
             <div className={styles.loginBlock}>
                 <h1>Login 🚀</h1>
 

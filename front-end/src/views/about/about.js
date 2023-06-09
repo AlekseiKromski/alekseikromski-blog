@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
 import styles from "./about.module.css"
 import FacebookIcon from '@mui/icons-material/Facebook';
+import {useSelector} from "react-redux";
 
 function About() {
+    const application = useSelector((state) => state.application);
+
     return (
-        <div className={styles.about}>
+        <div className={`${styles.about} ${!application.sideClosed ? "static" : ""}`}>
             <div className={styles.aboutBlock}>
                 <div className={styles.aboutImage}>
                     <img src={require("../../images/avatar.jpeg")} alt=""/>

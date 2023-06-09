@@ -60,7 +60,7 @@ function Main() {
     }, [categoryID]);
 
     return (
-        <div className="main">
+        <div className={`main ${!application.sideClosed ? "static" : ""}`}>
             <div className="mainHeader">
                 <h1>Posts</h1>
                 <select onChange={(e) => {getPostsByCategory(e.target.value)}} name="categoryID" id="">

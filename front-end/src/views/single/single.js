@@ -50,7 +50,7 @@ function Single() {
     }
 
     return (
-        <div className="singlePost">
+        <div className={`singlePost ${!application.sideClosed ? "static" : setTimeout(() => "", 1000)}`}>
             <Link to="/">
                 <ArrowBackIosIcon/>
             </Link>
