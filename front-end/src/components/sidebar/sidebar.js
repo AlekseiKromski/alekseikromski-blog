@@ -1,19 +1,27 @@
 import "./sidebar.css"
-import {Link} from "react-router-dom";
 import CloseIcon from '@mui/icons-material/Close';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import {useEffect, useState} from "react";
-import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 import { importCategories } from '../../store/shared'
+import { useNavigate } from "react-router-dom";
 
 function SideBar() {
+    let navigate = useNavigate();
+
+    //State
+    let [isMobile, setIsMobile] = useState(false)
+    let [close, setClose] = useState(true);
+
+    window.addEventListener("resize", (e) => {
+        checkSize()
+    })
+
     //Redux
     const dispatch = useDispatch()
     const shared = useSelector((state) => state.shared);
     const application = useSelector((state) => state.application);
 
-    let [close, setClose] = useState(true);
     let closeFunction = () => {
         setClose(!close)
     }
@@ -24,20 +32,51 @@ function SideBar() {
         })
     }
 
+    function checkSize() {
+        if (window.innerWidth <= 800){
+            setIsMobile(true)
+        }else {
+            setIsMobile(false)
+        }
+    }
+
+    function sideBarIdentify() {
+        if (isMobile == false) {
+            return close ? "sideBarMinimal-show" : "sideBar-hide"
+        }
+        return close ? "sideBar-hide" : "sideBarMinimal-show"
+    }
+
+    function sideBarMinimalIdentify() {
+        if (isMobile == false) {
+            return !close ? "sideBarMinimal-show" : "sideBar-hide"
+        }
+        return !close ? "sideBar-hide" : "sideBarMinimal-show"
+    }
+
+    function red(to) {
+        if (isMobile) {
+            setClose(true)
+        }
+        console.log(to)
+        return navigate(to)
+    }
+
     useEffect(() => {
         getCategories()
+        checkSize()
     }, [])
 
     return (
         <div className="mainSideBar">
-            <div className={`sideBarBlock ${close ? "sideBarMinimal-show" : "sideBar-hide"}`}>
+            <div className={`sideBarBlock ${sideBarIdentify()}`}>
                 <div className="sideBar">
                     <div className="">
                         <h1 className="fontRighteous">
-                            <Link to="/" className="logo">
+                            <a onClick={() => red("/")} className="logo">
                                 <img src={require("../../images/logo.png")} alt=""/>
                                 Blog
-                            </Link>
+                            </a>
                             <CloseIcon
                                 className="close"
                                 onClick={closeFunction}
@@ -47,19 +86,19 @@ function SideBar() {
                     <div className="links">
                         <ul>
                             <li>
-                                <Link to="/">Posts</Link>
+                                <a onClick={() => red("/")}>Posts</a>
                             </li>
                             <li>
-                                <Link to="/about">About</Link>
+                                <a onClick={(e) => red("/about")}>About</a>
                             </li>
                         </ul>
 
                         <div className="categories">
                             <h1>Categories</h1>
 
-                            <Link to={`/`}>All</Link>
+                            <a onClick={() => red("/")}>All</a>
                             {shared.categories.map(category => (
-                                <Link to={`/${category.ID}`} key={category.id}>{category.name}</Link>
+                                <a onClick={() => red(`/${category.ID}`)} key={category.id}>{category.name}</a>
                             ))}
                         </div>
                     </div>
@@ -69,7 +108,7 @@ function SideBar() {
                 </div>
             </div>
 
-            <div className={`sideBarMinimalBlock ${!close ? "sideBarMinimal-show" : "sideBar-hide"}`}>
+            <div className={`sideBarMinimalBlock ${sideBarMinimalIdentify()}`}>
                 <MenuOpenIcon onClick={closeFunction} className="open"/>
             </div>
         </div>
