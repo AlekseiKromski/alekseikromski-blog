@@ -70,6 +70,7 @@ func (db *DbConnection) getNotExistedTables() ([]models.MigrationInterface, erro
 		&models.Post{},
 		&models.Category{},
 		&models.Comment{},
+		&models.User{},
 	}
 
 	query := `SELECT migrations."tableName" FROM migrations`
@@ -110,6 +111,7 @@ func (db *DbConnection) checkDependencies(notExisted []models.MigrationInterface
 func (db *DbConnection) createTable(tc *models.TableCreation, tableName string, m models.MigrationInterface) error {
 	_, err := db.Connection.Exec(tc.Sql)
 	if err != nil {
+		log.Printf("[DBSTORAGE] sql error: %v", err)
 		if strings.Contains(err.Error(), "already exists") {
 			log.Printf("[DBSTORAGE] migrations for: %s ALREADY EXISTS", tableName)
 			return nil

@@ -2,12 +2,13 @@ package v1
 
 import (
 	"encoding/json"
+	"golang.org/x/crypto/bcrypt"
 	"log"
 	"net/http"
 )
 
 type Credits struct {
-	Username string `json:"username"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
@@ -30,13 +31,24 @@ func (v *V1) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if credits.Username == "" || credits.Password == "" {
+	if credits.Email == "" || credits.Password == "" {
 		log.Println("Auth error: bad credits")
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	//Find user in db + compare password
-	token := v.guards["JWTGuard"].Auth(1)
+	user, err := v.storage.GetUser(credits.Email)
+	if err != nil {
+		v.ReturnErrorResponse(err, w)
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(credits.Password)); err != nil {
+		log.Printf("password are not the same: %v", err)
+		v.ReturnErrorResponse(NewAuthError("bad credits"), w)
+		return
+	}
+
+	//Find user in db
+	token := v.guards["JWTGuard"].Auth(user.ID)
 	v.ReturnResponse(w, []byte(token))
 }

@@ -36,6 +36,21 @@ func (ie *InputError) Error() string {
 	return fmt.Sprintf("internal server error: %s, cause: %v", ie.Message, ie.Error())
 }
 
+type AuthError struct {
+	Message string `json:"message"`
+}
+
+func NewAuthError(msg string) *AuthError {
+	return &AuthError{
+		Message: msg,
+	}
+}
+
+func (au *AuthError) Error() string {
+	//TODO implement me
+	panic("implement me")
+}
+
 type JsonError struct {
 	Message string `json:"message"`
 }
@@ -48,6 +63,10 @@ func NewDecodingError() *JsonError {
 
 func (ie *JsonError) HttpError() int {
 	return http.StatusBadRequest
+}
+
+func (au *AuthError) HttpError() int {
+	return http.StatusForbidden
 }
 
 func (ie *JsonError) Error() string {

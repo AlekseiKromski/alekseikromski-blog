@@ -54,6 +54,9 @@ type Storage interface {
 	// Search - will return search result
 	Search(sr *SearchRequest) *SearchResult
 
+	// GetUser - will return user from DB
+	GetUser(email string) (*models.User, error)
+
 	//General functions
 	Stop()
 }
