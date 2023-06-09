@@ -5,8 +5,13 @@ import About from "./views/about/about"
 import SideBar from "./components/sidebar/sidebar"
 import Single from "./views/single/single";
 import { Helmet } from 'react-helmet';
+import {useDispatch} from "react-redux";
+import {initAxios} from "./store/application"
 
 function App() {
+    let dispatch = useDispatch()
+    dispatch(initAxios())
+
     return (
         <div className="App">
             <Helmet>

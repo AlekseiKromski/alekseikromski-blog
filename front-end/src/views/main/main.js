@@ -11,13 +11,14 @@ function Main() {
 
     //Redux
     const shared = useSelector((state) => state.shared);
+    const application = useSelector((state) => state.application);
 
     let [loading, setLoading] = useState(true)
     let [posts, setPosts] = useState([])
 
     async function getPostsByCategory(category) {
         setLoading(true)
-        await axios.get(`http://localhost:3001/v1/post/get-posts-by-category/${category}/15/0`).catch(
+        await application.axios.get(`/v1/post/get-posts-by-category/${category}/15/0`).catch(
             setPosts([])
         ).then(response => {
             setPosts(response.data)
@@ -30,7 +31,7 @@ function Main() {
 
     async function getPosts(){
         setLoading(true)
-        await axios.get("http://localhost:3001/v1/post/get-last-posts/15/0").catch(
+        await application.axios.get("/v1/post/get-last-posts/15/0").catch(
             setPosts([])
         ).then(response => {
             setPosts(response.data)

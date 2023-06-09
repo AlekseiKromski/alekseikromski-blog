@@ -4,9 +4,13 @@ import axios from "axios";
 import "./single.css"
 import SinglePostMock from "../../components/singlePostMock/singlePostMock";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import {useSelector} from "react-redux";
 
 function Single() {
     const params = useParams()
+
+    //redux
+    const application = useSelector((state) => state.application);
 
     let [loading, setLoading] = useState(true)
     let [post, setPost] = useState(null)
@@ -14,7 +18,7 @@ function Single() {
     let [commentText, setCommentText] = useState("")
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/v1/post/get-post/${params.id}`).catch(
+        application.axios.get(`/v1/post/get-post/${params.id}`).catch(
             setPost(null)
         ).then(response => {
             setPost(response.data)
@@ -28,7 +32,7 @@ function Single() {
 
     function sendComment() {
         if (commentName != "" && commentText != "") {
-            axios.post("http://localhost:3001/v1/post/comment", {
+            application.axios.post("/v1/post/comment", {
                 name: commentName,
                 text: commentText,
                 post_id: Number.parseInt(params.id)

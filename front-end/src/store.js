@@ -1,8 +1,13 @@
-import { configureStore } from '@reduxjs/toolkit'
+import {configureStore, getDefaultMiddleware} from '@reduxjs/toolkit'
 import counterReducer from './store/shared'
+import applicationReducer from "./store/application";
 
 export default configureStore({
     reducer: {
-        shared: counterReducer
-    }
+        shared: counterReducer,
+        application: applicationReducer
+    },
+    middleware: getDefaultMiddleware({
+        serializableCheck: false,
+    }),
 })

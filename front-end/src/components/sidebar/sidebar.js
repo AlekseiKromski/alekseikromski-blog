@@ -11,6 +11,7 @@ function SideBar() {
     //Redux
     const dispatch = useDispatch()
     const shared = useSelector((state) => state.shared);
+    const application = useSelector((state) => state.application);
 
     let [close, setClose] = useState(true);
     let closeFunction = () => {
@@ -18,7 +19,7 @@ function SideBar() {
     }
 
     async function getCategories () {
-        await axios.get("http://localhost:3001/v1/category/all").then(response => {
+        await application.axios.get("/v1/category/all").then(response => {
             dispatch(importCategories(response.data))
         })
     }
