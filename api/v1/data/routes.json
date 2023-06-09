@@ -79,7 +79,7 @@
         },
         {
           "method": "GET",
-          "route": "/get-last-posts-by-category/{category_id}/{size}/{indent}",
+          "route": "/get-posts-by-category/{category_id}/{size}/{indent}",
           "handler": "GetLastPostsByCategory"
         },
         {
