@@ -63,7 +63,7 @@ function Single() {
                         <small>{post.createdAt}</small>
                     </div>
                     <p>{post.description}</p>
-                    <span className="singleCategory">Category: <span>{post.category.name}</span></span>
+                    <span className="singleCategory">Category: <span><Link to={`/${post.category_id}`}>{post.category.name}</Link></span></span>
                     <div>
                         <b>Tags: </b>
                         {

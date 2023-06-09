@@ -37,6 +37,20 @@
     align-items: center;
     margin-top: 0;
     cursor: pointer;
+    margin-bottom: 10px;
+}
+.sideBar h1 a {
+    color: black;
+    text-decoration: none;
+}
+.sideBar img {
+    width: 20%;
+}
+.logo{
+    display: flex;
+    justify-content: start;
+    gap: 10px;
+    align-items: center;
 }
 .sideBar p {
     font-size: 1.2rem;
@@ -44,10 +58,10 @@
 
 .links {
     display: flex;
-    margin-top: 40px;
+    margin-top: 5px;
     flex-direction: column;
-    justify-content: space-between;
     height: 100%;
+    gap: 30px;
 }
 .links ul {
     padding: 0;
@@ -83,13 +97,44 @@
     transform-origin: bottom left;
 }
 
-.links .copyright {
-    text-align: center;
+.copyright {
+    align-self: center;
 }
 
 .close {
     cursor: pointer;
 }
+
+.categories{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.categories h1{
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 1.4rem;
+}
+
+.categories a {
+    cursor: pointer;
+
+    padding: 4px;
+    border-radius: 10px;
+    background: #dcb639;
+    margin: 0 5px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: none;
+}
+.categories span:hover{
+    transition: 0.3s;
+    box-shadow: 0px 0px 15px -2px #ddb639;
+}
+
+
 .open {
     cursor: pointer;
     width: 2.5rem!important;

@@ -3,14 +3,57 @@
     width: 100%;
     flex-direction: column;
     padding-bottom: 30px;
-
-}
-.main h1 {
-    margin-bottom: 15px!important;
 }
 .post-map{
     display: flex;
     width: 100%;
     gap: 20px;
     flex-wrap: wrap;
+}
+.mainHeader{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.mainHeader h1 {
+    margin-bottom: 15px!important;
+}
+.mainHeader select{
+    height: fit-content;
+    font-size: 0.9rem;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid black;
+}
+
+.mainHeader select:focus{
+    outline: none;
+}
+
+.noContent{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.noContent p{
+    font-size: 1.2rem;
+}
+
+.noContent a{
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid black;
+    background: white;
+    font-weight: bold;
+    transition: 0.3s;
+    width: fit-content;
+}
+
+.noContent a:hover{
+    transition: 0.3s;
+    background: #dcb639;
+    color: white;
+    border: 2px solid #dcb639;
 }

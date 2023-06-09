@@ -81,4 +81,7 @@ img {
     .post{
         width: 100%;
     }
+    .post:hover{
+        width: 100%;
+    }
 }
