@@ -17,10 +17,12 @@ function PostCreate() {
 
     let [title, setTitle] = useState("")
     let [image, setImage] = useState("")
+    let [category, setCategory] = useState(0)
     let [canSend, setCanSend] = useState(true)
     let [loading, setLoading] = useState(false)
 
     const application = useSelector((state) => state.application);
+    const shared = useSelector((state) => state.shared);
 
     const editor = useEditor({
         extensions: [
@@ -41,7 +43,7 @@ function PostCreate() {
                 "title": title,
                 "description": editor.getHTML(),
                 "img": image,
-                "category_id": 1
+                "category_id": category
             }).then(() => {
                 navigate("/dashboard/admin/posts")
             })
@@ -81,6 +83,17 @@ function PostCreate() {
                 <div className="">
                     <label htmlFor="">Image</label>
                     <input type="file" ref={upload} onChange={() => addImage(upload)}/>
+                </div>
+
+                <div className="">
+                    <label htmlFor="">Category</label>
+                    <select onChange={(e) => setCategory(Number.parseInt(e.target.value))}>
+                        {shared.categories != null &&
+                            shared.categories.map(category => (
+                                <option value={category.ID} key={category.ID} >{category.name}</option>
+                            ))
+                        }
+                    </select>
                 </div>
             </div>
 

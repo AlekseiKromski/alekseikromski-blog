@@ -20,7 +20,7 @@ label{
     font-weight: bold;
 }
 
-input[type="text"] {
+input[type="text"], select {
     padding: 10px;
     border-radius: 8px;
     border: 2px solid black;
