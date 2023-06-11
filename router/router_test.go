@@ -59,7 +59,7 @@ func TestGroup_CreateRouter(t *testing.T) {
 func TestRouter_CreateDynamicRoute(t *testing.T) {
 	router := NewRouter([]guard.Guard{})
 
-	router.CreateRoute("/v1/{id}/{test}/test", http.MethodGet, func(writer http.ResponseWriter, request *http.Request) {
+	router.CreateRoute("/v1/{id}/{temp}/temp", http.MethodGet, func(writer http.ResponseWriter, request *http.Request) {
 		params := router.GetParams(request)
 		assert.Equal(t, "f8aef97f-60aa-42de-b7b1-db8f5d45f6fd", params["id"])
 		writer.Write([]byte("200 OK"))
@@ -68,7 +68,7 @@ func TestRouter_CreateDynamicRoute(t *testing.T) {
 	server := httptest.NewServer(router)
 	defer server.Close()
 
-	response, err := http.DefaultClient.Get(fmt.Sprintf("%s/v1/f8aef97f-60aa-42de-b7b1-db8f5d45f6fd/2b833c3d-289b-4783-b0f9-313e44eb11e7/test", server.URL))
+	response, err := http.DefaultClient.Get(fmt.Sprintf("%s/v1/f8aef97f-60aa-42de-b7b1-db8f5d45f6fd/2b833c3d-289b-4783-b0f9-313e44eb11e7/temp", server.URL))
 	assert.NoError(t, err)
 
 	responseBytes, err := io.ReadAll(response.Body)
@@ -83,7 +83,7 @@ func TestRouter_CreateDynamicRouteWithMiddleware(t *testing.T) {
 	router := NewRouter([]guard.Guard{})
 
 	router.CreateRoute(
-		"/v1/{id}/{test}/test",
+		"/v1/{id}/{temp}/temp",
 		http.MethodGet,
 		func(writer http.ResponseWriter, request *http.Request) { writer.Write([]byte("200 OK")) },
 		nil,
@@ -102,7 +102,7 @@ func TestRouter_CreateDynamicRouteWithMiddleware(t *testing.T) {
 	server := httptest.NewServer(router)
 	defer server.Close()
 
-	response, err := http.DefaultClient.Get(fmt.Sprintf("%s/v1/f8aef97f-60aa-42de-b7b1-db8f5d45f6fd/2b833c3d-289b-4783-b0f9-313e44eb11e7/test", server.URL))
+	response, err := http.DefaultClient.Get(fmt.Sprintf("%s/v1/f8aef97f-60aa-42de-b7b1-db8f5d45f6fd/2b833c3d-289b-4783-b0f9-313e44eb11e7/temp", server.URL))
 	assert.NoError(t, err)
 
 	assert.Equal(t, http.StatusBadRequest, response.StatusCode)
@@ -113,7 +113,7 @@ func TestRouter_CreateGroupRouteWithMiddleware(t *testing.T) {
 
 	group := router.CreateGroup("/v1/")
 	group.CreateRoute(
-		"/{id}/{test}/test",
+		"/{id}/{temp}/temp",
 		http.MethodGet,
 		func(writer http.ResponseWriter, request *http.Request) { writer.Write([]byte("200 OK")) },
 		nil,
@@ -132,7 +132,7 @@ func TestRouter_CreateGroupRouteWithMiddleware(t *testing.T) {
 	server := httptest.NewServer(router)
 	defer server.Close()
 
-	response, err := http.DefaultClient.Get(fmt.Sprintf("%s/v1/f8aef97f-60aa-42de-b7b1-db8f5d45f6fd/2b833c3d-289b-4783-b0f9-313e44eb11e7/test", server.URL))
+	response, err := http.DefaultClient.Get(fmt.Sprintf("%s/v1/f8aef97f-60aa-42de-b7b1-db8f5d45f6fd/2b833c3d-289b-4783-b0f9-313e44eb11e7/temp", server.URL))
 	assert.NoError(t, err)
 
 	assert.Equal(t, http.StatusBadRequest, response.StatusCode)
@@ -148,7 +148,7 @@ func TestRouter_CreateGroupRouteWithGuard(t *testing.T) {
 	guard := "JWTGuard"
 	group := router.CreateGroup("/v1/")
 	group.CreateRoute(
-		"/{id}/{test}/test",
+		"/{id}/{temp}/temp",
 		http.MethodGet,
 		func(writer http.ResponseWriter, request *http.Request) { writer.Write([]byte("200 OK")) },
 		&guard,
@@ -158,7 +158,7 @@ func TestRouter_CreateGroupRouteWithGuard(t *testing.T) {
 	defer server.Close()
 
 	token := jwtGuard.Auth(1)
-	request, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/v1/f8aef97f-60aa-42de-b7b1-db8f5d45f6fd/2b833c3d-289b-4783-b0f9-313e44eb11e7/test", server.URL), nil)
+	request, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/v1/f8aef97f-60aa-42de-b7b1-db8f5d45f6fd/2b833c3d-289b-4783-b0f9-313e44eb11e7/temp", server.URL), nil)
 	assert.NoError(t, err)
 
 	request.Header.Add("Authorization", fmt.Sprintf("Bearer %s", token))
@@ -178,7 +178,7 @@ func TestRouter_CreateGroupRouteWithGuard_shouldFail(t *testing.T) {
 	guard := "JWTGuard"
 	group := router.CreateGroup("/v1/")
 	group.CreateRoute(
-		"/{id}/{test}/test",
+		"/{id}/{temp}/temp",
 		http.MethodGet,
 		func(writer http.ResponseWriter, request *http.Request) { writer.Write([]byte("200 OK")) },
 		&guard,
@@ -187,8 +187,8 @@ func TestRouter_CreateGroupRouteWithGuard_shouldFail(t *testing.T) {
 	server := httptest.NewServer(router)
 	defer server.Close()
 
-	request, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/v1/f8aef97f-60aa-42de-b7b1-db8f5d45f6fd/2b833c3d-289b-4783-b0f9-313e44eb11e7/test", server.URL), nil)
-	request.Header.Add("Authorization", fmt.Sprintf("Bearer %s", "test-token"))
+	request, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/v1/f8aef97f-60aa-42de-b7b1-db8f5d45f6fd/2b833c3d-289b-4783-b0f9-313e44eb11e7/temp", server.URL), nil)
+	request.Header.Add("Authorization", fmt.Sprintf("Bearer %s", "temp-token"))
 
 	response, err := http.DefaultClient.Do(request)
 	assert.NoError(t, err)
