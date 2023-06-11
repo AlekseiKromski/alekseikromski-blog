@@ -6,10 +6,17 @@ import (
 	"alekseikromski.com/blog/router"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
+	"os"
+	"regexp"
 	"strconv"
+	"strings"
 )
+
+var urlRegExp = regexp.MustCompile(`/temp/upload-\d+.(jpg|png|jpeg)`)
+var extensionsRegExp = regexp.MustCompile("(png|jpg|jpeg)")
 
 // GetLastPosts
 //
@@ -227,6 +234,24 @@ func (v *V1) CreatePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if find, converted, err := findTempImages(post.Img); err == nil && find {
+		post.Img = converted
+	} else {
+		if err != nil {
+			v.ReturnErrorResponse(err, w)
+			return
+		}
+	}
+
+	if find, converted, err := findTempImages(post.Description); err == nil && find {
+		post.Description = converted
+	} else {
+		if err != nil {
+			v.ReturnErrorResponse(err, w)
+			return
+		}
+	}
+
 	created, err := v.storage.CreatePost(&post)
 	if err != nil {
 		log.Printf("Problem: %v", err)
@@ -240,8 +265,30 @@ func (v *V1) CreatePost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("created"))
 	log.Printf("Post with id [%d] was created", post.ID)
+}
+
+func findTempImages(data string) (bool, string, error) {
+	//define temp images path in description
+	pos := urlRegExp.FindAllString(data, -1)
+
+	if len(pos) != 0 {
+		final := data
+		for _, path := range pos {
+			new := strings.ReplaceAll(string(path), "/temp/", "./store/images/")
+			err := os.Rename(fmt.Sprintf("./%s", path), new)
+			log.Printf("cannot move file: %v", err)
+
+			if err != nil {
+				return false, "", err
+			}
+
+			final = strings.ReplaceAll(final, string(path), new[2:len(new)])
+		}
+		return true, final, nil
+	}
+
+	return false, "", nil
 }
 
 // CreateComment
@@ -276,6 +323,68 @@ func (v *V1) CreateComment(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Printf("Comment with id [%d] was created", comment.ID)
+	v.ReturnResponse(w, response)
+}
+
+// UploadFile
+//
+//	@Summary		Upload [png,jpg,jpeg] image file
+//	@Description	Upload files to temp directory (only for png,jpg,jpeg)
+//	@Success		200
+//	@Failure		400
+//	@Failure		500
+//	@Router			/v1/post/upload [post]
+func (v *V1) UploadFile(w http.ResponseWriter, r *http.Request) {
+	log.Println("[HANDLER] Starting uploading file to temp dir")
+
+	file, handler, err := r.FormFile("file")
+	if err != nil {
+		log.Println("[HANDLER] error during getting file")
+		v.ReturnErrorResponse(err, w)
+		return
+	}
+
+	defer file.Close()
+	log.Printf("[HANDLER] Uploaded File: %s", handler.Filename)
+	log.Printf("[HANDLER] File Size: %d", handler.Size)
+	log.Printf("[HANDLER] MIME Header: %s", handler.Header)
+
+	// Create a temp file within our temp-images directory that follows
+	// a particular naming pattern
+	pos := extensionsRegExp.FindStringSubmatch(handler.Filename)
+	if len(pos) == 0 {
+		log.Printf("[HANDLER] incorrect format of file from regexp")
+		v.ReturnErrorResponse(fmt.Errorf("incorrect fromat"), w)
+		return
+	}
+	tempFile, err := os.CreateTemp("./temp", fmt.Sprintf("upload-*.%s", pos[0]))
+	if err != nil {
+		log.Printf("[HANDLER] cannot create temp file: %v", err)
+		fmt.Println(err)
+	}
+	defer tempFile.Close()
+
+	// read all of the contents of our uploaded file into a
+	// byte array
+	fileBytes, err := io.ReadAll(file)
+	if err != nil {
+		log.Printf("[HANDLER] cannot read writed temp file")
+		fmt.Println(err)
+	}
+	// write this byte array to our temp file
+	tempFile.Write(fileBytes)
+
+	response, err := json.Marshal(struct {
+		Payload string `json:"payload"`
+	}{
+		Payload: tempFile.Name()[1:len(tempFile.Name())],
+	})
+
+	if err != nil {
+		log.Printf("[HANDLER] cannot marshal payload %v", err)
+		v.ReturnErrorResponse(err, w)
+		return
+	}
 	v.ReturnResponse(w, response)
 }
 

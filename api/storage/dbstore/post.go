@@ -121,7 +121,7 @@ func (db *DbConnection) UpdatePost(post *models.Post) error {
 func (db *DbConnection) CreatePost(post *models.Post) (bool, error) {
 
 	//Recreate from json model
-	post = models.CreatePostWithData(post.Title, post.Description, "", post.CategoryID)
+	post = models.CreatePostWithData(post.Title, post.Description, post.Img, post.CategoryID)
 
 	query := post.CreateRecord()
 

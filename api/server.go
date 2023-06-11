@@ -49,6 +49,26 @@ func (s *Server) Start() error {
 	)
 
 	s.router.CreateRoute(
+		"/temp/*",
+		http.MethodGet,
+		func(writer http.ResponseWriter, request *http.Request) {
+			fileServer := http.FileServer(http.Dir("."))
+			fileServer.ServeHTTP(writer, request)
+		},
+		nil,
+	)
+
+	s.router.CreateRoute(
+		"/store/*",
+		http.MethodGet,
+		func(writer http.ResponseWriter, request *http.Request) {
+			fileServer := http.FileServer(http.Dir("."))
+			fileServer.ServeHTTP(writer, request)
+		},
+		nil,
+	)
+
+	s.router.CreateRoute(
 		"/healthz",
 		http.MethodGet,
 		func(writer http.ResponseWriter, request *http.Request) {
