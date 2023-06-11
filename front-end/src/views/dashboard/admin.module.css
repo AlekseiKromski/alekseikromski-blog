@@ -1,0 +1,65 @@
+.dashboard{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard h1 {
+    margin-bottom: 0px;
+}
+
+.dashboardBlocks{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 30px;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.dashboardBlocks a {
+    text-decoration: none;
+    color: black;
+}
+
+.dashboardBlock{
+    width: 25%;
+    border-radius: 10px;
+    box-shadow: 0px 0px 22px -5px #9f9f9f;
+    padding: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    min-height: 150px;
+}
+
+.dashboardBlock:hover{
+    transition: 0.3s;
+    box-shadow: 0px 0px 34px -5px #9f9f9f;
+}
+
+.fastActions{
+    display: flex;
+    gap: 15px;
+}
+
+.fastActions a{
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid black;
+    background: white;
+    font-weight: bold;
+    transition: 0.3s;
+    margin-bottom: 10px;
+    color: black;
+    text-decoration: none;
+}
+
+.fastActions a:hover {
+    transition: 0.3s;
+    background: #dcb639;
+    color: white;
+    border: 2px solid #dcb639;
+}

@@ -1,13 +1,14 @@
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react"
 import axios from "axios";
 import "./single.css"
 import SinglePostMock from "../../components/singlePostMock/singlePostMock";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import {useSelector} from "react-redux";
-import TiptapView from "../../components/tiptap/tiptapView";
+import TiptapView from "../../components/tiptap/tiptapView/tiptapView";
 
 function Single() {
+    const navigate = useNavigate()
     const params = useParams()
 
     //redux
@@ -51,9 +52,9 @@ function Single() {
 
     return (
         <div className={`singlePost ${!application.sideClosed ? "static" : setTimeout(() => "", 1000)}`}>
-            <Link to="/">
+            <a onClick={() => navigate(-1)}>
                 <ArrowBackIosIcon/>
-            </Link>
+            </a>
             {loading &&
                 <SinglePostMock/>
             }

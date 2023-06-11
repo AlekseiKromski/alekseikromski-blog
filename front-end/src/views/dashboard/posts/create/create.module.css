@@ -1,0 +1,48 @@
+.createMain{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.basicData{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.basicData div{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+label{
+    font-weight: bold;
+}
+
+input[type="text"] {
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid black;
+}
+
+input:focus {
+    outline: none;
+}
+
+button {
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid black;
+    background: white;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+button:hover {
+    transition: 0.3s;
+    background: #dcb639;
+    color: white;
+    border: 2px solid #dcb639;
+}

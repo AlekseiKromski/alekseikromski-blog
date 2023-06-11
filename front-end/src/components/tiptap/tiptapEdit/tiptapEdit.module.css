@@ -1,0 +1,21 @@
+.tiptap {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.editor{
+    border: 2px solid black;
+}
+
+.invisible{
+    display: none;
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 10px 0px;
+}

@@ -31,6 +31,19 @@ export const applicationSlice = createSlice({
             //set to sessions storage
             sessionStorage.setItem("account", JSON.stringify(data.payload))
         },
+        logout: state => {
+            //remove header
+            delete state.axios.defaults.headers.common["Authorization"]
+
+            //set user
+            state.user = {
+                email: null,
+                authorized: false,
+            }
+
+            //Remove from sesion storage
+            sessionStorage.removeItem("account")
+        },
         setSideClosed: (state,data) => {
             if (data.payload != undefined) {
                 state.sideClosed = data.payload
@@ -41,6 +54,6 @@ export const applicationSlice = createSlice({
     }
 })
 
-export const { initAxios, setToken, setSideClosed } = applicationSlice.actions
+export const { initAxios, setToken, setSideClosed, logout} = applicationSlice.actions
 
 export default applicationSlice.reducer
