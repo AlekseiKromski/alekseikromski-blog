@@ -1,10 +1,10 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import styles from "./posts.module.css"
 
 function Posts() {
-
+    const navigate = useNavigate()
     const application = useSelector((state) => state.application);
     let [posts, setPosts] = useState([])
 
@@ -57,7 +57,7 @@ function Posts() {
                             </th>
                             <th>
                                 <div className={styles.action}>
-                                    <button>edit</button>
+                                    <button onClick={() => {navigate(`/dashboard/admin/posts/edit/${post.id}`)}}>edit</button>
                                     <button onClick={() => {deletePost(post.id)}}>delete</button>
                                 </div>
                             </th>

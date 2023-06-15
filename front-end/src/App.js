@@ -11,6 +11,7 @@ import Auth from "./views/auth/auth";
 import Admin from "./views/dashboard/admin";
 import Posts from "./views/dashboard/posts/posts";
 import PostCreate from "./views/dashboard/posts/create/create";
+import PostEdit from "./views/dashboard/posts/edit/edit";
 
 function App() {
     let dispatch = useDispatch()
@@ -40,6 +41,7 @@ function App() {
                     <Route path="/dashboard/admin" element={ <Admin/> } />
                     <Route path="/dashboard/admin/posts" element={ <Posts/> } />
                     <Route path="/dashboard/admin/posts/create" element={ <PostCreate/> } />
+                    <Route path="/dashboard/admin/posts/edit/:id" element={ <PostEdit/> } />
                 </Routes>
             </div>
         </div>

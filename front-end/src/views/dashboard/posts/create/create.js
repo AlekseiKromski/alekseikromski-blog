@@ -1,7 +1,7 @@
 import {Link, useNavigate} from "react-router-dom";
 import TiptapEdit from "../../../../components/tiptap/tiptapEdit/tiptapEdit";
 import {useSelector} from "react-redux";
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useEditor} from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TextAlign from "@tiptap/extension-text-align";
@@ -10,8 +10,9 @@ import Dropcursor from '@tiptap/extension-dropcursor'
 import Image from '@tiptap/extension-image'
 import styles from "./create.module.css"
 import Loading from "../../../../components/loading/loading";
+import edit from "../edit/edit";
 
-function PostCreate() {
+function PostCreate({post}) {
     let upload = useRef(null)
     let navigate = useNavigate()
 
@@ -34,7 +35,13 @@ function PostCreate() {
             Image,
             Dropcursor,
         ],
-        content: "",
+        content: function () {
+            // import description if exists
+            if (post !== undefined && post !== null) {
+                return post.description
+            }
+            return ""
+        }(),
     })
 
     function createPost(){
@@ -69,10 +76,23 @@ function PostCreate() {
             })
     }
 
+    useEffect(() => {
+        //init if we have post
+        if (post != undefined || post != null) {
+            setTitle(post.title)
+            setCategory(post.category_id)
+        }
+    }, [])
+
 
     return (
         <div className={styles.createMain}>
-            <h1><Link to={"/dashboard/admin"}>Dashboard</Link> / <Link to={'/dashboard/admin/posts/'}>Posts</Link> / Create</h1>
+            <h1><Link to={"/dashboard/admin"}>Dashboard</Link> / <Link to={'/dashboard/admin/posts/'}>Posts</Link> / {
+                post != null || post !== undefined ?
+                    <span>Update</span>
+                    :
+                    <span>Create</span>
+            }</h1>
 
             <div className={styles.basicData}>
                 <div className="">
@@ -87,11 +107,11 @@ function PostCreate() {
 
                 <div className="">
                     <label htmlFor="">Category</label>
-                    <select onChange={(e) => setCategory(Number.parseInt(e.target.value))}>
+                    <select value={category} onChange={(e) => setCategory(Number.parseInt(e.target.value))}>
                         {shared.categories != null &&
-                            shared.categories.map(category => (
-                                <option value={category.ID} key={category.ID} >{category.name}</option>
-                            ))
+                            shared.categories.map(category => {
+                                return (<option value={category.ID} key={category.ID} >{category.name}</option>)
+                            })
                         }
                     </select>
                 </div>
