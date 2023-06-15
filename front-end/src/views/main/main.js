@@ -34,6 +34,10 @@ function Main() {
         await application.axios.get("/v1/post/get-last-posts/15/0").catch(
             setPosts([])
         ).then(response => {
+            if (response.data == null){
+                setPosts([])
+                return
+            }
             setPosts(response.data)
         })
 
@@ -66,19 +70,19 @@ function Main() {
                 <select onChange={(e) => {getPostsByCategory(e.target.value)}} name="categoryID" id="">
                     {shared.categories.length != 0 &&
                         shared.categories.map(category => {
-                            if (categoryID == category.ID) {
+                            if (categoryID == category.id) {
                                 return (
                                     <option
                                         selected={true}
-                                        value={category.ID}
-                                        key={category.ID}
+                                        value={category.id}
+                                        key={category.id}
                                     >{category.name}</option>
                                 )
                             } else {
                                 return (
                                     <option
-                                        value={category.ID}
-                                        key={category.ID}
+                                        value={category.id}
+                                        key={category.id}
                                     >{category.name}</option>
                                 )
                             }
@@ -86,7 +90,7 @@ function Main() {
                     }
                 </select>
             </div>
-            {!loading ?
+            {!loading && posts.length != 0 ?
                 <div className="post-map">
                     {
                         posts.map(post => {
