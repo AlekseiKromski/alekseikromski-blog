@@ -103,7 +103,7 @@ function SideBar() {
 
                             <a onClick={() => red("/")}>All</a>
                             {shared.categories.map(category => (
-                                <a onClick={() => red(`/${category.ID}`)} key={category.id}>{category.name}</a>
+                                <a onClick={() => red(`/${category.id}`)} key={category.id}>{category.name}</a>
                             ))}
                         </div>
                     </div>
