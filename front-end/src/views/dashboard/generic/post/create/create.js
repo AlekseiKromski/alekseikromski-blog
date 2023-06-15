@@ -1,5 +1,5 @@
 import {Link, useNavigate} from "react-router-dom";
-import TiptapEdit from "../../../../components/tiptap/tiptapEdit/tiptapEdit";
+import TiptapEdit from "../../../../../components/tiptap/tiptapEdit/tiptapEdit";
 import {useSelector} from "react-redux";
 import {useEffect, useRef, useState} from "react";
 import {useEditor} from "@tiptap/react";
@@ -9,8 +9,7 @@ import Highlight from "@tiptap/extension-highlight";
 import Dropcursor from '@tiptap/extension-dropcursor'
 import Image from '@tiptap/extension-image'
 import styles from "./create.module.css"
-import Loading from "../../../../components/loading/loading";
-import edit from "../edit/edit";
+import Loading from "../../../../../components/loading/loading";
 
 function PostCreate({post}) {
     let upload = useRef(null)
@@ -110,7 +109,7 @@ function PostCreate({post}) {
                     <select value={category} onChange={(e) => setCategory(Number.parseInt(e.target.value))}>
                         {shared.categories != null &&
                             shared.categories.map(category => {
-                                return (<option value={category.ID} key={category.ID} >{category.name}</option>)
+                                return (<option value={category.id} key={category.id} >{category.name}</option>)
                             })
                         }
                     </select>
