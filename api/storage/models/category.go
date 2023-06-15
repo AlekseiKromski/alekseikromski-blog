@@ -6,7 +6,7 @@ import (
 )
 
 type Category struct {
-	ID   int    `json:"ID"`
+	ID   int    `json:"id"`
 	Name string `json:"name"`
 	*Timestamp
 	*SoftDelete

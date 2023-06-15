@@ -20,9 +20,8 @@ import (
 func (v *V1) GetAllCategories(w http.ResponseWriter, r *http.Request) {
 
 	categories := v.storage.GetCategories()
-	if len(categories) == 0 {
-		v.ReturnErrorResponse(NewInputError(), w)
-		return
+	if categories == nil {
+		categories = []*models.Category{}
 	}
 
 	response, err := json.Marshal(categories)

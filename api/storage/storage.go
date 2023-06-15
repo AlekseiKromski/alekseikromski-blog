@@ -74,7 +74,7 @@ func NewQueryRequest() *QueryRequest {
 }
 
 type SearchResult struct {
-	Posts []*models.Post `json:"posts"`
+	Generic []*models.Post `json:"posts"`
 }
 
 type SearchRequest struct {

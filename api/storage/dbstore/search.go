@@ -8,10 +8,10 @@ import (
 
 func (db *DbConnection) Search(sr *storage.SearchRequest) *storage.SearchResult {
 	result := &storage.SearchResult{
-		Posts: []*models.Post{},
+		Generic: []*models.Post{},
 	}
 
-	result.Posts = getPostSearch(sr, db)
+	result.Generic = getPostSearch(sr, db)
 
 	return result
 }
