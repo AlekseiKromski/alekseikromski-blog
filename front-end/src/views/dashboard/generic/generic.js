@@ -3,11 +3,13 @@ import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import styles from "./generic.module.css"
 import BreadCrumbs from "../../../components/bread-crumbs/bread-crumbs";
+import Alert from "../../../components/alert/alert";
 
 function Generic({settings}) {
     const navigate = useNavigate()
     const application = useSelector((state) => state.application);
     let [data, setData] = useState([])
+    let [error, setError] = useState(null)
 
     useEffect(() => {
         //call handler method for fetching data from external API and set it
@@ -26,13 +28,20 @@ function Generic({settings}) {
                         return d
                     }
                 }))
+            }).catch(e => {
+                setError(e.response.data.message)
             })
     }
 
-    console.log(data)
-
     return (
         <div className={styles.posts}>
+            <Alert
+                title="Error"
+                type="error"
+                text={error}
+                set={setError}
+            />
+
             <BreadCrumbs
                 breadcrubms={settings.breadcrumbs}
             />
