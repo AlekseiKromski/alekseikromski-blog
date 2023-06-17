@@ -43,6 +43,7 @@ func (db *DbConnection) GetCategories() []*models.Category {
 
 func (db *DbConnection) DeleteCategory(id int) error {
 	category := models.CreateCategory()
+	var postID *int
 
 	query := models.GetCategory(id)
 
@@ -61,6 +62,7 @@ func (db *DbConnection) DeleteCategory(id int) error {
 			&category.CreatedAt,
 			&category.UpdatedAt,
 			&category.DeletedAt,
+			&postID,
 		)
 
 		if scanError != nil {
@@ -68,10 +70,14 @@ func (db *DbConnection) DeleteCategory(id int) error {
 		}
 	}
 
+	if postID != nil {
+		return fmt.Errorf("cannot delete category, we have some posts here")
+	}
+
 	category.Soft()
 
 	if err := db.UpdateCategory(category); err != nil {
-		fmt.Errorf("cannot update object: %w", err)
+		return fmt.Errorf("cannot update object: %w", err)
 	}
 	return nil
 }

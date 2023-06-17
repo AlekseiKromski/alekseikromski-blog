@@ -72,3 +72,21 @@ func (au *AuthError) HttpError() int {
 func (ie *JsonError) Error() string {
 	return fmt.Sprintf("%s, cause: %v", ie.Message, ie.Error())
 }
+
+type ActionError struct {
+	Message string `json:"message"`
+}
+
+func NewActionError(err error) *ActionError {
+	return &ActionError{
+		Message: fmt.Sprintf("cannot finish action, reason: %v", err),
+	}
+}
+
+func (ie *ActionError) HttpError() int {
+	return http.StatusBadRequest
+}
+
+func (ie *ActionError) Error() string {
+	return fmt.Sprintf("Server error: %s, cause: %v", ie.Message, ie.Error())
+}

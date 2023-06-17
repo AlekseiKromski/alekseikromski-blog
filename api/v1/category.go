@@ -54,10 +54,12 @@ func (v *V1) DeleteCategory(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(params["id"])
 	if err != nil {
 		v.ReturnErrorResponse(NewInputError(), w)
+		return
 	}
 
 	if err := v.storage.DeleteCategory(id); err != nil {
-		v.ReturnErrorResponse(NewInputError(), w)
+		v.ReturnErrorResponse(NewActionError(err), w)
+		return
 	}
 
 	v.ReturnResponse(w, []byte("OK"))

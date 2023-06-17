@@ -83,8 +83,14 @@ func (c *Category) CreateRecord() string {
 func GetCategories() string {
 	return `SELECT * FROM categories WHERE categories."DeletedAt" IS NULL ORDER BY "CreatedAt" DESC`
 }
+
+// GetCategory -> return category with last post id
 func GetCategory(id int) string {
-	return fmt.Sprintf(`SELECT * FROM categories WHERE id = %d AND categories."DeletedAt" IS NULL`, id)
+	return fmt.Sprintf(`SELECT c.*, p.id FROM categories AS c
+    LEFT JOIN posts p on c.id = p.category_id
+                   WHERE c.id = %d AND c."DeletedAt" IS NULL
+                   ORDER BY p.id DESC
+                   LIMIT 1;`, id)
 }
 
 func UpdateCategory(category *Category) string {
