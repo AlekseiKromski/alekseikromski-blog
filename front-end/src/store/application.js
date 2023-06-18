@@ -5,7 +5,9 @@ import {sharedSlice} from "./shared";
 export const applicationSlice = createSlice({
     name: 'applicationSlice',
     initialState: {
-        axios: null,
+        axios: axios.create({
+            baseURL: process.env.REACT_APP_AXIOS_BASE_URL
+        }),
         user: {
             email: null,
             authorized: false
@@ -13,12 +15,6 @@ export const applicationSlice = createSlice({
         sideClosed: true
     },
     reducers: {
-        initAxios: state => {
-            let instance = axios.create({
-                baseURL: process.env.REACT_APP_AXIOS_BASE_URL
-            })
-            state.axios = instance
-        },
         setToken: (state, data) => {
             state.axios.defaults.headers.common['Authorization'] = `Bearer ${data.payload.token}`;
 
@@ -54,6 +50,6 @@ export const applicationSlice = createSlice({
     }
 })
 
-export const { initAxios, setToken, setSideClosed, logout} = applicationSlice.actions
+export const {setToken, setSideClosed, logout} = applicationSlice.actions
 
 export default applicationSlice.reducer

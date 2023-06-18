@@ -28,11 +28,11 @@
 }
 
 .show {
-    animation: show 1s forwards;
+    animation: show 0.5s forwards;
 }
 
 .hide {
-    animation: hide 1s forwards;
+    animation: hide 0.5s forwards;
 }
 
 @keyframes show {
@@ -43,6 +43,7 @@
     to {
         opacity: 1;
         transform: translateY(0px);
+        display: flex;
     }
 }
 
@@ -54,5 +55,7 @@
     to {
         opacity: 0;
         transform: translateY(150px);
+        display: flex;
+
     }
 }

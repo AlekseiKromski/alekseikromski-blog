@@ -206,10 +206,12 @@ func (v *V1) DeletePost(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(params["id"])
 	if err != nil {
 		v.ReturnErrorResponse(NewInputError(), w)
+		return
 	}
 
 	if err := v.storage.DeletePost(id); err != nil {
 		v.ReturnErrorResponse(NewInputError(), w)
+		return
 	}
 
 	v.ReturnResponse(w, []byte("OK"))

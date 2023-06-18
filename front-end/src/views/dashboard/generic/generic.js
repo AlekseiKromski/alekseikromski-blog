@@ -35,12 +35,14 @@ function Generic({settings}) {
 
     return (
         <div className={styles.posts}>
-            <Alert
-                title="Error"
-                type="error"
-                text={error}
-                set={setError}
-            />
+            {error != null &&
+                <Alert
+                    title="Error"
+                    type="error"
+                    text={error}
+                    set={setError}
+                />
+            }
 
             <BreadCrumbs
                 breadcrubms={settings.breadcrumbs}

@@ -6,7 +6,7 @@ import SideBar from "./components/sidebar/sidebar"
 import Single from "./views/single/single";
 import { Helmet } from 'react-helmet';
 import {useDispatch, useSelector} from "react-redux";
-import {initAxios, setToken} from "./store/application"
+import {setToken} from "./store/application"
 import Auth from "./views/auth/auth";
 import Admin from "./views/dashboard/admin";
 import Generic from "./views/dashboard/generic/generic";
@@ -19,7 +19,6 @@ function App() {
 
     const navigate = useNavigate()
     let dispatch = useDispatch()
-    dispatch(initAxios())
 
 
     useEffect(() => {
@@ -118,7 +117,7 @@ function App() {
                                 <div className={styles.action}>
                                     {
                                         actions.map(action => (
-                                            <button onClick={() => action.func()}>{action.title}</button>
+                                            <button key={action.title} onClick={() => action.func()}>{action.title}</button>
                                         ))
                                     }
                                 </div>

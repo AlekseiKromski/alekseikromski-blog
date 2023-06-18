@@ -23,7 +23,6 @@ function SideBar() {
     const application = useSelector((state) => state.application);
 
     let closeFunction = () => {
-        console.log('SSS')
         dispatch(setSideClosed())
     }
 
