@@ -162,7 +162,7 @@ function App() {
                 fastActions: [
                     {
                         title: "Create post",
-                        link: "/dashboard/admin/posts/genericCU"
+                        link: "/dashboard/admin/posts/create"
                     }
                 ]
             },

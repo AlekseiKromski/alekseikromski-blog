@@ -44,6 +44,20 @@ function PostCreate({post}) {
         }(),
     })
 
+    function updatePost(){
+        if (canSend) {
+            application.axios.post("/v1/post/edit", {
+                id: post.id,
+                "title": title,
+                "description": editor.getHTML(),
+                "img": image,
+                "category_id": category
+            }).then(() => {
+                navigate("/dashboard/admin/posts")
+            })
+        }
+    }
+
     function createPost(){
         if (canSend) {
             application.axios.post("/v1/post/create-post", {
@@ -134,11 +148,20 @@ function PostCreate({post}) {
 
             <TiptapEdit setLoading={setLoading} setCanSend={setCanSend} editor={editor}/>
 
-            <button onClick={() => {createPost()}}>
+            <button onClick={() => {
+                if (post != null && post != undefined){
+                    updatePost()
+                }else {
+                    createPost()
+                }
+            }}>
                 { loading ?
                     <Loading/>
                     :
-                    <span>Create</span>
+                    post != null && post != undefined ?
+                        <span>Update</span>
+                        :
+                        <span>Create</span>
                 }
             </button>
         </div>

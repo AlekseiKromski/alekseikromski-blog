@@ -17,7 +17,7 @@ function Admin(){
             <p>Hi, <b>{application.user.email}</b> this is your dashboard 🧨</p>
             <div className={styles.fastActions}>
                 <a onClick={(e) => {dispatch(logout())}}>logout</a>
-                <Link to={"/dashboard/admin/posts/genericCU"}>Create post</Link>
+                <Link to={"/dashboard/admin/posts/create"}>Create post</Link>
             </div>
 
             <div className={styles.dashboardBlocks}>
@@ -29,10 +29,10 @@ function Admin(){
                     <h1>Categories 🔗</h1>
                     <p>Create / modify / remove</p>
                 </Link>
-                <Link to="/dashboard/admin/tags" className={styles.dashboardBlock}>
-                    <h1>Tags 🔋</h1>
-                    <p>Create / modify / remove</p>
-                </Link>
+                {/*<Link to="/dashboard/admin/tags" className={styles.dashboardBlock}>*/}
+                {/*    <h1>Tags 🔋</h1>*/}
+                {/*    <p>Create / modify / remove</p>*/}
+                {/*</Link>*/}
             </div>
         </div>
     )
