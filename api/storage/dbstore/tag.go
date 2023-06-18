@@ -43,6 +43,37 @@ func (db *DbConnection) GetTags(postID *int) []*models.Tag {
 	return tags
 }
 
+func (db *DbConnection) GetTagById(tagID *int) *models.Tag {
+	tag := models.CreateTag()
+
+	query := models.GetTagById(tagID)
+
+	rows, err := db.Connection.Query(query)
+	if err != nil {
+		log.Printf("Problem: %v", err)
+		return tag
+	}
+
+	for rows.Next() {
+		var scanError error
+
+		scanError = rows.Scan(
+			&tag.ID,
+			&tag.Name,
+			&tag.PostID,
+			&tag.CreatedAt,
+			&tag.UpdatedAt,
+			&tag.DeletedAt,
+		)
+
+		if scanError != nil {
+			log.Printf("troubles during scanning: %v", err)
+		}
+	}
+
+	return tag
+}
+
 func (db *DbConnection) UpdateTag(tag *models.Tag) error {
 	tag.UpdatedAt = time.Now().Format(time.RFC3339)
 	query := models.UpdateTag(tag)

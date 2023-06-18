@@ -52,6 +52,11 @@
         },
         {
           "method": "GET",
+          "route": "/get-single-tag/{id}",
+          "handler": "GetSingleTag"
+        },
+        {
+          "method": "GET",
           "route": "/delete/{id}",
           "handler": "DeleteTag"
         },

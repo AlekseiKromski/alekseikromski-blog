@@ -94,6 +94,10 @@ func GetTags(postID *int) string {
 	return fmt.Sprintf(`SELECT * FROM tags WHERE tags.post_id = %d AND tags."DeletedAt" is NULL ORDER BY "CreatedAt" DESC`, *postID)
 }
 
+func GetTagById(tagID *int) string {
+	return fmt.Sprintf(`SELECT * FROM tags WHERE tags.id = %d AND tags."DeletedAt" is NULL ORDER BY "CreatedAt" DESC`, *tagID)
+}
+
 func GetTagByID(id int) string {
 	return fmt.Sprintf(`SELECT * FROM tags WHERE tags.id = %d AND tags."DeletedAt" is NULL`, id)
 }

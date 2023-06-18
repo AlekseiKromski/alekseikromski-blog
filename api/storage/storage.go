@@ -27,6 +27,9 @@ type Storage interface {
 	// GetTags - will return a list of tags
 	GetTags(postID *int) []*models.Tag
 
+	// GetTagById - will return one of tag
+	GetTagById(tagID *int) *models.Tag
+
 	// UpdatePost - will update singe post
 	UpdatePost(post *models.Post) error
 

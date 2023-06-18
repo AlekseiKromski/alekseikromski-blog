@@ -129,3 +129,38 @@ func (v *V1) CreateTag(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("created"))
 	log.Printf("Tag with id [%d] was created", tag.ID)
 }
+
+// GetSingleTag
+//
+//	@Summary		Get single tag
+//	@Description	Return single tag by id, that we have
+//	@Success		200
+//	@Failure		400
+//	@Failure		500
+//	@Router			/v1/tag/get-single-tag/:id [get]
+func (v *V1) GetSingleTag(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	var params router.Params
+	if pr, ok := ctx.Value("params").(router.Params); ok {
+		params = pr
+	}
+
+	id, err := strconv.Atoi(params["id"])
+	if err != nil {
+		v.ReturnErrorResponse(NewInputError(), w)
+	}
+
+	tag := v.storage.GetTagById(&id)
+	if tag == nil {
+		v.ReturnErrorResponse(NewInputError(), w)
+		return
+	}
+
+	response, err := json.Marshal(tag)
+	if err != nil {
+		v.ReturnErrorResponse(NewDecodingError(), w)
+		return
+	}
+
+	v.ReturnResponse(w, response)
+}
