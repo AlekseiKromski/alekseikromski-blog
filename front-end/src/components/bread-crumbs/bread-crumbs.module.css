@@ -1,3 +1,13 @@
+.breadCrumbs a{
+    text-decoration: none;
+    margin-right:8px;
+    color: #dcb639;
+
+}
+.breadCrumbs span{
+    font-weight: normal;
+}
+
 .fastActions{
     display: flex;
     gap: 15px;

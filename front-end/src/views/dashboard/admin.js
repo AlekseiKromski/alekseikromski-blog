@@ -17,7 +17,7 @@ function Admin(){
             <p>Hi, <b>{application.user.email}</b> this is your dashboard 🧨</p>
             <div className={styles.fastActions}>
                 <a onClick={(e) => {dispatch(logout())}}>logout</a>
-                <Link to={"/dashboard/admin/posts/create"}>Create post</Link>
+                <Link to={"/dashboard/admin/posts/genericCU"}>Create post</Link>
             </div>
 
             <div className={styles.dashboardBlocks}>

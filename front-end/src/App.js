@@ -12,14 +12,14 @@ import Admin from "./views/dashboard/admin";
 import Generic from "./views/dashboard/generic/generic";
 import PostCreate from "./views/dashboard/generic/post/create/create";
 import PostEdit from "./views/dashboard/generic/post/edit/edit";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import styles from "./views/dashboard/generic/generic.module.css";
+import GenericCU from "./views/dashboard/generic/genericCU/genericCU";
+import {importCategories} from "./store/shared";
 
 function App() {
-
-    const navigate = useNavigate()
+    let navigate = useNavigate()
     let dispatch = useDispatch()
-
 
     useEffect(() => {
         let account = JSON.parse(sessionStorage.getItem("account"))
@@ -36,6 +36,12 @@ function App() {
         categories: {
             breadcrumbs: {
                 title: "Categories",
+                links: [
+                    {
+                        title: "Dashboard",
+                        link: "/dashboard/admin"
+                    },
+                ],
                 fastActions: [
                     {
                         title: "Create category",
@@ -51,6 +57,7 @@ function App() {
                     ).then(response => {
                         if (response.data != null) {
                             cb(response.data)
+                            dispatch(importCategories(response.data))
                             return
                         }
                         cb([])
@@ -80,15 +87,82 @@ function App() {
                     edit: "/dashboard/admin/categories/edit",
                     delete: "/v1/category/delete"
                 }
+            },
+            create: {
+                buttonName: "Create",
+                breadcrumbs: {
+                    title: "Category create",
+                    links: [
+                        {
+                            title: "Dashboard",
+                            link: "/dashboard/admin"
+                        },
+                        {
+                            title: "Categories",
+                            link: "/dashboard/admin/categories"
+                        },
+                    ],
+                    fastActions: []
+                },
+                func: (data, application) => {
+                    application.axios.post("v1/category/create", {
+                        name: data
+                    }).then( () => {
+                        navigate("/dashboard/admin/categories")
+                    })
+                },
+                preFunc: () => {}
+            },
+            update: {
+                buttonName: "Edit",
+                breadcrumbs: {
+                    title: "Category edit",
+                    links: [
+                        {
+                            title: "Dashboard",
+                            link: "/dashboard/admin"
+                        },
+                        {
+                            title: "Categories",
+                            link: "/dashboard/admin/categories"
+                        },
+                    ],
+                    fastActions: []
+                },
+                func: (id, data, application) => {
+                    application.axios.post("v1/category/edit/", {
+                        id: Number.parseInt(id),
+                        name: data
+                    }).then( () => {
+                        navigate("/dashboard/admin/categories")
+                    })
+                },
+                preFunc: (id, shared, application) => {
+                    let cat = shared.categories.find( cat => {
+                        if (cat.id == id) {
+                            return cat
+                        }
+                    })
+                    if (cat == undefined) {
+                        return ""
+                    }
+                    return cat.name
+                }
             }
         },
         posts: {
             breadcrumbs: {
                 title: "Posts",
+                links: [
+                    {
+                        title: "Dashboard",
+                        link: "/dashboard/admin"
+                    },
+                ],
                 fastActions: [
                     {
                         title: "Create post",
-                        link: "/dashboard/admin/posts/create"
+                        link: "/dashboard/admin/posts/genericCU"
                     }
                 ]
             },
@@ -114,7 +188,7 @@ function App() {
                                 <Link to={"/post/" + post.id}>{post.title}</Link>
                             </th>
                             <th>
-                                <div className={styles.action}>
+                                <div className={style.action}>
                                     {
                                         actions.map(action => (
                                             <button key={action.title} onClick={() => action.func()}>{action.title}</button>
@@ -156,7 +230,12 @@ function App() {
                     <Route path="/dashboard/admin/categories" element={ <Generic
                         settings={generic.categories}
                     /> } />
-
+                    <Route path="/dashboard/admin/categories/create" element={ <GenericCU
+                        settings={generic.categories.create}
+                    /> } />
+                    <Route path="/dashboard/admin/categories/edit/:id" element={ <GenericCU
+                        settings={generic.categories.update}
+                    /> } />
                 </Routes>
             </div>
         </div>

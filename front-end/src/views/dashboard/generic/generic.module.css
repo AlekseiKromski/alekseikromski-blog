@@ -35,3 +35,6 @@
 .title{
     width: 80%;
 }
+.title a {
+    color: #dcb639;
+}

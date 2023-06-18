@@ -10,6 +10,7 @@ import Dropcursor from '@tiptap/extension-dropcursor'
 import Image from '@tiptap/extension-image'
 import styles from "./create.module.css"
 import Loading from "../../../../../components/loading/loading";
+import BreadCrumbs from "../../../../../components/bread-crumbs/bread-crumbs";
 
 function PostCreate({post}) {
     let upload = useRef(null)
@@ -86,12 +87,27 @@ function PostCreate({post}) {
 
     return (
         <div className={styles.createMain}>
-            <h1><Link to={"/dashboard/admin"}>Dashboard</Link> / <Link to={'/dashboard/admin/posts/'}>Posts</Link> / {
-                post != null || post !== undefined ?
-                    <span>Update</span>
-                    :
-                    <span>Create</span>
-            }</h1>
+            <BreadCrumbs
+                breadcrubms={{
+                    title: function (){
+                        if (post != null || post !== undefined) {
+                            return "Update"
+                        }
+                        return "Create"
+                    }(),
+                    links: [
+                        {
+                            title: "Dashboard",
+                            url: "/dashboard/admin"
+                        },
+                        {
+                            title: "Posts",
+                            link: "/dashboard/admin/posts"
+                        },
+                    ],
+                    fastActions: []
+                }}
+            />
 
             <div className={styles.basicData}>
                 <div className="">

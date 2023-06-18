@@ -4,7 +4,14 @@ import styles from "./bread-crumbs.module.css";
 function BreadCrumbs({breadcrubms}) {
     return (
         <div>
-            <h1><Link to={"/dashboard/admin"}>Dashboard</Link> / {breadcrubms.title}</h1>
+            <h1 className={styles.breadCrumbs}>
+
+                {breadcrubms.links.map(link => (
+                    <Link to={link.link}>{link.title} / </Link>
+                ))}
+                    <span>{breadcrubms.title}</span>
+
+            </h1>
 
             <div className={styles.fastActions}>
                 {
