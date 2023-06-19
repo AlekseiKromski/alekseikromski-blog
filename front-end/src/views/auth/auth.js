@@ -33,8 +33,8 @@ function Auth(){
 
                 setError("cannot get token")
             }).catch(e => {
-                if (e.response != undefined) {
-                    setError(e.response.data)
+                if (e.response !== undefined) {
+                    setError(e.response.data.message)
                 }
                 console.error(e)
             })

@@ -6,7 +6,7 @@ import SideBar from "./components/sidebar/sidebar"
 import Single from "./views/single/single";
 import { Helmet } from 'react-helmet';
 import {useDispatch, useSelector} from "react-redux";
-import {setDarkMode, setToken} from "./store/application"
+import {setDarkMode, setLang, setToken} from "./store/application"
 import Auth from "./views/auth/auth";
 import Admin from "./views/dashboard/admin";
 import Generic from "./views/dashboard/generic/generic";
@@ -21,7 +21,7 @@ import {useTranslation} from "react-i18next";
 function App() {
     let navigate = useNavigate()
     let dispatch = useDispatch()
-    let {t} = useTranslation()
+    let {t, i18n} = useTranslation()
 
     const application = useSelector((state) => state.application);
 
@@ -39,6 +39,12 @@ function App() {
             dispatch(setDarkMode(true))
         } else {
             dispatch(setDarkMode(false))
+        }
+
+        let lang = sessionStorage.getItem("lang")
+        if (lang != null && lang !== "") {
+            dispatch(setLang(lang))
+            i18n.changeLanguage(lang)
         }
     }, [])
 

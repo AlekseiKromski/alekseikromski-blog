@@ -13,7 +13,8 @@ export const applicationSlice = createSlice({
             authorized: false
         },
         sideClosed: true,
-        darkMode: false
+        darkMode: false,
+        lang: "en"
     },
     reducers: {
         setToken: (state, data) => {
@@ -51,10 +52,14 @@ export const applicationSlice = createSlice({
         setDarkMode: (state, data) => {
             state.darkMode = data.payload
             sessionStorage.setItem("darkMode", data.payload)
+        },
+        setLang: (state, data) => {
+            state.lang = data.payload
+            sessionStorage.setItem("lang", data.payload)
         }
     }
 })
 
-export const {setToken, setSideClosed, logout, setDarkMode} = applicationSlice.actions
+export const {setToken, setSideClosed, logout, setDarkMode, setLang} = applicationSlice.actions
 
 export default applicationSlice.reducer

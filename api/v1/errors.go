@@ -47,8 +47,7 @@ func NewAuthError(msg string) *AuthError {
 }
 
 func (au *AuthError) Error() string {
-	//TODO implement me
-	panic("implement me")
+	return fmt.Sprintf("error: %s", au.Message)
 }
 
 type JsonError struct {
@@ -66,7 +65,7 @@ func (ie *JsonError) HttpError() int {
 }
 
 func (au *AuthError) HttpError() int {
-	return http.StatusForbidden
+	return http.StatusBadRequest
 }
 
 func (ie *JsonError) Error() string {

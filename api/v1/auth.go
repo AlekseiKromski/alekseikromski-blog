@@ -40,6 +40,7 @@ func (v *V1) Login(w http.ResponseWriter, r *http.Request) {
 	user, err := v.storage.GetUser(credits.Email)
 	if err != nil {
 		v.ReturnErrorResponse(err, w)
+		return
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(credits.Password)); err != nil {

@@ -4,7 +4,7 @@ import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import { importCategories } from '../../store/shared'
-import {setDarkMode, setSideClosed} from '../../store/application'
+import {setDarkMode, setLang, setSideClosed} from '../../store/application'
 import { useNavigate } from "react-router-dom";
 import {FormControlLabel, Switch} from "@mui/material";
 import {useTranslation} from "react-i18next";
@@ -55,6 +55,11 @@ function SideBar() {
             return !application.sideClosed ? "sideBarMinimal-show" : "sideBar-hide"
         }
         return !application.sideClosed ? "sideBar-hide" : "sideBarMinimal-show"
+    }
+
+    function switchLang(lang) {
+        i18n.changeLanguage(lang)
+        dispatch(setLang(lang))
     }
 
     function red(to) {
@@ -127,11 +132,20 @@ function SideBar() {
                             </div>
                         </div>
 
-                        <div className="sidebarMenu">
+                        <div className="sidebarMenu sidebarMenuLanguage">
                             <h1>{t("sidebar.language")}</h1>
-                            <a onClick={() => i18n.changeLanguage("en")}>EN</a>
-                            <a onClick={() => i18n.changeLanguage("et")}>ET</a>
-                            <a onClick={() => i18n.changeLanguage("ru")}>RU</a>
+                            <a
+                                className={`${application.lang === "en" ? "active": "link"}`}
+                                onClick={() => switchLang("en")}
+                            >🇺🇸</a>
+                            <a
+                                className={`${application.lang === "et" ? "active": "link"}`}
+                                onClick={() => switchLang("et")}
+                            >🇪🇪</a>
+                            <a
+                                className={`${application.lang === "ru" ? "active": "link"}`}
+                                onClick={() => switchLang("ru")}
+                            >🇷🇺</a>
                         </div>
                     </div>
                     <div className="copyright">
