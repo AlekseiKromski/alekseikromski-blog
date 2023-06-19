@@ -124,6 +124,7 @@ func (db *DbConnection) CreatePost(post *models.Post) (bool, error) {
 	post = models.CreatePostWithData(post.Title, post.Description, post.Img, post.CategoryID)
 
 	query := post.CreateRecord()
+	log.Printf("[DBSTORE] running query: %s", query)
 
 	result, err := db.Connection.Exec(query)
 	if err != nil {
