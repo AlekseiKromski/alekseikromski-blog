@@ -176,6 +176,24 @@ func (v *V1) UpdatePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if find, converted, err := findTempImages(postForUpdate.Img); err == nil && find {
+		postForUpdate.Img = converted
+	} else {
+		if err != nil {
+			v.ReturnErrorResponse(err, w)
+			return
+		}
+	}
+
+	if find, converted, err := findTempImages(postForUpdate.Description); err == nil && find {
+		postForUpdate.Description = converted
+	} else {
+		if err != nil {
+			v.ReturnErrorResponse(err, w)
+			return
+		}
+	}
+
 	if err = v.storage.UpdatePost(postForUpdate); err != nil {
 		log.Printf("Update error: %s", err.Error())
 		v.ReturnErrorResponse(NewDecodingError(), w)
