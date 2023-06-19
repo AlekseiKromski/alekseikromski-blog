@@ -5,6 +5,7 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"os"
 	"reflect"
 	"regexp"
 	"strings"
@@ -76,7 +77,10 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, request *http.Request) {
 		e.Handler.ServeHTTP(w, request)
 		return
 	}
-	http.NotFound(w, request)
+
+	//By default, return index.html
+	file, _ := os.ReadFile("./front-end/build/index.html")
+	w.Write(file)
 }
 
 // CreateRoute - create new route with all parameters
