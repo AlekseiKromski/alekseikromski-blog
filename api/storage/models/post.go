@@ -106,7 +106,7 @@ func UpdatePost(post *Post) string {
 	if post.DeletedAt == nil {
 		return fmt.Sprintf(`UPDATE posts SET title = '%s', category_id = %d, description = '%s', "UpdatedAt" = '%s', "img" = '%s' WHERE posts.id = %d`, post.Title, post.CategoryID, post.Description, post.UpdatedAt, post.Img, post.ID)
 	}
-	return fmt.Sprintf(`UPDATE posts SET title = '%s', category_id = %d, description = '%s', "UpdatedAt" = '%s', "DeletedAt" = '%s' WHERE posts.id = %d`, post.Title, post.CategoryID, post.Description, post.UpdatedAt, *post.DeletedAt, post.ID)
+	return fmt.Sprintf(`UPDATE posts SET "DeletedAt" = '%s' WHERE posts.id = %d`, *post.DeletedAt, post.ID)
 }
 
 func GetLastPosts(limit int, offset int, categoryID int) string {
