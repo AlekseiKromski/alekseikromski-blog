@@ -3,8 +3,10 @@ import PostCreate from "../create/create";
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
+import {useTranslation} from "react-i18next";
 
 function PostEdit() {
+    let {t} = useTranslation()
     const params = useParams()
     const application = useSelector((state) => state.application);
 
@@ -23,7 +25,7 @@ function PostEdit() {
     return (
         <div>
             {post == null ?
-                <p>No data</p>
+                <p>{t("post_update.no_data")}</p>
                 :
                 <PostCreate post={post}/>
             }

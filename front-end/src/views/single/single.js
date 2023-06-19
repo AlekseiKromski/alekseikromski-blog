@@ -6,8 +6,10 @@ import SinglePostMock from "../../components/singlePostMock/singlePostMock";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import {useSelector} from "react-redux";
 import TiptapView from "../../components/tiptap/tiptapView/tiptapView";
+import {useTranslation} from "react-i18next";
 
 function Single() {
+    const {t} = useTranslation()
     const navigate = useNavigate()
     const params = useParams()
 
@@ -71,7 +73,7 @@ function Single() {
                     <p>
                         <TiptapView content={post.description}/>
                     </p>
-                    <span className="singleCategory">Category: <span><Link to={`/${post.category_id}`}>{post.category.name}</Link></span></span>
+                    <span className="singleCategory">{t("single.category")}: <span><Link to={`/${post.category_id}`}>{post.category.name}</Link></span></span>
                     {/*<div>*/}
                     {/*    <b>Tags: </b>*/}
                     {/*    {*/}
@@ -79,18 +81,18 @@ function Single() {
                     {/*    }*/}
                     {/*</div>*/}
                     <div className="commentForm">
-                        <h1>Comment</h1>
+                        <h1>{t("single.comment")}</h1>
 
                         <div className="">
-                            <label htmlFor="name">Name</label>
+                            <label htmlFor="name">{t("single.input_name")}</label>
                             <input type="text" name="Name" value={commentName} onChange={e => setCommentName(e.target.value)}/>
                         </div>
 
                         <div className="">
-                            <label htmlFor="comment">Comment</label>
+                            <label htmlFor="comment">{t("single.input_comment")}</label>
                             <textarea name="comment" value={commentText} onChange={e => setCommentText(e.target.value)}></textarea>
                         </div>
-                        <button onClick={sendComment}>send</button>
+                        <button onClick={sendComment}>{t("single.send")}</button>
                     </div>
                     <div className="singleComments">
                         {

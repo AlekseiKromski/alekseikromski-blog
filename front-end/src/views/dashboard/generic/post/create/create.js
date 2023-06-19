@@ -12,8 +12,10 @@ import styles from "./create.module.css"
 import Loading from "../../../../../components/loading/loading";
 import BreadCrumbs from "../../../../../components/bread-crumbs/bread-crumbs";
 import Alert from "../../../../../components/alert/alert";
+import {useTranslation} from "react-i18next";
 
 function PostCreate({post}) {
+    let {t} = useTranslation()
     let upload = useRef(null)
     let navigate = useNavigate()
 
@@ -125,17 +127,17 @@ function PostCreate({post}) {
                 breadcrubms={{
                     title: function (){
                         if (post != null || post !== undefined) {
-                            return "Update"
+                            return t("post_create.breadcumbs.update")
                         }
-                        return "Create"
+                        return t("post_create.breadcumbs.create")
                     }(),
                     links: [
                         {
-                            title: "Dashboard",
+                            title: t("generic.posts.breadcumbs_link_title"),
                             link: "/dashboard/admin"
                         },
                         {
-                            title: "Posts",
+                            title: t("generic.posts.breadcumbs_title"),
                             link: "/dashboard/admin/posts"
                         },
                     ],
@@ -145,17 +147,17 @@ function PostCreate({post}) {
 
             <div className={styles.basicData}>
                 <div className="">
-                    <label htmlFor="">Title</label>
+                    <label htmlFor="">{t("post_create.form.title")}</label>
                     <input type="text" value={title} onChange={(e) => setTitle(e.target.value)}/>
                 </div>
 
                 <div className="">
-                    <label htmlFor="">Image</label>
+                    <label htmlFor="">{t("post_create.form.image")}</label>
                     <input type="file" ref={upload} onChange={() => addImage(upload)}/>
                 </div>
 
                 <div className="">
-                    <label htmlFor="">Category</label>
+                    <label htmlFor="">{t("post_create.form.category")}</label>
                     <select value={category} onChange={(e) => {
                         setCategory(Number.parseInt(e.target.value))
                     }}>
@@ -181,9 +183,9 @@ function PostCreate({post}) {
                     <Loading/>
                     :
                     post != null && post != undefined ?
-                        <span>Update</span>
+                        <span>{t("post_create.breadcumbs.update")}</span>
                         :
-                        <span>Create</span>
+                        <span>{t("post_create.breadcumbs.create")}</span>
                 }
             </button>
         </div>

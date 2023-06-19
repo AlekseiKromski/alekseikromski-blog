@@ -4,8 +4,10 @@ import {useSelector} from "react-redux";
 import styles from "./generic.module.css"
 import BreadCrumbs from "../../../components/bread-crumbs/bread-crumbs";
 import Alert from "../../../components/alert/alert";
+import {useTranslation} from "react-i18next";
 
 function Generic({settings}) {
+    let {t} = useTranslation()
     const navigate = useNavigate()
     const application = useSelector((state) => state.application);
     let [data, setData] = useState([])
@@ -63,13 +65,13 @@ function Generic({settings}) {
                         data.map(d => {
                             return settings.data.renderTable(d, styles, [
                                 {
-                                    title: "edit",
+                                    title: t("generic.actions.update"),
                                     func: () => {
                                         editAction(d.id)
                                     }
                                 },
                                 {
-                                    title: "delete",
+                                    title: t("generic.actions.delete"),
                                     func: () => {
                                         deleteAction(d.id)
                                     }

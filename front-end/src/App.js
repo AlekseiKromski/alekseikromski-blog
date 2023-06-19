@@ -16,10 +16,12 @@ import {useEffect} from "react";
 import styles from "./views/dashboard/generic/generic.module.css";
 import GenericCU from "./views/dashboard/generic/genericCU/genericCU";
 import {importCategories} from "./store/shared";
+import {useTranslation} from "react-i18next";
 
 function App() {
     let navigate = useNavigate()
     let dispatch = useDispatch()
+    let {t} = useTranslation()
 
     const application = useSelector((state) => state.application);
 
@@ -44,22 +46,22 @@ function App() {
     let generic = {
         categories: {
             breadcrumbs: {
-                title: "Categories",
+                title: t("generic.categories.breadcumbs_title"),
                 links: [
                     {
-                        title: "Dashboard",
+                        title: t("generic.categories.breadcumbs_link_title"),
                         link: "/dashboard/admin"
                     },
                 ],
                 fastActions: [
                     {
-                        title: "Create category",
+                        title: t("generic.categories.breadcumbs_fastActions_title"),
                         link: "/dashboard/admin/categories/create"
                     }
                 ]
             },
             data: {
-                ids: ["ID", "Name", "Action"],
+                ids: [t("generic.categories.table_id"), t("generic.categories.table_name"), t("generic.categories.table_action")],
                 handler: (cb, application) => {
                     application.axios.get("/v1/category/all").catch(
                         cb([])
@@ -98,16 +100,16 @@ function App() {
                 }
             },
             create: {
-                buttonName: "Create",
+                buttonName: t("generic.categories.create_button_name"),
                 breadcrumbs: {
-                    title: "Category create",
+                    title: t("generic.categories.create_breadcumbs_title"),
                     links: [
                         {
-                            title: "Dashboard",
+                            title: t("generic.categories.breadcumbs_link_title"),
                             link: "/dashboard/admin"
                         },
                         {
-                            title: "Categories",
+                            title: t("generic.categories.breadcumbs_title"),
                             link: "/dashboard/admin/categories"
                         },
                     ],
@@ -123,16 +125,16 @@ function App() {
                 preFunc: () => {}
             },
             update: {
-                buttonName: "Edit",
+                buttonName: t("generic.categories.update_button_name"),
                 breadcrumbs: {
-                    title: "Category edit",
+                    title: t("generic.categories.update_breadcumbs_title"),
                     links: [
                         {
-                            title: "Dashboard",
+                            title: t("generic.categories.breadcumbs_link_title"),
                             link: "/dashboard/admin"
                         },
                         {
-                            title: "Categories",
+                            title: t("generic.categories.breadcumbs_title"),
                             link: "/dashboard/admin/categories"
                         },
                     ],
@@ -161,22 +163,22 @@ function App() {
         },
         posts: {
             breadcrumbs: {
-                title: "Posts",
+                title: t("generic.posts.breadcumbs_title"),
                 links: [
                     {
-                        title: "Dashboard",
+                        title: t("generic.posts.breadcumbs_link_title"),
                         link: "/dashboard/admin"
                     },
                 ],
                 fastActions: [
                     {
-                        title: "Create post",
+                        title: t("generic.posts.breadcumbs_fastActions_title"),
                         link: "/dashboard/admin/posts/create"
                     }
                 ]
             },
             data: {
-                ids: ["ID", "Name", "Action"],
+                ids: [t("generic.posts.table_id"), t("generic.posts.table_name"), t("generic.posts.table_action")],
                 handler: (cb, application) => {
                     application.axios.get("/v1/post/get-last-posts/15/0").catch(
                         cb([])

@@ -1,0 +1,103 @@
+{
+  "sidebar": {
+    "posts": "Посты",
+    "about": "О мне",
+    "dashboard": "Панель администратора",
+    "categories": "Категории",
+    "settings": "Настройки",
+    "switch": "Сменить тему",
+    "language": "Язык",
+    "copyright": "Copyright"
+  },
+  "about": {
+    "title": "Привет, мое имея Алексей Крымский",
+    "description": "Здесь вы можете найти небольшие посты о моей ИТ-жизни и ходе различных проектов, а также мои мысли о некоторых технологиях.",
+    "buttons": {
+      "read_posts": "Читать посты",
+      "check_portfolio": "Посмотреть портфолио",
+      "fb": "Facebook",
+      "click_email": "Написать на почту",
+      "cv": "Получить CV"
+    }
+  },
+  "auth" : {
+    "login": "Авторизация",
+    "email": "Почта",
+    "password": "Пароль",
+    "signin": "Войти",
+    "back": "назад"
+  },
+  "dashboard": {
+    "header": "Панель администратора",
+    "hi": "Привет",
+    "intro": "это твоя панель администратора",
+    "fastActions": {
+      "logout": "Выйти",
+      "create_post": "Создать пост"
+    },
+    "blocks": {
+      "posts" : {
+        "name": "Посты",
+        "desc": "Создать / отредактировать / удалить"
+      },
+      "categories" : {
+        "name": "Категории",
+        "desc": "Создать / отредактировать / удалить"
+      }
+    }
+  },
+  "generic": {
+    "posts": {
+      "breadcumbs_title": "Посты",
+      "breadcumbs_link_title": "Панель",
+      "breadcumbs_fastActions_title": "Создать пост",
+      "table_id": "ИД",
+      "table_name": "Имя",
+      "table_action": "Действие"
+    },
+    "categories": {
+      "breadcumbs_title": "Категории",
+      "breadcumbs_link_title": "Панель",
+      "breadcumbs_fastActions_title": "Создать категорию",
+      "table_id": "ИД",
+      "table_name": "Имя",
+      "table_action": "Действие",
+      "create_button_name": "Создать",
+      "create_breadcumbs_title": "Создать категорию",
+      "update_button_name": "Обновить",
+      "update_breadcumbs_title": "Обновить категорию"
+    },
+    "actions": {
+      "delete": "Удалить",
+      "update": "Обновить"
+    }
+  },
+  "post_create": {
+    "breadcumbs": {
+      "update": "Обновить",
+      "create": "Создать"
+    },
+    "form" : {
+      "title": "Заголовок",
+      "image": "Картинка",
+      "category": "Категория"
+    }
+  },
+  "post_update": {
+    "no_data": "Нет информации"
+  },
+  "genericCU": {
+    "input_name": "Название"
+  },
+  "main": {
+    "posts": "Посты",
+    "no_content": "Нет контента"
+  },
+  "single": {
+    "category": "Категория",
+    "comment": "Комментарий",
+    "input_name": "Имя",
+    "input_comment": "Комментарий",
+    "send": "Отправить"
+  }
+}

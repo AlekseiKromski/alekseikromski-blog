@@ -3,10 +3,11 @@ import "./main.css"
 import Post from "../../components/post/post"
 import PostMock from "../../components/post-mock/postMock"
 import {useEffect, useState} from "react";
-import axios from "axios";
 import {useSelector} from "react-redux";
+import {useTranslation} from "react-i18next";
 
 function Main() {
+    let {t} = useTranslation()
     const {categoryID} = useParams()
 
     //Redux
@@ -66,7 +67,7 @@ function Main() {
     return (
         <div className={`main ${!application.sideClosed ? "static" : ""}`}>
             <div className="mainHeader">
-                <h1>Posts</h1>
+                <h1>{t("main.posts")}</h1>
                 <select onChange={(e) => {getPostsByCategory(e.target.value)}} name="categoryID" id="">
                     {shared.categories.length != 0 &&
                         shared.categories.map(category => {
@@ -110,7 +111,7 @@ function Main() {
                     }
                     {posts.length == 0 &&
                         <div className="noContent">
-                            <p>🤯 No content</p>
+                            <p>🤯 {t("main.no_content")}</p>
                             <a onClick={() => getPosts()}>Back</a>
                         </div>
                     }

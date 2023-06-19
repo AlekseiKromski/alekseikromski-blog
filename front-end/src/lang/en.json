@@ -1,0 +1,103 @@
+{
+  "sidebar": {
+    "posts": "Posts",
+    "about": "About",
+    "dashboard": "Dashboard",
+    "categories": "Categories",
+    "settings": "Settings",
+    "switch": "Switch theme",
+    "language": "Language",
+    "copyright": "Copyright"
+  },
+  "about": {
+    "title": "Hi, my name is Aleksei Kromski",
+    "description": "Here you can find small posts about my IT life and the progress of various projects, as well as my thoughts on some technology.",
+    "buttons": {
+      "read_posts": "Read posts",
+      "check_portfolio": "Check portfolio",
+      "fb": "Facebook",
+      "click_email": "Click to email",
+      "cv": "Get CV"
+    }
+  },
+  "auth" : {
+    "login": "Login",
+    "email": "Email",
+    "password": "Password",
+    "signin": "Sign in",
+    "back": "back"
+  },
+  "dashboard": {
+    "header": "Dashboard",
+    "hi": "Hi",
+    "intro": "this is your dashboard",
+    "fastActions": {
+      "logout": "Logout",
+      "create_post": "Create post"
+    },
+    "blocks": {
+      "posts" : {
+        "name": "Posts",
+        "desc": "Create / modify / remove / manage comments"
+      },
+      "categories" : {
+        "name": "Categories",
+        "desc": "Create / modify / remove"
+      }
+    }
+  },
+  "generic": {
+    "posts": {
+      "breadcumbs_title": "Posts",
+      "breadcumbs_link_title": "Dashboard",
+      "breadcumbs_fastActions_title": "Create post",
+      "table_id": "ID",
+      "table_name": "Name",
+      "table_action": "Action"
+    },
+    "categories": {
+      "breadcumbs_title": "Categories",
+      "breadcumbs_link_title": "Dashboard",
+      "breadcumbs_fastActions_title": "Create category",
+      "table_id": "ID",
+      "table_name": "Name",
+      "table_action": "Action",
+      "create_button_name": "Create",
+      "create_breadcumbs_title": "Category create",
+      "update_button_name": "Update",
+      "update_breadcumbs_title": "Category update"
+    },
+    "actions": {
+      "delete": "Delete",
+      "update": "Update"
+    }
+  },
+  "post_create": {
+    "breadcumbs": {
+      "update": "Update",
+      "create": "Create"
+    },
+    "form" : {
+      "title": "Title",
+      "image": "Image",
+      "category": "Category"
+    }
+  },
+  "post_update": {
+    "no_data": "No data"
+  },
+  "genericCU": {
+    "input_name": "Name"
+  },
+  "main": {
+    "posts": "Posts",
+    "no_content": "No Content"
+  },
+  "single": {
+    "category": "Category",
+    "comment": "Comment",
+    "input_name": "Name",
+    "input_comment": "Comment",
+    "send": "Send"
+  }
+}

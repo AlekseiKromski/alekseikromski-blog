@@ -3,8 +3,10 @@ import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import styles from "./genericCU.module.css"
 import {useParams} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 function GenericCU({settings}) {
+    let {t} = useTranslation()
     const params = useParams()
     const application = useSelector((state) => state.application);
     const shared = useSelector((state) => state.shared);
@@ -21,7 +23,7 @@ function GenericCU({settings}) {
                 breadcrubms={settings.breadcrumbs}
             />
 
-            <label htmlFor="">Name</label>
+            <label htmlFor="">{t("genericCU.input_name")}</label>
             <input value={data} onChange={(e) => setData(e.target.value)} type="text"/>
             <button onClick={() => {
                 if (params.id) {
