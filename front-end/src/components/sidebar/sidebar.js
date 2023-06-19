@@ -4,8 +4,9 @@ import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import { importCategories } from '../../store/shared'
-import { setSideClosed } from '../../store/application'
+import {setDarkMode, setSideClosed} from '../../store/application'
 import { useNavigate } from "react-router-dom";
+import {FormControlLabel, Switch} from "@mui/material";
 
 function SideBar() {
     let navigate = useNavigate();
@@ -73,7 +74,6 @@ function SideBar() {
                     <div className="">
                         <h1 className="fontRighteous">
                             <a onClick={() => red("/")} className="logo">
-                                <img src={require("../../images/logo.png")} alt=""/>
                                 Blog
                             </a>
                             <CloseIcon
@@ -97,13 +97,32 @@ function SideBar() {
                             }
                         </ul>
 
-                        <div className="categories">
+                        <div className="sidebarMenu">
                             <h1>Categories</h1>
 
                             <a onClick={() => red("/")}>All</a>
                             {shared.categories.map(category => (
                                 <a onClick={() => red(`/${category.id}`)} key={category.id}>{category.name}</a>
                             ))}
+                        </div>
+
+                        <div className="sidebarMenu">
+                            <h1>Settings</h1>
+                            <div className="">
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={application.darkMode}
+                                            onChange={(event) => {
+                                                dispatch(setDarkMode(event.target.checked))
+                                            }}
+                                            name="theme"
+                                            color="default"
+                                        />
+                                    }
+                                    label="Swith theme"
+                                />
+                            </div>
                         </div>
                     </div>
                     <div className="copyright">

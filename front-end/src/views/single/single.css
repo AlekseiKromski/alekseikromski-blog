@@ -4,6 +4,9 @@
     flex-direction: column;
     padding-bottom: 30px;
 }
+.dark .singlePost a {
+    color: white;
+}
 .singlePost a {
     margin: 15px 0;
     color: black;
@@ -113,6 +116,9 @@
     background: white;
     font-weight: bold;
     transition: 0.3s;
+}
+.dark .singleComment {
+    background: #424242;
 }
 
 .commentForm button:hover {

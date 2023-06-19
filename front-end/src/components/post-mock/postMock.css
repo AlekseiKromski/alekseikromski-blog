@@ -6,6 +6,10 @@
     background-size: 400% 400%;
     animation: gradient 2s ease infinite;
 }
+.dark .postMock {
+    background: linear-gradient(-45deg, #646464, #4b4b4b)!important;
+}
+
 .imageMock{
     margin: 10px;
     height: 250px;
@@ -14,6 +18,9 @@
     background: linear-gradient(-45deg, #ffffff, #dadada);
     background-size: 400% 400%;
     animation: gradient 2s ease infinite;
+}
+.dark .imageMock {
+    background: linear-gradient(-45deg, #646464, #4b4b4b)!important;
 }
 .postMock h1 {
     width: 100%;
@@ -25,6 +32,10 @@
     animation: gradient 2s ease infinite;
 }
 
+.dark .postMock h1 {
+    background: linear-gradient(-45deg, #646464, #4b4b4b)!important;
+}
+
 .postMock p {
     width: 80%;
     height: 20px;
@@ -33,6 +44,10 @@
     background: linear-gradient(-45deg, #ffffff, #dadada);
     background-size: 400% 400%;
     animation: gradient 2s ease infinite;
+}
+.dark .singlePostContentMock p {
+    background: linear-gradient(-45deg, #646464, #4b4b4b)!important;
+    background-size: 400% 400%;
 }
 
 .postMock span {
@@ -44,6 +59,15 @@
     background-size: 400% 400%;
     animation: gradient 2s ease infinite;
 }
+.dark .postMock span {
+    background: linear-gradient(-45deg, #646464, #4b4b4b)!important;
+    background-size: 400% 400%;
+}
+.dark .postContent p {
+    background: linear-gradient(-45deg, #646464, #4b4b4b)!important;
+    background-size: 400% 400%;
+}
+
 .commentsMock{
     width: 20%;
     height: 20px;
@@ -52,6 +76,11 @@
     background: linear-gradient(-45deg, #ffffff, #dadada);
     background-size: 400% 400%;
     animation: gradient 2s ease infinite;
+}
+
+.dark .commentsMock {
+    background: linear-gradient(-45deg, #646464, #4b4b4b)!important;
+    background-size: 400% 400%;
 }
 @keyframes gradient {
     0% {

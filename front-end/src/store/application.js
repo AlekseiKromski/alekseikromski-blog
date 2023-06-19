@@ -12,7 +12,8 @@ export const applicationSlice = createSlice({
             email: null,
             authorized: false
         },
-        sideClosed: true
+        sideClosed: true,
+        darkMode: false
     },
     reducers: {
         setToken: (state, data) => {
@@ -46,10 +47,14 @@ export const applicationSlice = createSlice({
                 return
             }
             state.sideClosed = !state.sideClosed
+        },
+        setDarkMode: (state, data) => {
+            state.darkMode = data.payload
+            sessionStorage.setItem("darkMode", data.payload)
         }
     }
 })
 
-export const {setToken, setSideClosed, logout} = applicationSlice.actions
+export const {setToken, setSideClosed, logout, setDarkMode} = applicationSlice.actions
 
 export default applicationSlice.reducer

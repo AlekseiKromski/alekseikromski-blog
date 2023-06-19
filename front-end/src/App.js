@@ -6,7 +6,7 @@ import SideBar from "./components/sidebar/sidebar"
 import Single from "./views/single/single";
 import { Helmet } from 'react-helmet';
 import {useDispatch, useSelector} from "react-redux";
-import {setToken} from "./store/application"
+import {setDarkMode, setToken} from "./store/application"
 import Auth from "./views/auth/auth";
 import Admin from "./views/dashboard/admin";
 import Generic from "./views/dashboard/generic/generic";
@@ -21,6 +21,8 @@ function App() {
     let navigate = useNavigate()
     let dispatch = useDispatch()
 
+    const application = useSelector((state) => state.application);
+
     useEffect(() => {
         let account = JSON.parse(sessionStorage.getItem("account"))
         if (account != null) {
@@ -28,6 +30,13 @@ function App() {
                 email: account.email,
                 token: account.token
             }))
+        }
+
+        let darkMode = sessionStorage.getItem("darkMode")
+        if (darkMode != null && darkMode === "true") {
+            dispatch(setDarkMode(true))
+        } else {
+            dispatch(setDarkMode(false))
         }
     }, [])
 
@@ -208,7 +217,7 @@ function App() {
     }
 
     return (
-        <div className="App">
+        <div className={`App ${application.darkMode ? "dark" : ""}`}>
             <Helmet>
                 <title>Blog | Aleksei Kromski</title>
             </Helmet>

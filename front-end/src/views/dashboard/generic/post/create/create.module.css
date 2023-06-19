@@ -3,6 +3,7 @@
     display: flex;
     flex-direction: column;
 }
+
 .basicData{
     display: flex;
     flex-direction: column;

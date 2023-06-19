@@ -17,6 +17,13 @@
     background-size: 400% 400%;
     animation: gradient 2s ease infinite;
 }
+.dark .singleHeaderMock {
+    background: linear-gradient(-45deg, #646464, #4b4b4b)!important;
+}
+
+.dark .singleHeaderMock small {
+    background: linear-gradient(-45deg, #646464, #4b4b4b)!important;
+}
 
 .singleHeaderMock h1 {
     margin: 0px;
@@ -27,6 +34,9 @@
     background: linear-gradient(-45deg, #ffffff, #dadada);
     background-size: 400% 400%;
     animation: gradient 2s ease infinite;
+}
+.dark .singleHeaderMock h1 {
+    background: linear-gradient(-45deg, #646464, #4b4b4b)!important;
 }
 
 .singleHeaderMock small {
@@ -40,6 +50,10 @@
     animation: gradient 2s ease infinite;
 }
 
+.dark .small {
+    background: linear-gradient(-45deg, #646464, #4b4b4b)!important;
+}
+
 .singlePostContentMock p {
     width: 100%;
     height: 100px;
@@ -50,14 +64,8 @@
     animation: gradient 2s ease infinite;
 }
 
-.singleCategoryMock {
-    width: 25%;
-    height: 20px;
-    border-radius: 10px;
-
-    background: linear-gradient(-45deg, #ffffff, #dadada);
-    background-size: 400% 400%;
-    animation: gradient 2s ease infinite;
+.dark .singleHeaderMock p {
+    background: linear-gradient(-45deg, #646464, #4b4b4b)!important;
 }
 
 .singleCategoryMock {
@@ -69,6 +77,11 @@
     background-size: 400% 400%;
     animation: gradient 2s ease infinite;
 }
+
+.dark .singleCategoryMock {
+    background: linear-gradient(-45deg, #646464, #4b4b4b)!important;
+}
+
 .singlePostContentMock div b {
     width: 100%;
     height: 100px;
@@ -78,6 +91,11 @@
     background-size: 400% 400%;
     animation: gradient 2s ease infinite;
 }
+
+.dark .singleHeaderMock div b {
+    background: linear-gradient(-45deg, #646464, #4b4b4b)!important;
+}
+
 .singleCommentMock{
     width: 100%;
     height: 50px;
@@ -88,6 +106,10 @@
     background: linear-gradient(-45deg, #ffffff, #dadada);
     background-size: 400% 400%;
     animation: gradient 2s ease infinite;
+}
+
+.dark .singleCommentMock {
+    background: linear-gradient(-45deg, #646464, #4b4b4b)!important;
 }
 
 @keyframes gradient {
