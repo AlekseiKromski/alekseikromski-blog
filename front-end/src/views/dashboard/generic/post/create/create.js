@@ -11,6 +11,7 @@ import Image from '@tiptap/extension-image'
 import styles from "./create.module.css"
 import Loading from "../../../../../components/loading/loading";
 import BreadCrumbs from "../../../../../components/bread-crumbs/bread-crumbs";
+import Alert from "../../../../../components/alert/alert";
 
 function PostCreate({post}) {
     let upload = useRef(null)
@@ -21,6 +22,7 @@ function PostCreate({post}) {
     let [category, setCategory] = useState(0)
     let [canSend, setCanSend] = useState(true)
     let [loading, setLoading] = useState(false)
+    let [error, setError] = useState(null)
 
     const application = useSelector((state) => state.application);
     const shared = useSelector((state) => state.shared);
@@ -54,6 +56,8 @@ function PostCreate({post}) {
                 "category_id": category
             }).then(() => {
                 navigate("/dashboard/admin/posts")
+            }).catch(e => {
+                setError(e.response.data.message)
             })
         }
     }
@@ -67,6 +71,8 @@ function PostCreate({post}) {
                 "category_id": category
             }).then(() => {
                 navigate("/dashboard/admin/posts")
+            }).catch(e => {
+                setError(e.response.data.message)
             })
         }
     }
@@ -86,7 +92,7 @@ function PostCreate({post}) {
                 setLoading(false)
             })
             .catch(e => {
-                console.error(e)
+                setError(e.response.data.message)
             })
     }
 
@@ -95,12 +101,26 @@ function PostCreate({post}) {
         if (post != undefined || post != null) {
             setTitle(post.title)
             setCategory(post.category_id)
+            return
         }
-    }, [])
+
+        if (shared.categories.length === 1) {
+            setCategory(shared.categories[0].id)
+        }
+    }, [shared.categories])
 
 
     return (
         <div className={styles.createMain}>
+            {error != null &&
+                <Alert
+                    title="Error"
+                    type="error"
+                    text={error}
+                    set={setError}
+                />
+            }
+
             <BreadCrumbs
                 breadcrubms={{
                     title: function (){
@@ -112,7 +132,7 @@ function PostCreate({post}) {
                     links: [
                         {
                             title: "Dashboard",
-                            url: "/dashboard/admin"
+                            link: "/dashboard/admin"
                         },
                         {
                             title: "Posts",
@@ -136,7 +156,9 @@ function PostCreate({post}) {
 
                 <div className="">
                     <label htmlFor="">Category</label>
-                    <select value={category} onChange={(e) => setCategory(Number.parseInt(e.target.value))}>
+                    <select value={category} onChange={(e) => {
+                        setCategory(Number.parseInt(e.target.value))
+                    }}>
                         {shared.categories != null &&
                             shared.categories.map(category => {
                                 return (<option value={category.id} key={category.id} >{category.name}</option>)
