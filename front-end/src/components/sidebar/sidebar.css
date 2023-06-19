@@ -134,7 +134,10 @@
 .active{
     background: #dcb639!important;
 }
-
+.dark .link {
+    background: #464646 !important;
+    border: 2px solid #dcb639;
+}
 .link{
     background: white!important;
     border: 2px solid #dcb639;
