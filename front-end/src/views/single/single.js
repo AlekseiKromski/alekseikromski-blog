@@ -72,12 +72,12 @@ function Single() {
                         <TiptapView content={post.description}/>
                     </p>
                     <span className="singleCategory">Category: <span><Link to={`/${post.category_id}`}>{post.category.name}</Link></span></span>
-                    <div>
-                        <b>Tags: </b>
-                        {
-                            post.tags.map( tag => (<span className="tag">{tag.name}</span>))
-                        }
-                    </div>
+                    {/*<div>*/}
+                    {/*    <b>Tags: </b>*/}
+                    {/*    {*/}
+                    {/*        post.tags.map( tag => (<span className="tag">{tag.name}</span>))*/}
+                    {/*    }*/}
+                    {/*</div>*/}
                     <div className="commentForm">
                         <h1>Comment</h1>
 
