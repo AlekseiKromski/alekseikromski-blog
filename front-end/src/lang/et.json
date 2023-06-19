@@ -1,3 +1,103 @@
 {
-  "Welcome to React": "Tervist !"
+  "sidebar": {
+    "posts": "Postitused",
+    "about": "Mina",
+    "dashboard": "Administraatori paneel",
+    "categories": "Kategooriad",
+    "settings": "Seaded",
+    "switch": "Muuda teemat",
+    "language": "Keel",
+    "copyright": "Copyright"
+  },
+  "about": {
+    "title": "Tere, minu nimi on Aleksei Krõmski",
+    "description": "Siin saate leida postitusi minu IT-elust ja erinevatest projektidest; samuti minu mõtteid igasugustest tehnoloogiatest.",
+    "buttons": {
+      "read_posts": "Lugeda poste",
+      "check_portfolio": "Vaadata profilli",
+      "fb": "Facebook",
+      "click_email": "Saata e-maili",
+      "cv": "Saada CV"
+    }
+  },
+  "auth" : {
+    "login": "Sisselogimine",
+    "email": "E-post",
+    "password": "Salasõna",
+    "signin": "Logi sisse",
+    "back": "tagasi"
+  },
+  "dashboard": {
+    "header": "Administraatori paneel ",
+    "hi": "Tere",
+    "intro": "see on sinu admini paneel",
+    "fastActions": {
+      "logout": "Logi välja",
+      "create_post": "Loo postitus"
+    },
+    "blocks": {
+      "posts" : {
+        "name": "Postitused",
+        "desc": "Loo / korrigeeri / kustuta"
+      },
+      "categories" : {
+        "name": "Kategooriad",
+        "desc": " Loo / korrigeeri / kustuta "
+      }
+    }
+  },
+  "generic": {
+    "posts": {
+      "breadcumbs_title": "Postitused",
+      "breadcumbs_link_title": "Paneel",
+      "breadcumbs_fastActions_title": "Loo postitus",
+      "table_id": "ID",
+      "table_name": "Nimi",
+      "table_action": "Tegevus"
+    },
+    "categories": {
+      "breadcumbs_title": "Kategooriad",
+      "breadcumbs_link_title": "Paneel",
+      "breadcumbs_fastActions_title": "Loo kategooria",
+      "table_id": "ID",
+      "table_name": "Nimi",
+      "table_action": "Tegevus",
+      "create_button_name": "Loo",
+      "create_breadcumbs_title": "Loo kategooria ",
+      "update_button_name": "Uuenda",
+      "update_breadcumbs_title": "Uuenda kategooria"
+    },
+    "actions": {
+      "delete": "Kustuta",
+      "update": "Uuenda"
+    }
+  },
+  "post_create": {
+    "breadcumbs": {
+      "update": "Uuenda",
+      "create": "Loo"
+    },
+    "form" : {
+      "title": "Pealkiri",
+      "image": "Pilt",
+      "category": "Kategooria"
+    }
+  },
+  "post_update": {
+    "no_data": "Info puudub"
+  },
+  "genericCU": {
+    "input_name": "Nimetus"
+  },
+  "main": {
+    "posts": "Postitused",
+    "no_content": "Sisu puudub"
+  },
+  "single": {
+    "category": "Kategooria",
+    "comment": "Kommentaar",
+    "input_name": "Nimi",
+    "input_comment": "Kommetaar",
+    "send": "Saada"
+  }
 }
