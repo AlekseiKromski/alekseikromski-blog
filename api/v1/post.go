@@ -10,6 +10,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -295,15 +296,22 @@ func findTempImages(data string) (bool, string, error) {
 	if len(pos) != 0 {
 		final := data
 		for _, path := range pos {
-			new := strings.ReplaceAll(string(path), "/temp/", "./store/images/")
-			err := os.Rename(fmt.Sprintf("./%s", path), new)
-			log.Printf("cannot move file: %v", err)
 
+			//Content for old file
+			bytes, err := os.ReadFile(filepath.Join(".", path))
 			if err != nil {
+				log.Printf("[HANDLER] Cannot read file: %v", err)
 				return false, "", err
 			}
 
-			final = strings.ReplaceAll(final, string(path), new[2:len(new)])
+			dest := strings.ReplaceAll(string(path), "/temp/", "./store/images/")
+
+			if err = os.WriteFile(dest, bytes, 0644); err != nil {
+				log.Printf("[HANDLER] Cannot write file: %v", err)
+				return false, "", err
+			}
+
+			final = strings.ReplaceAll(final, string(path), dest[1:len(dest)])
 		}
 		return true, final, nil
 	}
@@ -397,7 +405,7 @@ func (v *V1) UploadFile(w http.ResponseWriter, r *http.Request) {
 	response, err := json.Marshal(struct {
 		Payload string `json:"payload"`
 	}{
-		Payload: tempFile.Name()[1:len(tempFile.Name())],
+		Payload: tempFile.Name()[2:len(tempFile.Name())],
 	})
 
 	if err != nil {
