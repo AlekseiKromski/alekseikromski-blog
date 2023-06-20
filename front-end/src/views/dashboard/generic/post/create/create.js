@@ -103,6 +103,7 @@ function PostCreate({post}) {
         if (post != undefined || post != null) {
             setTitle(post.title)
             setCategory(post.category_id)
+            setImage(post.img)
             return
         }
 
