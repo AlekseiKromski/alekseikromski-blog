@@ -83,7 +83,7 @@ func (m *Post) TableCreate() *TableCreation {
 					constraint posts_pk
 						primary key,
 				"title"  varchar(60)      not null,
-				"img"  varchar(60)      not null,
+				"img"  text     not null,
 				"description"  text      not null,
 				"category_id" serial not null,
 				"CreatedAt" timestamp not null,
