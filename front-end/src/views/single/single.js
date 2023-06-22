@@ -1,12 +1,13 @@
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react"
-import axios from "axios";
 import "./single.css"
 import SinglePostMock from "../../components/singlePostMock/singlePostMock";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import {useSelector} from "react-redux";
 import TiptapView from "../../components/tiptap/tiptapView/tiptapView";
 import {useTranslation} from "react-i18next";
+import ReCaptcha from "@matt-block/react-recaptcha-v2";
+import Alert from "../../components/alert/alert";
 
 function Single() {
     const {t} = useTranslation()
@@ -20,6 +21,8 @@ function Single() {
     let [post, setPost] = useState(null)
     let [commentName, setCommentName] = useState("")
     let [commentText, setCommentText] = useState("")
+    let [captchaToken, setCaptchaToken] = useState(null)
+    let [error, setError] = useState(null)
 
     useEffect(() => {
         application.axios.get(`/v1/post/get-post/${params.id}`).catch(
@@ -35,11 +38,12 @@ function Single() {
     }, [params.id]);
 
     function sendComment() {
-        if (commentName != "" && commentText != "") {
+        if (commentName != "" && commentText != "" && captchaToken != null) {
             application.axios.post("/v1/post/comment", {
                 name: commentName,
                 text: commentText,
-                post_id: Number.parseInt(params.id)
+                post_id: Number.parseInt(params.id),
+                captchaToken: captchaToken
             }).then(response => {
                 setPost({
                     ...post,
@@ -48,6 +52,8 @@ function Single() {
 
                 setCommentName("")
                 setCommentText("")
+            }).catch(e => {
+                setError("Cannot add comment, try again 🤯")
             })
         }
     }
@@ -62,6 +68,14 @@ function Single() {
             }
             {!loading && post !== null &&
                 <div className="singlePostContent">
+                    {error != null &&
+                        <Alert
+                            title="Error"
+                            type="error"
+                            text={error}
+                            set={setError}
+                        />
+                    }
                     <div className="singleHeader" style={{
                         "backgroundImage": `linear-gradient(to bottom, rgba(252, 252, 252, 0) 20%, rgb(71 71 71) 100%), url('${post.img}')`
                     }}>
@@ -92,7 +106,17 @@ function Single() {
                             <label htmlFor="comment">{t("single.input_comment")}</label>
                             <textarea name="comment" value={commentText} onChange={e => setCommentText(e.target.value)}></textarea>
                         </div>
-                        <button onClick={sendComment}>{t("single.send")}</button>
+                        <ReCaptcha
+                            siteKey={process.env.REACT_APP_GOOGLE_RECAPTCHA_TOKEN}
+                            theme="light"
+                            size="normal"
+                            onSuccess={(c) => setCaptchaToken(c)}
+                            onError={() => setError("There is some troubles, try again")}
+                            onExpire={() => setError("Verification has expired, re-verify.")}
+                        />
+                        {captchaToken != null &&
+                            <button onClick={sendComment}>{t("single.send")}</button>
+                        }
                     </div>
                     <div className="singleComments">
                         {
