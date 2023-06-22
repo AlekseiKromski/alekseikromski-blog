@@ -71,7 +71,7 @@ func (m *Comment) TableCreate() *TableCreation {
 				ID          serial
 					constraint comments_pk
 						primary key,
-				"name"  varchar(60)      not null,
+				"name"  varchar(140)      not null,
 				"text"  text     not null,
 				"post_id"  serial     not null,
 				"CreatedAt" timestamp not null,
