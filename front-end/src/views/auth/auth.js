@@ -55,10 +55,10 @@ function Auth(){
                 }
 
                 <label htmlFor="email">{t("auth.email")}</label>
-                <input name="email" type="text" onChange={(e) => setEmail(e.target.value)} value={email}/>
+                <input name="email" type="email" onChange={(e) => setEmail(e.target.value)} value={email}/>
 
                 <label htmlFor="password">{t("auth.password")}</label>
-                <input name="password" type="text" onChange={(e) => setPassword(e.target.value)} value={password}/>
+                <input name="password" type="password" onChange={(e) => setPassword(e.target.value)} value={password}/>
 
                 <button onClick={(e) => login()}>{t("auth.signin")}</button>
                 <Link to="/">{t("auth.back")}</Link>
