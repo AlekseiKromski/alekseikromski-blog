@@ -11,18 +11,20 @@ import (
 )
 
 type V1 struct {
-	Version string
-	router  *router.Router
-	storage storage.Storage
-	guards  map[string]guard.Guard
+	Version            string
+	googleCaptchaToken string
+	router             *router.Router
+	storage            storage.Storage
+	guards             map[string]guard.Guard
 }
 
-func NewV1(storage storage.Storage, router *router.Router, gs []guard.Guard) *V1 {
+func NewV1(storage storage.Storage, router *router.Router, googleCaptchaToken string, gs []guard.Guard) *V1 {
 	return &V1{
-		Version: "V1",
-		router:  router,
-		storage: storage,
-		guards:  parseGuards(gs),
+		Version:            "V1",
+		router:             router,
+		storage:            storage,
+		googleCaptchaToken: googleCaptchaToken,
+		guards:             parseGuards(gs),
 	}
 }
 

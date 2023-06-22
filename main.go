@@ -29,6 +29,7 @@ func main() {
 	port := os.Getenv("DB_PORT")
 	database := os.Getenv("DB_DATABASE")
 	jwtSecret := os.Getenv("jwtSecret")
+	googCaptchaToken := os.Getenv("GOOGLE_CAPTCHA_TOKEN")
 
 	if username == "" || password == "" || hostname == "" || port == "" || database == "" {
 		log.Fatalf("[ERROR] Database credits is required")
@@ -59,7 +60,7 @@ func main() {
 
 	//Prepare apis
 	apis := []api.Api{
-		v1.NewV1(dbstore, router, guards),
+		v1.NewV1(dbstore, router, googCaptchaToken, guards),
 	}
 
 	server := api.NewServer(config, router, apis)

@@ -328,8 +328,23 @@ func findTempImages(data string) (bool, string, error) {
 //	@Failure		500
 //	@Router			/V1/post/create-comment [post]
 func (v *V1) CreateComment(w http.ResponseWriter, r *http.Request) {
-	var comment models.Comment
+	extendedCommentModel := struct {
+		models.Comment
+		captchaToken string
+	}{}
 
+	//Verify token
+	if verified, err := v.googleTokenVerification(extendedCommentModel.captchaToken); err != nil || !verified {
+		v.ReturnErrorResponse(fmt.Errorf("cannot verify token: %v", err), w)
+		return
+	}
+
+	//Create new comment model without captcha token
+	comment := models.Comment{
+		Name:   extendedCommentModel.Name,
+		Text:   extendedCommentModel.Text,
+		PostID: extendedCommentModel.PostID,
+	}
 	err := json.NewDecoder(r.Body).Decode(&comment)
 	defer r.Body.Close()
 	if err != nil {
@@ -428,4 +443,18 @@ func (v *V1) getSizeAndOffset(params router.Params) (int, int, error) {
 	}
 
 	return size, indent, nil
+}
+
+func (v *V1) googleTokenVerification(token string) (bool, error) {
+	url := fmt.Sprintf("https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s", v.googleCaptchaToken, token)
+	request, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		return false, fmt.Errorf("cannot create request: %v", err)
+	}
+	response, err := http.DefaultClient.Do(request)
+	if err != nil || response.StatusCode != 200 {
+		return false, fmt.Errorf("bad response from server: %v", err)
+	}
+
+	return true, nil
 }
