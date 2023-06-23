@@ -29,7 +29,7 @@ function About() {
                             <FacebookIcon/>
                         </a>
                         <a href="mailto:aleskeikromski@outlook.com">{t("about.buttons.click_email")} ✉️</a>
-                        <a href="https://alekseikromski.com/" target="_blank">{t("about.buttons.cv")} 📋️</a>
+                        <a href="https://alekseikromski.com/_nuxt/img/cv.fa9af94.pdf" target="_blank">{t("about.buttons.cv")} 📋️</a>
                     </div>
                 </div>
             </div>
