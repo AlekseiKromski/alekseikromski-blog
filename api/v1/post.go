@@ -16,8 +16,8 @@ import (
 	"strings"
 )
 
-var urlRegExp = regexp.MustCompile(`/temp/upload-\d+.(jpg|png|jpeg)`)
-var extensionsRegExp = regexp.MustCompile("(png|jpg|jpeg)")
+var urlRegExp = regexp.MustCompile(`/temp/upload-\d+.(jpg|png|jpeg|gif)`)
+var extensionsRegExp = regexp.MustCompile("(png|jpg|jpeg|gif)")
 
 // GetLastPosts
 //
